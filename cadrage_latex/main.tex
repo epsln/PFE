@@ -1,0 +1,72 @@
+\documentclass[french, 11pt, a4paper]{article}
+%lexique des termes difficiles
+
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{etoolbox} 
+\usepackage{graphicx}
+\usepackage{import} 
+\usepackage{array}
+\usepackage{afterpage}
+
+\geometry{a4paper, margin=20mm}
+\hyphenation {con-sti-tu-tio-nal}
+
+%document begin
+\pagestyle {plain}
+\begin{document}
+
+\title {Document de cadrage\\Projet de Fin d'Étude}
+\author{Baptiste Hudyma - Martin Olivier}
+
+%Document main
+\thispagestyle {plain}
+
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+\section {Compréhension du problème}
+%Quel est le pb ? qui ? quel contexte ?
+%En quoi est ce un pb ? critères de satis
+\import {sections/} {comprehension}
+\newpage
+
+\section {Objectifs}
+%SMART (avec le commanditaire)
+\import {sections/} {objectifs}
+\newpage
+
+\section {Interlocuteurs}
+
+\newpage
+
+\section {Règles de fonctionnement}
+%réunions, échanges, lieux de travail
+
+\newpage
+
+\section {Moyens}
+
+\newpage
+
+\section {Méthode envisagée}
+\import {sections/} {methode}
+\newpage
+
+\section {Organisation de l'équipe}
+\import {sections/} {orgaequipe}
+\newpage
+
+\section {Planning}
+
+\newpage
+
+\end {document}
+
