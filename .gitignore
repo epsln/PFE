@@ -1,1 +1,2 @@
-cadrage_latex/build/*
+build/*
+*.pdf
