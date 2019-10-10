@@ -1,1 +1,11 @@
-Lorem Ipsum
+\subsection{word2vec}
+Word2Vec est un groupe de modèle, utilisé pour former des embeddings de mots, c'est a dire d'associer un mot a un vecteur dans un espace vectoriel. Cet espace vectoriel a en général une centaine de dimensions. Les vecteurs de mots sont placés de tels façons a ce que les mots ayant un contexte similaire soit proche, selon une distance défini au préalable.
+
+Word2Vec est un algorithme récent, ayant été crée en 2013, par une équipe de chercheur travaillant a Google. 
+
+En général on choisit une de deux architecture pour obtenir une representation distribué des mots. Soit un \textit{Continuous Bag Of Words} (CBOW), ou un \textit{Continuous Skip-gram}. Dans l'architecture CBOW, le modèle prédit le mot actuel en fonction d'une fenetre de contexte. Dans l'architecture skip-gram, le modèle utilise le mot actuel pour prédire le contexte. 
+
+Word2Vec est se base sur un apprentissage non supervisé. Il suffit de lui présenter des textes sans avoir besoin de labeliser, et on obtiendra un emdeding correspondant.
+\subsection{doc2vec}
+Doc2Vec est une technique de classfication non supervisé de documents, se basant sur word2vec. Il s'agit d'une extension du modèle CBOW, où un identifiant correspondant au paragraphe est ajouté au vecteur de contexte. Le but de Doc2Vec est de construire, de la même façon que word2vec, une représentation vectorielle d'un document. Là où les vecteurs de mots servent a représenter le contexte d'un mot, le vecteur de document cherche a représenter le concept d'un document.
+
