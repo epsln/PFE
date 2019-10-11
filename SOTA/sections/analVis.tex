@@ -1,0 +1,9 @@
+\subsection{Autoencodeur convolutionnel}
+
+Le but de l'analyse visuelle d'un document est de pouvoir encapsuler la forme, plutôt que le fond, dans une forme vectorielle compréhensible et comparable. Une excellente méthode pour effectuer cette tache est un autoencodeur convolutionnel. A l'instar des autoencodeurs "classiques", un autoencodeur convolutionnel cherche a réduire la dimensionnalité de son vecteur d'entrée en trouvant une représentation vectorielle capturant ses charactéristiques. 
+
+Un autoencodeur convolutionnel va utiliser des couches de convolution, a l'opposé de couches entièrement connectées, avec des max-poolings entre chaque couche de convolution pour réduire la dimensionalité. 
+
+De plus, la compression dans le vecteur latent se fera de façon a ce que les images proches, donc dans notre cas les documents ayant une mise en page et une identité visuelle similaire se retrouveront proche dans l'espace vectorielle latent produit par l'autoencodeur.
+
+Comme pour le doc2vec (ou word2vec), le but de cette analyse est d'obtenir un vecteur d'une certaine dimension que nous pouvons comparer entre les documents. Cependant, nous cherchons ici a analyser la forme du document, plutôt que son fond. 
