@@ -21,7 +21,7 @@
 \begin{document}
 
 \title {Document de cadrage\\Projet de Fin d'Étude}
-\author{Baptiste Hudyma - Martin Olivier}
+\author{Baptiste Hudyma - Martin Olivier - Staberlin Valentain}
 
 %Document main
 \thispagestyle {plain}
@@ -32,41 +32,63 @@
 \tableofcontents
 \newpage
 
-\section {Compréhension du problème}
+
+
+\part {Presentation}
+\section {Contexte et finalité}
+%Quelle est l 'entreprise
+%pour qui est fait le projet
+%Quel est le périmètre du projet
+\import {sections/} {context}
+
+\section {Interlocuteurs}
+\import {sections/} {interlocuteurs}
+
+
+
+\newpage
+\part {Problématisation}
+
+\section {Problématique}
 %Quel est le pb ? qui ? quel contexte ?
 %En quoi est ce un pb ? critères de satis
-\import {sections/} {comprehension}
-\newpage
+\import {sections/} {problematique}
+
+\section {Analyse du scénario}
+\import {sections/} {analyseScenario}
 
 \section {Objectifs}
 %SMART (avec le commanditaire)
 \import {sections/} {objectifs}
-\newpage
 
-\section {Interlocuteurs}
-\import {sections/} {interlocuteurs}
-\newpage
 
-\section {Règles de fonctionnement}
-%réunions, échanges, lieux de travail
-\import {sections/} {fonctionnement}
+
 \newpage
+\part {Cadrage}
+
+\section {Livrables}
+%liste des livrables
+
+\section {Démarche}
+%Approche adoptée pour mener à bien le projet
+%justification de l'approche
+%Principales étapes
+\import {sections/} {methode}
 
 \section {Moyens}
+%budget estimé
 \import {sections/} {moyens}
-\newpage
-
-\section {Méthode envisagée}
-\import {sections/} {methode}
-\newpage
 
 \section {Organisation de l'équipe}
 \import {sections/} {orgaequipe}
-\newpage
 
 \section {Planning}
+%Gantt
+
+\section {Gouvernance}
+%réunions, échanges, lieux de travail
+\import {sections/} {fonctionnement}
 
 \newpage
-
 \end {document}
 
