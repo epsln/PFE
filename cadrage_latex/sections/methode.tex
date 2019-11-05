@@ -26,15 +26,15 @@ Nous avons séparé le projet en plusieurs parties principales :
 Le document doit être analysé afin d'en retirer le contenu textuel.
 \\
 \item \textbf {Analyse du texte} :
-Le contenu textuel du document doit être analysé sémantiquement de placer le document dans une ou plusieurs taxonomie. 
+Le contenu textuel du document doit être analysé sémantiquement afin de placer le document dans une ou plusieurs taxonomie. 
 Ces informations seront ajoutées aux métadonnées du document.
 \\
 \item \textbf {transformation vectorielle du document} :
-Le texte du document sera ensuite passé par un word2vec, qui transformera le contenu sémantique en vecteur de nombres flottants, qui sera utilisé pour retrouver les documents avec des contenus identiques.
-Le document sera aussi passé dans un encodeur pour obtenir un vecteur permettant de retrouver les documents par ressemblance visuels par la suite.
+Le texte du document sera ensuite passé par un word2vec, qui transformera le contenu sémantique en vecteur de nombres flottants, qui sera utilisé pour retrouver les documents avec des contenus similaires ou ressemblants.
+Le document sera aussi passé dans un autoencodeur pour obtenir un vecteur permettant de retrouver les documents par ressemblance visuels.
 \\
 \item \textbf {Extraction d'informations utiles} :
-Le document sera ensuite passé par une suite d'analyseurs pour en retirer des informations que le commanditaire aura jugé utiles.
+Le document sera finalement traité par une suite d'analyseurs spécifiques pour en retirer des informations que le commanditaire aura jugé utiles.
 Par exemple, on pourra trouver le nom des personnes mentionnées dans ce document, les dates de validité, les signatures, si le document est un faux, ... 
 Ces informations seront ajoutées aux métadonnées du document.
 \\
