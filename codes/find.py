@@ -12,7 +12,7 @@ def find_arretes (txt) :
 	return remove_same (re.findall (r"\d{4,8}(?:[-_ ])*[a-zA-Z]{2,10}(?:\d{1})*(?:-)*(?:\d{2})*(?:-)*(?:[A-Za-z])*(?:[-_ ]\d{1,3})", txt) + re.findall (r"\d{2,3}-\d{4}-\d{2}-\d{2}-\d{1,4}", txt))
 
 def find_dates (txt) :
-	_dates = re.findall (r"\d{1,2}(er)? \b\w{3,8}\b \d{4}", txt) 
+	_dates = re.findall (r"\d{1,2}e?r?\s\b\w{3,8}\b\s\d{4}", txt) 
 	_dates_slash = re.findall (r"[\s (]\d{1,2}/\d{1,2}/\d{2,4}[\s )]", txt)
 	dates = list ()
 	for date in _dates:
