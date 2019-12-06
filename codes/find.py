@@ -1,14 +1,23 @@
 import sys
 import re
 
-txt = open (sys.argv [1]).read ()
 
 def remove_same (_list) :
 	return list (dict.fromkeys (_list))
+
 def remove_keep_nb (_list) :
 	pattern = re.compile (r"[^0-9-]")
 	_list = [pattern.sub ('', patt) for patt in _list]
 	return _list
+
+def clean_title (_list) :
+	#remove "arretes", dates, pages, symboles spéciaux, nombres
+	pattern = re.compile (r"(?i)(\barr[eê]t[ée]|\d{1,2}\s\b\w{3,9}\b\s\d{2,4}|pages?|[\W\d_])")
+	#remove mots < 3 lettres entouré par des espaces
+	clean = re.compile (r"(?<= )\w{1,2}(?= )")
+	spaces = re.compile (r" {1,}")
+	return remove_same ([spaces.sub (' ', clean.sub (' ', pattern.sub (' ', patt))) for patt in _list])
+
 
 #2012348-0010
 def find_arretes (txt) :
@@ -35,15 +44,11 @@ def find_dates (txt) :
 
 	return remove_same (dates)
 
-def find_titles (txt, arretes) :
+def find_titles (txt) :
 	titles = list ()
 	titles += re.findall (r"(?i)(\barr[eê]t[ée]\b(?:.){1,300}(?=(\ble pr[ée]fet\b|\barr[eê]t[ée]|page|vu)))", txt)
-	#for arrete in (arretes) :
-	#	regex = r"(?i)(" + arrete + r"(?:.){1,300}(\ble pr[ée]fet\b|page|vu))"
-	#	titles += re.findall (regex, txt)
-	titles = [title[0] for title in titles]
-	#return re.findall (r"(?i)(\barr[eê]t[ée]\b(?:.){1,300}(?=(\ble [pP]r[ée]fet\b|\barr[eê]t[ée])))", txt)
-
+	spaces = re.compile (r" {1,}")
+	titles = [spaces.sub(' ', title[0]) for title in titles]
 	return remove_same (titles)
 
 def find_raa (txt) :
@@ -69,28 +74,30 @@ def find_decrets (txt) :
 					)
 			)
 
-txt = " ".join (txt.split ())
 
-arretes = find_arretes (txt)
-titles = find_titles (txt, arretes)
-
-dates = find_dates (txt)
-raa = find_raa (txt)
-articles = find_articles (txt)
-decret = find_decrets (txt)
-lois = find_lois (txt)
-
-
-
-#print ("Arretes : ", len (arretes), arretes, "\n")
-#print ("Dates : ", len (dates), dates, "\n")
-#print ("RAA : ", len (raa), raa, "\n")
-#print ("Articles : ", len (articles), articles, "\n")
-#print ("decret : ", len (decret), decret, "\n")
-#print ("Lois : ", len (lois), lois, "\n")
-
-print ("Titres : ", len (titles))
-for title in titles :
-	print (title, "\n")
-
-print ("Titres : ", len (titles))
+#txt = open (sys.argv [1]).read ()
+#txt = " ".join (txt.split ())
+#
+#arretes = find_arretes (txt)
+#titles = clean_title (find_titles (txt))
+#
+#dates = find_dates (txt)
+#raa = find_raa (txt)
+#articles = find_articles (txt)
+#decret = find_decrets (txt)
+#lois = find_lois (txt)
+#
+#
+#
+##print ("Arretes : ", len (arretes), arretes, "\n")
+##print ("Dates : ", len (dates), dates, "\n")
+##print ("RAA : ", len (raa), raa, "\n")
+##print ("Articles : ", len (articles), articles, "\n")
+##print ("decret : ", len (decret), decret, "\n")
+##print ("Lois : ", len (lois), lois, "\n")
+#
+#print ("Titres : ", len (titles))
+#for title in titles :
+#	print (title, "\n")
+#
+#print ("Titres : ", len (titles))
