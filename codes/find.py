@@ -37,12 +37,14 @@ def find_dates (txt) :
 
 def find_titles (txt, arretes) :
 	titles = list ()
-	for arrete in (arretes) :
-		regex = r"(?i)((\barr[eê]t[ée]\b|" + arrete + r").{1,200}?(\ble [pP]r[ée]fet\b|\barr[eê]t[ée]|page|vu))"
-		print (arrete, regex)
-		titles += re.findall (regex, txt)
+	titles += re.findall (r"(?i)(\barr[eê]t[ée]\b(?:.){1,300}(?=(\ble pr[ée]fet\b|\barr[eê]t[ée]|page|vu)))", txt)
+	#for arrete in (arretes) :
+	#	regex = r"(?i)(" + arrete + r"(?:.){1,300}(\ble pr[ée]fet\b|page|vu))"
+	#	titles += re.findall (regex, txt)
+	titles = [title[0] for title in titles]
 	#return re.findall (r"(?i)(\barr[eê]t[ée]\b(?:.){1,300}(?=(\ble [pP]r[ée]fet\b|\barr[eê]t[ée])))", txt)
-	return titles
+
+	return remove_same (titles)
 
 def find_raa (txt) :
 	#find RAA names 12-9837-183
@@ -78,6 +80,8 @@ articles = find_articles (txt)
 decret = find_decrets (txt)
 lois = find_lois (txt)
 
+
+
 #print ("Arretes : ", len (arretes), arretes, "\n")
 #print ("Dates : ", len (dates), dates, "\n")
 #print ("RAA : ", len (raa), raa, "\n")
@@ -87,5 +91,6 @@ lois = find_lois (txt)
 
 print ("Titres : ", len (titles))
 for title in titles :
-	print (title)
+	print (title, "\n")
 
+print ("Titres : ", len (titles))
