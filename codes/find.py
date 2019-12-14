@@ -1,22 +1,27 @@
-import sys
 import re
 
+def clean_doc (doc) :
+	return " ".join (doc.split ())	#remove all spaces and special characters
 
+#remove all similar entries
 def remove_same (_list) :
 	return list (dict.fromkeys (_list))
 
+#remove everything except numbers and -
 def remove_keep_nb (_list) :
 	pattern = re.compile (r"[^0-9-]")
 	_list = [pattern.sub ('', patt) for patt in _list]
 	return _list
 
+#remove words of less than 1 or 2 char words, special chars, dates, ...
 def clean_title (_list) :
 	#remove "arretes", dates, pages, symboles spéciaux, nombres
-	pattern = re.compile (r"(?i)(\barr[eê]t[ée]|\d{1,2}\s\b\w{3,9}\b\s\d{2,4}|pages?|[\W\d_])")
-	#remove mots < 3 lettres entouré par des espaces
-	clean = re.compile (r"(?<= )\w{1,2}(?= )")
+	#pattern = re.compile (r"(?i)(\barr[eê]t[ée]|\d{1,2}\s\b\w{3,9}\b\s\d{2,4}|pages?|[\W\d_])")
+	pattern = re.compile (r"(?i)(\d{1,2}\s\b\w{3,9}\b\s\d{2,4}|pages?|[\W\d_])")
+	#remove mots < 3 lettres surrounded by spaces
+	clean = re.compile (r"(?i)((?<= )\w{1,2}(?= ))")
 	spaces = re.compile (r" {1,}")
-	return remove_same ([spaces.sub (' ', clean.sub (' ', pattern.sub (' ', patt))) for patt in _list])
+	return remove_same ([spaces.sub (' ', clean.sub (' ', pattern.sub (' ', patt))) for patt in _list if len(patt) > 15])
 
 
 #2012348-0010
@@ -45,10 +50,12 @@ def find_dates (txt) :
 	return remove_same (dates)
 
 def find_titles (txt) :
+	#find "Arreté" and the all characters (limit is 600 char) until "préfet", "arrêté", "page" or "vu"
 	titles = list ()
-	titles += re.findall (r"(?i)(\barr[eê]t[ée]\b(?:.){1,300}(?=(\ble pr[ée]fet\b|\barr[eê]t[ée]|page|vu)))", txt)
-	spaces = re.compile (r" {1,}")
-	titles = [spaces.sub(' ', title[0]) for title in titles]
+#	titles += re.findall (r"(?i)((?<=\barr[eê]t[eé]\b)(?:.){1,600}(?=(\bpr[ée]fet\b|article|\barr[eê]t[ée]|page|vu)))", txt)
+	titles += re.findall (r"(?i)((?<=(?<!présent )arr[eê]t[eé]).{1,300}?(?=(pr[ée]fet\b|article\b|arr[eê]t[ée]|page|vu\b)))", txt)
+	spaces = re.compile (r" {1,}")	#detect multiple following spaces
+	titles = [spaces.sub(' ', title[0]) for title in titles]	#remove all double spaces
 	return remove_same (titles)
 
 def find_raa (txt) :
@@ -63,41 +70,17 @@ def find_articles (txt) :
 	return remove_same ([pattern.sub ('', art) for art in articles])
 
 def find_lois (txt) :
+	#find "Loi(s)" and the following numbers 
 	return remove_same (remove_keep_nb (
 				re.findall (r"[lL]ois?(?:.){0,4}\d{1,4}-\d{1,4}", txt)
 				)
 			)
 
 def find_decrets (txt) :
+	#find "Décret(s) and the following numbers
 	return remove_same (remove_keep_nb (
 				re.findall (r"[dD][ée]crets?(?:.){0,5}\d{1,4}-\d{1,4}", txt)
 					)
 			)
 
 
-#txt = open (sys.argv [1]).read ()
-#txt = " ".join (txt.split ())
-#
-#arretes = find_arretes (txt)
-#titles = clean_title (find_titles (txt))
-#
-#dates = find_dates (txt)
-#raa = find_raa (txt)
-#articles = find_articles (txt)
-#decret = find_decrets (txt)
-#lois = find_lois (txt)
-#
-#
-#
-##print ("Arretes : ", len (arretes), arretes, "\n")
-##print ("Dates : ", len (dates), dates, "\n")
-##print ("RAA : ", len (raa), raa, "\n")
-##print ("Articles : ", len (articles), articles, "\n")
-##print ("decret : ", len (decret), decret, "\n")
-##print ("Lois : ", len (lois), lois, "\n")
-#
-#print ("Titres : ", len (titles))
-#for title in titles :
-#	print (title, "\n")
-#
-#print ("Titres : ", len (titles))
