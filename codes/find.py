@@ -21,7 +21,8 @@ def clean_title (_list) :
 	#remove mots < 3 lettres surrounded by spaces
 	clean = re.compile (r"(?i)((?<= )\w{1,2}(?= ))")
 	spaces = re.compile (r" {1,}")
-	return remove_same ([spaces.sub (' ', clean.sub (' ', pattern.sub (' ', patt))) for patt in _list if len(patt) > 15])
+	_list = remove_same ([spaces.sub (' ', clean.sub (' ', pattern.sub (' ', patt))) for patt in _list])
+	return [patt for patt in _list if len(patt.split ()) > 4]
 
 
 #2012348-0010
@@ -52,8 +53,8 @@ def find_dates (txt) :
 def find_titles (txt) :
 	#find "Arreté" and the all characters (limit is 600 char) until "préfet", "arrêté", "page" or "vu"
 	titles = list ()
-#	titles += re.findall (r"(?i)((?<=\barr[eê]t[eé]\b)(?:.){1,600}(?=(\bpr[ée]fet\b|article|\barr[eê]t[ée]|page|vu)))", txt)
-	titles += re.findall (r"(?i)((?<=(?<!présent )arr[eê]t[eé]).{1,300}?(?=(pr[ée]fet\b|article\b|arr[eê]t[ée]|page|vu\b)))", txt)
+	titles = re.findall (r"(?i)((?<=(?<!présent )arr[eê]t[eé]).{1,300}?(?=(pr[ée]fet\b|article\b|(?<!présent )arr[eê]t[ée]|page|vu\b)))", txt)
+#	titles = re.findall (r"(?i)((?<=(?<!présent )arr[eê]t[eé]).{1,300}?(?=(pr[ée]fet\b|article\b|arr[eê]t[ée]|page|vu\b)))", txt)
 	spaces = re.compile (r" {1,}")	#detect multiple following spaces
 	titles = [spaces.sub(' ', title[0]) for title in titles]	#remove all double spaces
 	return remove_same (titles)
