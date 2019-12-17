@@ -6,6 +6,7 @@ Utilisation du script **extractText.sh** :
 ./extractText DOSSIER_ORIGINE/ DOSSIER_SORTIE/
 ```
 En sortie : tous les documents du DOSSIER_ORIGINE se retrouvent dans des fichiers indépendants .txt dans le DOSSIER_SORTIE
+
 /!\ : Peut prendre beaucoup de temps si l'OCR s'active
 
 Problèmes avec l'OCR : 
