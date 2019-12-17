@@ -2,5 +2,21 @@ Manuel d'utilisation:
 
 1) Extraction du texte depuis les pdf avec utilisation d'extractText.sh
 	./extractText DOSSIER_ORIGINE/ DOSSIER_SORTIE/
+Sortie : tous les documents du DOSSIER_ORIGINE se retrouvent dans des fichiers indépendants .txt dans le DOSSIER_SORTIE
+/!\ : Peut prendre beaucoup de temps si l'OCR s'active
 
-2) Analyse avec word2vec.py
+Problèmes avec l'OCR : 
+	- les documents très longs (> 30 pages) font crasher la transformation d'image
+	- Certains documents ont seulement quelques pages en OCR parmi des pages avec du texte facilement extractable. Les pages nécessitants l'OCR sont alors considérées vides et le texte n'est pas récupéré.
+	- Certains documents pdf présentent uniquement le texte "Pour de meilleurs résultats, ouvrez ce porte document PDF dans 9, Adobe Acrobat Reader 9 ou version antérieure.". Il nous faut chercher une manière d'ouvrir ce genre de documents
+
+2) Récupération des éléments du texte avec find_code.py, utilisant des REGEX.
+	python find_code.py DOCUMENT_TXT_ENTREE
+Sortie : référence des arrêtés/articles/décrets/RAA, dates, titres des arrêtés
+
+Des améliorations sont a prévoir pour la détection des titres.
+
+
+3) Analyse avec word2vec.py
+
+
