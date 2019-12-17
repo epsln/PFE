@@ -2,8 +2,9 @@
 
 ## 1) Extraction du texte depuis les pdf
 	Utilisation du script **extractText.sh** : 
-	`./extractText DOSSIER_ORIGINE/ DOSSIER_SORTIE/`
-
+	```
+	./extractText DOSSIER_ORIGINE/ DOSSIER_SORTIE/
+	```
 	En sortie : tous les documents du DOSSIER_ORIGINE se retrouvent dans des fichiers indépendants .txt dans le DOSSIER_SORTIE
 /!\ : Peut prendre beaucoup de temps si l'OCR s'active
 
@@ -14,8 +15,9 @@ Problèmes avec l'OCR :
 
 ## 2) Récupération des éléments clefs du texte 
 	Utilisation du code  **find_code.py**, utilisant des REGEX.
-	`python find_code.py DOCUMENT_TXT_ENTREE`
-
+	```
+	python find_code.py DOCUMENT_TXT_ENTREE
+	```
 Sortie : référence des arrêtés/articles/décrets/RAA, dates, titres des arrêtés
 
 Des améliorations sont a prévoir pour la détection des titres.
