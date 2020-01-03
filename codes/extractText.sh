@@ -28,7 +28,7 @@ for FILEPATH in $BPATH*; do
 	echo " extracted $FILESIZE words."
 
 	# If that fails, try Tesseract.
-	if [[ $FILESIZE -lt $MIN_WORDS ]]
+	if [ $FILESIZE -lt $MIN_WORDS ]
 	then
 		echo "Attempting OCR extraction..."
 		echo "Image transformation..."

@@ -1,10 +1,16 @@
 from datetime import datetime
+import unicodedata
 import dateparser
+import spacy
 import re
 
 
+def strip_accent (doc) :
+	return ''.join(c for c in unicodedata.normalize('NFD', doc)
+		if unicodedata.category(c) != 'Mn')
+
 def clean_doc (doc) :
-	return " ".join (doc.split ())	#remove all spaces and special characters
+	return strip_accent (" ".join (doc.split ()))	#remove all spaces and special characters
 
 #remove all similar entries
 def remove_same (_list) :
@@ -45,6 +51,7 @@ def find_dates (txt) :
 	#remove "er" in "1er janvier"
 	pattern = re.compile (r"er (?!\d)")
 	dates = [pattern.sub (' ', date.lower ()) for date in dates]
+
 	#remove special characters
 	pattern = re.compile (r"[^\s\w]")	#special caracters
 	dates = clean_dates_string ([pattern.sub ('', date.lower ()) for date in dates])
@@ -56,11 +63,36 @@ def find_dates (txt) :
 
 def clean_dates_string (date_list) :
 	#return dates "DD month YYYY" as format "YYYY-MM-DD"
-	return [dateparser.parse(date_string).date().strftime ('%Y-%m-%d') for date_string in date_list]
+	#return [dateparser.parse(date_string).date().strftime ('%Y-%m-%d') for date_string in date_list]
+	return_list = []
+	for date_string in date_list :
+		try :
+			val = dateparser.parse(date_string)
+			val = val.date()
+			return_list.append (val.strftime ('%Y-%m-%d'))
+
+		except :
+			#wrong date orthographe
+			print ("Wrong date writing : ", date_string)
+	return return_list
 
 def clean_dates_slash (date_list) :
 	#return dates "DD/MM/YYYY" as format "YYYY-MM-DD"
-	return [datetime.strptime (date_string, "%d/%m/%Y").strftime ('%Y-%m-%d') for date_string in date_list]
+	#return [datetime.strptime (date_string, "%d/%m/%Y").strftime ('%Y-%m-%d') for date_string in date_list]
+	return_list = []
+	for date_string in date_list :
+		try :
+			val = datetime.strptime (date_string, "%d/%m/%Y")
+			return_list.append (val.strftime ('%Y-%m-%d'))
+
+		except :
+			#wrong date orthographe
+			try :
+				val = datetime.strptime (date_string, "%d/%m/%y")
+				return_list.append (val.strftime ('%Y-%m-%d'))
+			except :
+				print ("Wrong date writing : ", date_string)
+	return return_list
 
 def find_titles (txt) :
 	#find "Arreté" and the all characters (limit is 600 char) until "préfet", "arrêté", "page" or "vu"
@@ -94,5 +126,28 @@ def find_decrets (txt) :
 				re.findall (r"[dD][ée]crets?(?:.){0,5}\d{1,4}-\d{1,4}", txt)
 					)
 			)
+
+
+def find_names (txt) :
+	temp_name = []
+	name = []
+	
+	nlp = spacy.load('fr_core_news_sm')
+	doc = nlp(txt)
+	ents = [(e.text, e.label_) for e in doc.ents]
+	#count = 1
+	
+	for i in ents: 
+		if "PER" in i:
+			temp_name.append(i)
+			#print("Line Number", count, ":", i)
+			#count += 1
+	    
+	for l in range(len(temp_name)):
+		name.append(temp_name[l][0])
+	
+	process_names = [x.replace('\n', ' ').replace('é', 'e') for x in name]
+	   
+	return process_namess
 
 
