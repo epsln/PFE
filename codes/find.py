@@ -1,4 +1,7 @@
+from datetime import datetime
+import dateparser
 import re
+
 
 def clean_doc (doc) :
 	return " ".join (doc.split ())	#remove all spaces and special characters
@@ -38,23 +41,31 @@ def find_dates (txt) :
 	dates = re.findall (r"\d{1,2}e?r?(?:\W)*\s\b[A-zÀ-ÿ]{3,9}\b\s\d{4}", txt) 
 	#find dates with format "1/4/2013", "02/05/97", ...
 	dates_slash = re.findall (r"[\s (,]\d{1,2}/\d{1,2}/\d{2,4}[\s ),]", txt)
-	
-	#remove special characters
-	pattern = re.compile (r"er (?!\d)")	#remove "er" in "1er janvier"
+
+	#remove "er" in "1er janvier"
+	pattern = re.compile (r"er (?!\d)")
 	dates = [pattern.sub (' ', date.lower ()) for date in dates]
+	#remove special characters
 	pattern = re.compile (r"[^\s\w]")	#special caracters
-	dates = [pattern.sub ('', date.lower ()) for date in dates]
+	dates = clean_dates_string ([pattern.sub ('', date.lower ()) for date in dates])
 	
 	pattern = re.compile (r"[ (),]")
-	dates += [pattern.sub ('', date) for date in dates_slash]
+	dates += clean_dates_slash ([pattern.sub ('', date) for date in dates_slash])
 
 	return remove_same (dates)
+
+def clean_dates_string (date_list) :
+	#return dates "DD month YYYY" as format "YYYY-MM-DD"
+	return [dateparser.parse(date_string).date().strftime ('%Y-%m-%d') for date_string in date_list]
+
+def clean_dates_slash (date_list) :
+	#return dates "DD/MM/YYYY" as format "YYYY-MM-DD"
+	return [datetime.strptime (date_string, "%d/%m/%Y").strftime ('%Y-%m-%d') for date_string in date_list]
 
 def find_titles (txt) :
 	#find "Arreté" and the all characters (limit is 600 char) until "préfet", "arrêté", "page" or "vu"
 	titles = list ()
 	titles = re.findall (r"(?i)((?<=(?<!présent )arr[eê]t[eé]).{1,300}?(?=(pr[ée]fet\b|article\b|(?<!présent )arr[eê]t[ée]|page|vu\b)))", txt)
-#	titles = re.findall (r"(?i)((?<=(?<!présent )arr[eê]t[eé]).{1,300}?(?=(pr[ée]fet\b|article\b|arr[eê]t[ée]|page|vu\b)))", txt)
 	spaces = re.compile (r" {1,}")	#detect multiple following spaces
 	titles = [spaces.sub(' ', title[0]) for title in titles]	#remove all double spaces
 	return remove_same (titles)
@@ -67,7 +78,7 @@ def find_raa (txt) :
 def find_articles (txt) :
 	#find "R. 3-827", "L16-98-893-1"
 	articles = re.findall (r"[RADL](?:[. *])*\d{1,4}(?:[.-]\d{1,4}(?:[-.]\d{1,4})*)", txt)
-	pattern = re.compile (r"[^0-9-RADL]") #all non element that are not numbers or - or R A D and L
+	pattern = re.compile (r"[^0-9-RADL]") #all element that are not numbers or - or R A D and L
 	return remove_same ([pattern.sub ('', art) for art in articles])
 
 def find_lois (txt) :
