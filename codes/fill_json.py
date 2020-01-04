@@ -1,6 +1,7 @@
 import json
 import sys
-from find import *
+from utils.taxo import *
+from utils.find import *
 
 def find_index (json_file) :
 	with open (json_file, "r") as f :
@@ -21,7 +22,7 @@ def add_json (json_tab, json_file) :
 
 def add_field (json_doc) :
 	#field "dates"
-	if "fieds" not in json_doc :
+	if "fields" not in json_doc :
 		json_doc ["fields"] = dict ()
 
 def  add_meta (json_doc, meta_file) :
@@ -29,6 +30,7 @@ def  add_meta (json_doc, meta_file) :
 	json_doc ["fields"] ["dates"] = find_dates (meta_file)
 	json_doc ["fields"] ["arretes"] = find_arretes (meta_file)
 	json_doc ["fields"] ["raa"] = find_raa (meta_file)
+	json_doc ["fields"] ["taxo"] = get_taxo (meta_file)
 #	json_doc ["fields"] ["titres"] = clean_title (find_titles (meta_file))
 
 #	json_doc ["fields"] ["noms"] = find_names (meta_file)
@@ -45,8 +47,11 @@ add_json (index, doc)
 
 json_doc = dict ()
 
+#Open file as given in exec parameters (TODO: change that to automatically analyse every file in dir)
 meta_file = open (sys.argv [1]).read ()
+#Remove accents and spec chars
 meta_file = clean_doc (meta_file);
+
 
 add_meta (json_doc, meta_file)
 add_json (json_doc, doc)
