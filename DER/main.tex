@@ -12,20 +12,33 @@
 \usepackage{caption}
 \usepackage{parskip}
 \usepackage{hyperref}
+\usepackage[margin=0.5in]{geometry}
 
-\geometry{a4paper, margin=20mm}
 
 \graphicspath{{images/}}
 \addbibresource{biblio.bib}
 
-\author{Baptiste Hudyma, Martin Olivier, Staberlin Valentain}
-\title{Rapport}
 \begin{document}
 
 \import{sections/}{pagegarde}
 \newpage
 
-
 \tableofcontents
+\newpage
+
+\import{sections/}{etudePrea}
+\newpage
+
+\import{sections/}{cahierCharge}
+\newpage
+
+\import{sections/}{techSpecs}
+\newpage
+
+\import{sections/}{devTools}
+\newpage
+
+\import{sections/}{real}
+\newpage
 
 \end{document}

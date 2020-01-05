@@ -1,5 +1,5 @@
 filename=main
-pdfName=Cadrage_PFE
+pdfName=DER
 
 all : 
 	xelatex -output-directory=build/ $(filename).tex
