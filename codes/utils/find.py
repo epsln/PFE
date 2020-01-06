@@ -4,13 +4,15 @@ import dateparser
 import spacy
 import re
 
+nlp = spacy.load('fr_core_news_sm')
 
 def strip_accent (doc) :
 	return ''.join(c for c in unicodedata.normalize('NFD', doc)
 		if unicodedata.category(c) != 'Mn')
 
+#remove all accents and special characters
 def clean_doc (doc) :
-	return strip_accent (" ".join (doc.split ()))	#remove all spaces and special characters
+	return strip_accent (" ".join (doc.split ()))	
 
 #remove all similar entries
 def remove_same (_list) :
@@ -22,15 +24,22 @@ def remove_keep_nb (_list) :
 	_list = [pattern.sub ('', patt) for patt in _list]
 	return _list
 
+#remove everything except characters a-z, - and spaces
+def remove_keep_char (_list) :
+	pattern = re.compile (r"(?i)[^-a-z\s]")
+	_list = [pattern.sub ('', patt) for patt in _list]
+	return _list
+
 #remove words of less than 1 or 2 char words, special chars, dates, ...
 def clean_title (_list) :
 	#remove "arretes", dates, pages, symboles spéciaux, nombres
-	#pattern = re.compile (r"(?i)(\barr[eê]t[ée]|\d{1,2}\s\b\w{3,9}\b\s\d{2,4}|pages?|[\W\d_])")
 	pattern = re.compile (r"(?i)(\d{1,2}\s\b\w{3,9}\b\s\d{2,4}|pages?|[\W\d_])")
+
 	#remove mots < 3 lettres surrounded by spaces
 	clean = re.compile (r"(?i)((?<= )\w{1,2}(?= ))")
 	spaces = re.compile (r" {1,}")
 	_list = remove_same ([spaces.sub (' ', clean.sub (' ', pattern.sub (' ', patt))) for patt in _list])
+	#remove title that have less than 4 words
 	return [patt for patt in _list if len(patt.split ()) > 4]
 
 
@@ -129,25 +138,25 @@ def find_decrets (txt) :
 
 
 def find_names (txt) :
-	temp_name = []
-	name = []
-	
-	nlp = spacy.load('fr_core_news_sm')
-	doc = nlp(txt)
+	names = []
+
+	doc = nlp (txt)
 	ents = [(e.text, e.label_) for e in doc.ents]
-	#count = 1
 	
 	for i in ents: 
 		if "PER" in i:
-			temp_name.append(i)
-			#print("Line Number", count, ":", i)
-			#count += 1
-	    
-	for l in range(len(temp_name)):
-		name.append(temp_name[l][0])
+			names.append(i [0].lower ())
+	#remove monsieur/madame/m/mme/m./mme./
+	clean = re.compile (r"(?i)(?<=\b)(monsieur |madame |m[ \.]+|mme[ \.]+|DDT\b ?)")
 	
-	process_names = [x.replace('\n', ' ').replace('é', 'e') for x in name]
-	   
-	return process_namess
+	#remove words shorter than 2 caracs and words longer than 20 char
+	short = re.compile (r"\W*\b\w{1,2}\b|\W*\b\w{20,}\b")
 
+	#remove multiple spaces
+	spaces = re.compile (r" {1,}")
 
+	names = remove_keep_char (names)
+	names = [spaces.sub (' ', short.sub ('', clean.sub ('', name))) for name in names]
+	
+	#only keep if longer than 2 words
+	return remove_same ([name for name in names if len(name.split ()) >= 2])
