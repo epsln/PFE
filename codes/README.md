@@ -25,7 +25,7 @@ Des améliorations sont a prévoir pour la détection des titres.
 
 
 ## 3) Analyse avec word2vec
-L'analyse se fait durant le remplissage du fichier json ? (ou prétraitement et lecture dans un fichier ?) a l'aide de la fonction get_taxo. 
+L'analyse se fait durant le remplissage du fichier json a l'aide de la fonction get_taxo. 
 Utilisation du fichier taxonomyLemma.txt qui contient la taxonomie lemmatisé. 
 
 
