@@ -3,6 +3,8 @@ pdfName=DER
 
 all : 
 	xelatex -output-directory=build/ $(filename).tex
+	biber build/$(filename)
+	xelatex -output-directory=build/ $(filename).tex
 	mv build/$(filename).pdf ./$(pdfName).pdf
 
 read:
