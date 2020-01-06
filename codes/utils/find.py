@@ -24,12 +24,6 @@ def remove_keep_nb (_list) :
 	_list = [pattern.sub ('', patt) for patt in _list]
 	return _list
 
-#remove everything except characters a-z, - and spaces
-def remove_keep_char (_list) :
-	pattern = re.compile (r"(?i)[^-a-z\s]")
-	_list = [pattern.sub ('', patt) for patt in _list]
-	return _list
-
 #remove words of less than 1 or 2 char words, special chars, dates, ...
 def clean_title (_list) :
 	#remove "arretes", dates, pages, symboles spéciaux, nombres
@@ -141,13 +135,12 @@ def find_names (txt) :
 	names = []
 
 	doc = nlp (txt)
-	ents = [(e.text, e.label_) for e in doc.ents]
 	
-	for i in ents: 
-		if "PER" in i:
-			names.append(i [0].lower ())
+	#remove everything except chars, spaces and -
+	clean = re.compile (r"(?i)[^-a-z\s]")
+
 	#remove monsieur/madame/m/mme/m./mme./
-	clean = re.compile (r"(?i)(?<=\b)(monsieur |madame |m[ \.]+|mme[ \.]+|DDT\b ?)")
+	remove = re.compile (r"(?i)(?<=\b)(monsieur |madame |m[ \.]+|mme[ \.]+|DDT\b ?)")
 	
 	#remove words shorter than 2 caracs and words longer than 20 char
 	short = re.compile (r"\W*\b\w{1,2}\b|\W*\b\w{20,}\b")
@@ -155,8 +148,11 @@ def find_names (txt) :
 	#remove multiple spaces
 	spaces = re.compile (r" {1,}")
 
-	names = remove_keep_char (names)
-	names = [spaces.sub (' ', short.sub ('', clean.sub ('', name))) for name in names]
-	
-	#only keep if longer than 2 words
-	return remove_same ([name for name in names if len(name.split ()) >= 2])
+	for ent in doc.ents: 
+		if "PER" in ent.label_ :
+			name = clean. sub ('', ent.text.lower ())
+			name = spaces.sub (' ', short.sub ('', remove.sub ('', name)))
+			if len (name.split ()) >= 2 :
+				names.append (name)
+
+	return remove_same (names)
