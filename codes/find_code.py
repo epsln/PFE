@@ -25,9 +25,9 @@ print ("Lois : ", len (lois), lois, "\n")
 
 print ("Titres : ", len (titles))
 
-for title in clean_titles :
-	print (title, "\n")
+#for title in clean_titles :
+#	print (title, "\n")
 
 print ("Titres : ", len (titles))
 print ("Titres : ", len (clean_titles))
-print ("names : ", len (names), names, '\n')
+#print ("names : ", len (names), names, '\n')

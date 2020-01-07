@@ -7,8 +7,8 @@ import re
 nlp = spacy.load('fr_core_news_sm')
 
 def strip_accent (doc) :
-	return ''.join(c for c in unicodedata.normalize('NFD', doc)
-		if unicodedata.category(c) != 'Mn')
+	return ''.join (c for c in unicodedata.normalize ('NFD', doc)
+		if unicodedata.category (c) != 'Mn')
 
 #remove all accents and special characters
 def clean_doc (doc) :
@@ -39,11 +39,13 @@ def clean_title (_list) :
 
 #2012348-0010
 def find_arretes (txt) :
+#TODO : complete arrete names search
 	ref_arretes = re.findall (r"\d{2,3}-\d{4}-\d{2}-\d{2}-\d{1,4}", txt)
 	
 	return remove_same (
 				ref_arretes
 			)
+	
 
 def find_dates (txt) :
 	#find dates with format "13 janvier 2019", "1er février 97", ...
@@ -106,6 +108,8 @@ def find_titles (txt) :
 	return remove_same (titles)
 
 def find_raa (txt) :
+	#TODO Compose number with the first date is 
+
 	#find RAA names 12-9837-183
 	raa = re.findall (r"\d{1,2}-\d{4}-\d{1,4} ", txt)
 	return remove_same ([r.replace (" ", "") for r in raa])
@@ -134,8 +138,6 @@ def find_decrets (txt) :
 def find_names (txt) :
 	names = []
 
-	doc = nlp (txt)
-	
 	#remove everything except chars, spaces and -
 	clean = re.compile (r"(?i)[^-a-z\s]")
 
@@ -148,8 +150,8 @@ def find_names (txt) :
 	#remove multiple spaces
 	spaces = re.compile (r" {1,}")
 
-	for ent in doc.ents: 
-		if "PER" in ent.label_ :
+	for ent in nlp (txt).ents: 
+		if "PER" in ent.label_ :	#Personne
 			name = clean. sub ('', ent.text.lower ())
 			name = spaces.sub (' ', short.sub ('', remove.sub ('', name)))
 			if len (name.split ()) >= 2 :

@@ -30,8 +30,8 @@ Utilisation du fichier taxonomyLemma.txt qui contient la taxonomie lemmatisé.
 
 
 ## 4) Mise en forme JSON
-Utilisation du script **fill_json.sh**, appellant le script python **fill_json.py**, lui même dépendant de **find.py**
+Utilisation du programme **elastic_json.py**, dépendant de **find.py**
 ```
-./fill_json.sh DOSSIER_CONTENANT_TXT
+python elastic_json.py DOSSIER_CONTENANT_LES_TXT/
 ```
-Sortie : fichier prefet_json.json contenant les métadonnées de chaque fichiers formatées pour ElasticSearch.
+Sortie : fichier elastic.json contenant les métadonnées de chaque fichiers formatées pour ElasticSearch.

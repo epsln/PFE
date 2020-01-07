@@ -9,4 +9,6 @@ shitIDidToMakeItWork.txt
 taxonomie.txt
 testFrOCR.png
 testQuality.png
-
+*/__pycache__/*
+*.pyc
+__init__*
