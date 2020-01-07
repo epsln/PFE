@@ -11,3 +11,4 @@ testFrOCR.png
 testQuality.png
 */__pycache__/*
 *.pyc
+__init__*
