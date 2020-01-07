@@ -188,14 +188,14 @@ def find_locs (txt) :
 	clean = re.compile (r"(?i)[^\w'\s]")
 
 	#remove isolated numbers (keep only number with letters ahead)
-	remove = re.compile (r"(?i)\b[a-z]+\d+|\b[a-z -]+\b")
+	remove = r"(?i)\b[a-z]+\d+|\b[a-z -]+\b"
 
 	#remove multiple spaces
 	spaces = re.compile (r" {1,}")
 
 	for ent in nlp (txt).ents: 
 		if "LOC" in ent.label_ :	#Personne
-			loc = remove.ent.text.replace ("_", " ") 
+			loc = "".join (re.findall (remove, ent.text.replace ("_", " ")))
 			loc = spaces.sub (' ', clean.sub ('', loc))
 			if len (loc) > 2 :
 				locs.append (loc)
