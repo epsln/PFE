@@ -41,9 +41,12 @@ def add_field (jsonDoc) :
 
 def  add_meta (jsonDoc, metaFile) :
 	add_field (jsonDoc)
+	dates = find_dates (metaFile)
+
 	jsonDoc ["fields"] ["raa"] = find_raa (metaFile)
+	jsonDoc ["fields"] ["publi"] = find_date_publi (dates)
 	jsonDoc ["fields"] ["arretes"] = find_arretes (metaFile)
-	jsonDoc ["fields"] ["dates"] = find_dates (metaFile)
+	jsonDoc ["fields"] ["dates"] = dates
 	jsonDoc ["fields"] ["titres"] = clean_title (find_titles (metaFile))
 	jsonDoc ["fields"] ["decrets"] = find_decrets (metaFile)
 	jsonDoc ["fields"] ["lois"] = find_lois (metaFile)

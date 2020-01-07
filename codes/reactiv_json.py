@@ -25,9 +25,12 @@ def add_json (jsonArray, jsonFile) :
 		_file.write (json.dumps (jsonArray))
 
 def  add_meta (jsonDoc, metaFile) :
+	dates = find_dates (metaFile)
+
 	jsonDoc ["raa"] = find_raa (metaFile)
+	jsonDoc ["publi"] = find_date_publi (dates)
 	jsonDoc ["arretes"] = find_arretes (metaFile)
-	jsonDoc ["dates"] = find_dates (metaFile)
+	jsonDoc ["dates"] = dates
 	jsonDoc ["titres"] = clean_title (find_titles (metaFile))
 	jsonDoc ["decrets"] = find_decrets (metaFile)
 	jsonDoc ["lois"] = find_lois (metaFile)
