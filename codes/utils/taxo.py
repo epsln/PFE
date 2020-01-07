@@ -2,9 +2,10 @@ import io
 import numpy as np
 import re
 import spacy
+import unidecode
 from utils import find 
 
-nlp = spacy.load('fr_core_news_md')
+nlp = spacy.load('fr_core_news_sm')
 
 def tax2vec(vecIn):
     mini = 100000
@@ -19,9 +20,17 @@ def tax2vec(vecIn):
     bestWord = re.findall(r'".+?"', fp[idx])[0].replace('"',"")
     return bestWord, mini 
 
+#Helper function to get the un-normalized taxonomy
+def getNormalWord(lineNum):
+    fp = open("utils/taxonomieUTF.txt")
+    for i, line in enumerate(fp):
+        if i == lineNum:
+            return line 
+           
 
 def findWordInTax(title):
-    out = []
+    taxoOutput = []
+    lineOutput = []
     title = nlp(title)
     titleTreated = ""
     for word in title:
@@ -35,8 +44,14 @@ def findWordInTax(title):
             line = line.strip('"').strip(',')
             line = " " + line + " "
             if line in titleTreated:
-                out.append(str(line))
-    return out
+                outputLine = getNormalWord(i)
+                outputLine = re.findall(r'".+?"', outputLine)[0].replace('"',"")
+                outputLine = outputLine.strip('"').strip(',')
+                outputLine = " " + outputLine + " "
+                outputLine = find.strip_accent(outputLine) #remplace accents and special chars by their ascii counterparts 
+                taxoOutput.append(str(outputLine))
+
+    return taxoOutput
 
 
 def get_taxo(text):

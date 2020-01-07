@@ -1,3 +1,5 @@
-numpy==1.17.0
+Unidecode==1.1.1
+treelib==1.5.5
 spacy==2.2.3
+numpy==1.17.0
 dateparser==0.7.2
