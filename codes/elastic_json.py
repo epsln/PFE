@@ -2,7 +2,8 @@ import json
 import sys
 import glob
 import os
-from find import *
+from utils.find import *
+from utils.taxo import *
 
 def find_index (jsonFile) :
 	with open (jsonFile, "r") as f :
@@ -14,6 +15,18 @@ def find_index (jsonFile) :
 			return 0
 		return lastLine ["index"] ["_id"] + 1
 
+def remove_last_line (jsonFile) :
+	#remove last line
+	with open (jsonFile, "r+") as _file :
+		_file.seek (0, os.SEEK_END)
+		pos = _file.tell () - 1
+		while pos > 0 and _file.read (1) != "\n":
+			pos -= 1
+			_file.seek (pos, os.SEEK_SET)
+		if pos > 0:
+			_file.seek (pos, os.SEEK_SET)
+			_file.truncate ()
+		_file.write ("\n")
 
 def add_json (jsonArray, jsonFile) :
 	#add the json_tab to end of _file
@@ -36,6 +49,7 @@ def  add_meta (jsonDoc, metaFile) :
 	jsonDoc ["fields"] ["lois"] = find_lois (metaFile)
 	jsonDoc ["fields"] ["noms"] = find_names (metaFile)
 	jsonDoc ["fields"] ["articles"] = find_articles (metaFile)
+	jsonDoc ["fields"] ["taxo"] = get_taxo (metaFile)
 
 def add_doc_to_json (_id, jsonDoc, doc2analyze) :
 	try :
@@ -66,11 +80,15 @@ if not os.path.exists(jsonFile):
 		print ("Created json file")
 	index = 0
 else :
+	remove_last_line (jsonFile)
 	index = find_index (jsonFile)
+	
 
 for filename in glob.glob (sys.argv [1] + "*.txt") :
 	print (index, " : ", filename)
 	add_doc_to_json (index, jsonFile, filename)
 	index += 1
 
+with open (jsonFile, "a") as _file :
+	_file.write ("\n")
 
