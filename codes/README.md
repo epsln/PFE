@@ -32,6 +32,6 @@ Utilisation du fichier taxonomyLemma.txt qui contient la taxonomie lemmatisé.
 ## 4) Mise en forme JSON
 Utilisation du programme **elastic_json.py**, dépendant de **find.py**
 ```
-./fill_json.sh DOSSIER_CONTENANT_LES_TXT/
+python elastic_json.py DOSSIER_CONTENANT_LES_TXT/
 ```
 Sortie : fichier elastic.json contenant les métadonnées de chaque fichiers formatées pour ElasticSearch.
