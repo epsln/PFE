@@ -45,6 +45,12 @@ def find_arretes (txt) :
 	return remove_same (
 				ref_arretes
 			)
+
+def find_date_publi (dates) :
+	if len (dates) <= 0 :
+		return [""]
+	#first date is publication date
+	return [dates [0]]
 	
 
 def find_dates (txt) :
@@ -108,12 +114,10 @@ def find_titles (txt) :
 	return remove_same (titles)
 
 def find_raa (txt) :
-	#TODO Compose number with the first date is 
-
 	#find RAA names 12-9837-183
 	raa = re.findall (r"\d{1,2}-\d{4}-\d{1,4} ", txt)
 	return remove_same ([r.replace (" ", "") for r in raa])
-	
+
 def find_articles (txt) :
 	#find "R. 3-827", "L16-98-893-1"
 	articles = re.findall (r"[RADL](?:[. *])*\d{1,4}(?:[.-]\d{1,4}(?:[-.]\d{1,4})*)", txt)
