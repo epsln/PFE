@@ -1,8 +1,11 @@
 import sys
 from utils.find import *
+from utils.taxo import *
 
 txt = open (sys.argv [1]).read ()
-txt = clean_doc (txt);
+txt = clean_doc (txt)
+
+taxoTree = getTaxoTree()
 
 arretes = find_arretes (txt)
 titles = find_titles (txt)
@@ -16,6 +19,8 @@ lois = find_lois (txt)
 names = find_names (txt)
 orgs = find_orgs (txt)
 locs = find_locs (txt)
+taxo = get_taxo(txt, taxoTree)
+
 
 
 print ("Arretes : ", len (arretes), arretes, "\n")
@@ -28,6 +33,8 @@ print ("Lois : ", len (lois), lois, "\n")
 
 print ("Locs : ", len(locs), locs, "\n")
 print ("Orgs : ", len(orgs), orgs, "\n")
+
+print ("Taxo : ", len(taxo), taxo, "\n")
 
 #for title in clean_titles :
 #	print (title, "\n")

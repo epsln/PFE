@@ -29,9 +29,10 @@ def getNormalWord(lineNum):
             return line 
            
 def getTaxoTree():
+    parentArr = []
     taxoTree = Tree()
     taxoTree.create_node("Taxo", str(-1)) #Root
-    with open("taxonomieUTF.txt") as fic:
+    with open("utils/taxonomieUTF.txt") as fic:
         for i, line in enumerate(fic):
             currName = re.findall(r'".+?"', line)[0].replace('"',"")
             currName = currName.strip('"').strip(',')
@@ -49,8 +50,9 @@ def getTaxoTree():
 
     return taxoTree
 
-def getPathFromNode(idNode):
-    node = taxoTree.get_node("69")
+def getPathFromNode(idNode, taxoTree):
+    pathArr = []
+    node = taxoTree.get_node(idNode)
     while True:
         if type(node) != type(None):
             pathArr.append(node.tag) 
@@ -58,7 +60,7 @@ def getPathFromNode(idNode):
         else:
             return pathArr[:-1] 
 
-def findWordInTax(title):
+def findWordInTax(title, taxoTree):
     taxoOutput = []
     lineOutput = []
     title = nlp(title)
@@ -79,7 +81,7 @@ def findWordInTax(title):
                 outputLine = outputLine.strip('"').strip(',')
                 outputLine = " " + outputLine + " "
                 outputLine = find.strip_accent(outputLine) #remplace accents and special chars by their ascii counterparts 
-                path = getPathFromNode(str(i+1))
+                path = getPathFromNode(str(i+1), taxoTree)
                 taxoOutput.append(str(outputLine))
 
     return taxoOutput
@@ -98,7 +100,7 @@ def get_taxo(text, taxoTree):
     title = find.remove_same(title)
 
     for t in title:
-        out += findWordInTax(t)
+        out += findWordInTax(t, taxoTree)
 
     dictDuplicates = {i:out.count(i) for i in out}
     dictDuplicates = sorted(dictDuplicates.items(), key=lambda x: x[1], reverse=True)
