@@ -4,7 +4,7 @@ import dateparser
 import spacy
 import re
 
-nlp = spacy.load('fr_core_news_sm')
+nlp = spacy.load('fr_core_news_md')
 
 def strip_accent (doc) :
 	return ''.join (c for c in unicodedata.normalize ('NFD', doc)
@@ -162,3 +162,43 @@ def find_names (txt) :
 				names.append (name)
 
 	return remove_same (names)
+
+def find_orgs (txt) :
+	orgs = []
+
+	#remove everything except chars, spaces and -
+	clean = re.compile (r"(?i)[^-a-z\s]")
+
+	#remove multiple spaces
+	spaces = re.compile (r" {1,}")
+
+	for ent in nlp (txt).ents: 
+		if "ORG" in ent.label_ :	#Personne
+			org = clean. sub ('', ent.text)
+			org = spaces.sub (' ', org)
+			orgs.append (org)
+
+	return remove_same (orgs)
+
+
+def find_locs (txt) :
+	locs = []
+
+	#remove everything except chars, spaces and -
+	clean = re.compile (r"(?i)[^\w'\s]")
+
+	#remove isolated numbers (keep only number with letters ahead)
+	remove = re.compile (r"(?i)\b[a-z]+\d+|\b[a-z -]+\b")
+
+	#remove multiple spaces
+	spaces = re.compile (r" {1,}")
+
+	for ent in nlp (txt).ents: 
+		if "LOC" in ent.label_ :	#Personne
+			loc = remove.ent.text.replace ("_", " ") 
+			loc = spaces.sub (' ', clean.sub ('', loc))
+			if len (loc) > 2 :
+				locs.append (loc)
+
+	return remove_same (locs)
+
