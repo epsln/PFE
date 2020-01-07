@@ -3,6 +3,7 @@ import numpy as np
 import re
 import spacy
 import unidecode
+from treelib import Node, Tree
 from utils import find 
 
 nlp = spacy.load('fr_core_news_sm')
@@ -27,6 +28,35 @@ def getNormalWord(lineNum):
         if i == lineNum:
             return line 
            
+def getTaxoTree():
+    taxoTree = Tree()
+    taxoTree.create_node("Taxo", str(-1)) #Root
+    with open("taxonomieUTF.txt") as fic:
+        for i, line in enumerate(fic):
+            currName = re.findall(r'".+?"', line)[0].replace('"',"")
+            currName = currName.strip('"').strip(',')
+            line = line.split('"')[0]
+            virCount = line.count(',') - 2
+            try:
+                parentArr = parentArr[:virCount]
+                parentArr[virCount] = str(i) 
+            except IndexError:
+                parentArr.append(str(i))
+            if len(parentArr) > 1:
+                taxoTree.create_node(currName, str(i), parent=parentArr[virCount-1])
+            else:
+                taxoTree.create_node(currName, str(i), parent="-1")
+
+    return taxoTree
+
+def getPathFromNode(idNode):
+    node = taxoTree.get_node("69")
+    while True:
+        if type(node) != type(None):
+            pathArr.append(node.tag) 
+            node = taxoTree.parent(node.identifier)
+        else:
+            return pathArr[:-1] 
 
 def findWordInTax(title):
     taxoOutput = []
@@ -49,12 +79,13 @@ def findWordInTax(title):
                 outputLine = outputLine.strip('"').strip(',')
                 outputLine = " " + outputLine + " "
                 outputLine = find.strip_accent(outputLine) #remplace accents and special chars by their ascii counterparts 
+                path = getPathFromNode(str(i+1))
                 taxoOutput.append(str(outputLine))
 
     return taxoOutput
 
 
-def get_taxo(text):
+def get_taxo(text, taxoTree):
     out = list()
     outList = list()
     #Remove all problematic characters
