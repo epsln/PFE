@@ -21,8 +21,7 @@ def remove_same (_list) :
 #remove everything except numbers and -
 def remove_keep_nb (_list) :
 	pattern = re.compile (r"[^0-9-]")
-	_list = [pattern.sub ('', patt) for patt in _list]
-	return _list
+	return [pattern.sub ('', patt) for patt in _list]
 
 #remove words of less than 1 or 2 char words, special chars, dates, ...
 def clean_title (_list) :
@@ -32,6 +31,7 @@ def clean_title (_list) :
 	#remove mots < 3 lettres surrounded by spaces
 	clean = re.compile (r"(?i)((?<= )\w{1,2}(?= ))")
 	spaces = re.compile (r" {1,}")
+
 	_list = remove_same ([spaces.sub (' ', clean.sub (' ', pattern.sub (' ', patt))) for patt in _list])
 	#remove title that have less than 4 words
 	return [patt for patt in _list if len(patt.split ()) > 4]
@@ -39,16 +39,16 @@ def clean_title (_list) :
 
 def find_arretes (txt) :
 	#find arretes with format 53-...-...-....[...]
-	ref_arretes = re.findall (r"\d{2,3}-\d{4}-\d{2}-\d{2}-\d{1,4}", txt)
+	refArretes = re.findall (r"\d{2,3}-\d{4}-\d{2}-\d{2}-\d{1,4}", txt)
 
 	#find all arrete refs with format "arrete [...] AB/123.12-ABC/...
 	arretes = re.findall(r"(?i)(?<=\barrete)(((?:[. *](?:prefectoral)?(?:ministeriel)?|n.)*?)(\w{2,8}(?:[\/_.-]\w{1,5}){1,5})\b){1,2}", txt)
+
 	#only take third capturing group
 	arretes = [ref [2] for ref in arretes]
-	
 
 	return remove_same (
-				ref_arretes + arretes
+				refArretes + arretes
 			)
 
 def find_date_publi (dates) :
@@ -69,7 +69,7 @@ def find_dates (txt) :
 	dates = [pattern.sub (' ', date.lower ()) for date in dates]
 
 	#remove special characters
-	pattern = re.compile (r"[^\s\w]")	#special caracters
+	pattern = re.compile (r"[^\s\w]")
 	dates = clean_dates_string ([pattern.sub ('', date.lower ()) for date in dates])
 	
 	pattern = re.compile (r"[ (),]")
@@ -77,37 +77,36 @@ def find_dates (txt) :
 
 	return remove_same (dates)
 
-def clean_dates_string (date_list) :
+def clean_dates_string (dateList) :
 	#return dates "DD month YYYY" as format "YYYY-MM-DD"
-	return_list = []
-	for date_string in date_list :
+	returnList = []
+	for dateString in dateList :
 		try :
-			val = dateparser.parse(date_string)
-			val = val.date()
-			return_list.append (val.strftime ('%Y-%m-%d'))
+			val = dateparser.parse(dateString).date ()
+			returnList.append (val.strftime ('%Y-%m-%d'))
 
-		except :
+		except Exception as e:
 			#wrong date orthographe
-			print ("Wrong date writing : ", date_string)
-	return return_list
+			print ("Error in date parsing : ", dateString, " : ", e)
+	return returnList
 
-def clean_dates_slash (date_list) :
+def clean_dates_slash (dateList) :
 	#return dates "DD/MM/YYYY" as format "YYYY-MM-DD"
-	return_list = []
-	for date_string in date_list :
+	returnList = []
+	for dateString in dateList :
 		try :
-			val = datetime.strptime (date_string, "%d/%m/%Y")
-			return_list.append (val.strftime ('%Y-%m-%d'))
+			val = datetime.strptime (dateString, "%d/%m/%Y")
+			returnList.append (val.strftime ('%Y-%m-%d'))
 
 		except :
 			#wrong date orthographe : maybe year is 97 instead of 1997
 			try :
-				val = datetime.strptime (date_string, "%d/%m/%y")
-				return_list.append (val.strftime ('%Y-%m-%d'))
-			except :
+				val = datetime.strptime (dateString, "%d/%m/%y")
+				returnList.append (val.strftime ('%Y-%m-%d'))
+			except Exception as e:
 				#distance pour trouver orthographe correct ?
-				print ("Wrong date writing : ", date_string)
-	return return_list
+				print ("Error in date parsing : ", dateString, " : ", e)
+	return returnList
 
 def find_titles (txt) :
 	#find "arrete" and the all characters (limit is 600 char) until "prefet", "arrete", "page" or "vu"
@@ -198,7 +197,7 @@ def find_locs (txt) :
 	short = re.compile (r"\W*\b\w\b|\W*\b\w{15,}\b")
 
 	#remove arrete, monsieur/madame, cedex, 
-	remove_specials = re.compile (r"(?i)(?<=\b)(monsieur|madame|arrete|cedex|)")
+	removeSpecials = re.compile (r"(?i)(?<=\b)(monsieur|madame|arrete|cedex|)")
 	
 	
 	#remove multiple spaces
@@ -209,7 +208,7 @@ def find_locs (txt) :
 			loc = "".join (re.findall (remove, ent.text.replace ("_", " ")))
 			#insert space before every majuscules
 			loc = re.sub(r"(?<=\w)([A-Z])", r" \1", clean.sub ('', loc))
-			loc = spaces.sub (' ', short.sub("", remove_specials.sub ("", loc)))
+			loc = spaces.sub (' ', short.sub("", removeSpecials.sub ("", loc)))
 
 			if len (loc) > 3 :
 				locs.append (loc)

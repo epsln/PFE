@@ -63,9 +63,9 @@ if not os.path.exists(jsonFile):
 else :
 	remove_last_line (jsonFile)
 
-docs = glob.glob (sys.argv [1] + "*.txt")
-for i, filename in enumerate(docs) :
-	if i > 0 :
+
+for i, filename in enumerate(glob.glob (sys.argv [1] + "*.txt")) :
+	if i > 0 :	#insert coma
 		with open (jsonFile, "a") as _file :
 			_file.write (",\n")
 	print (i, " : ", filename)
