@@ -37,6 +37,8 @@ def  add_meta (jsonDoc, metaFile) :
 	jsonDoc ["noms"] = find_names (metaFile)
 	jsonDoc ["articles"] = find_articles (metaFile)
 	jsonDoc ["taxo"] = get_taxo (metaFile)
+	jsonDoc ["lieux"] = find_locs (metaFile)
+	jsonDoc ["orgs"] = find_orgs (metaFile)
 
 def add_doc_to_json (jsonDoc, doc2analyze) :
 	try :

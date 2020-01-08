@@ -37,9 +37,8 @@ def clean_title (_list) :
 	return [patt for patt in _list if len(patt.split ()) > 4]
 
 
-#2012348-0010
 def find_arretes (txt) :
-#TODO : complete arrete names search
+	#find arretes with format 53-...-...-....[...]
 	ref_arretes = re.findall (r"\d{2,3}-\d{4}-\d{2}-\d{2}-\d{1,4}", txt)
 
 	#find all arrete refs with format "arrete [...] AB/123.12-ABC/...
@@ -195,8 +194,8 @@ def find_locs (txt) :
 	#remove isolated numbers (keep only number with letters ahead)
 	remove = r"(?i)\b[a-z]+\d+|\b[a-z -]+\b"
 
-	#remove words shorter than 2 caracs and words longer than 20 char
-	short = re.compile (r"\W*\b\w\b|\W*\b\w{20,}\b")
+	#remove words longer than 12 char
+	short = re.compile (r"\W*\b\w\b|\W*\b\w{15,}\b")
 
 	#remove arrete, monsieur/madame, cedex, 
 	remove_specials = re.compile (r"(?i)(?<=\b)(monsieur|madame|arrete|cedex|)")
