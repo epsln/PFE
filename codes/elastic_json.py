@@ -5,6 +5,9 @@ import os
 from utils.find import *
 from utils.taxo import *
 
+#create taxonomy tree
+taxoTree = getTaxoTree()
+
 def find_index (jsonFile) :
 	with open (jsonFile, "r") as f :
 		lines = f.readlines()
@@ -52,7 +55,7 @@ def  add_meta (jsonDoc, metaFile) :
 	jsonDoc ["fields"] ["lois"] = find_lois (metaFile)
 	jsonDoc ["fields"] ["noms"] = find_names (metaFile)
 	jsonDoc ["fields"] ["articles"] = find_articles (metaFile)
-	jsonDoc ["fields"] ["taxo"] = get_taxo (metaFile)
+	jsonDoc ["fields"] ["taxo"] = get_taxo (metaFile, taxoTree)
 	jsonDoc ["fields"] ["lieux"] = find_locs (metaFile)
 	jsonDoc ["fields"] ["orgs"] = find_orgs (metaFile)
 
@@ -75,8 +78,8 @@ def add_doc_to_json (_id, jsonDoc, doc2analyze) :
 		add_meta (jsonArray, metaFile)
 		add_json (jsonArray, jsonDoc)
 
-	except :
-		print ("Coud not open ", doc2analyze)
+	except Exception as e :
+		print ("Error with ", doc2analyze, " : ", e)
 
 jsonFile = "elastic.json"
 

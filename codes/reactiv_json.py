@@ -5,6 +5,8 @@ import os
 from utils.find import *
 from utils.taxo import *
 
+#create taxonomy tree
+taxoTree = getTaxoTree()
 
 def remove_last_line (jsonFile) :
 	#remove last line
@@ -36,7 +38,7 @@ def  add_meta (jsonDoc, metaFile) :
 	jsonDoc ["lois"] = find_lois (metaFile)
 	jsonDoc ["noms"] = find_names (metaFile)
 	jsonDoc ["articles"] = find_articles (metaFile)
-	jsonDoc ["taxo"] = get_taxo (metaFile)
+	jsonDoc ["taxo"] = get_taxo (metaFile, taxoTree)
 	jsonDoc ["lieux"] = find_locs (metaFile)
 	jsonDoc ["orgs"] = find_orgs (metaFile)
 
@@ -49,8 +51,8 @@ def add_doc_to_json (jsonDoc, doc2analyze) :
 		add_meta (jsonArray, metaFile)
 		add_json (jsonArray, jsonDoc)
 
-	except :
-		print ("Coud not open ", doc2analyze)
+	except Exception as e :
+		print ("Error with ", doc2analyze, " : ", e)
 
 jsonFile = "reactiv.json"
 
@@ -60,7 +62,6 @@ if not os.path.exists(jsonFile):
 		f.write ("[\n")
 else :
 	remove_last_line (jsonFile)
-
 
 docs = glob.glob (sys.argv [1] + "*.txt")
 for i in range (len (docs)) :
