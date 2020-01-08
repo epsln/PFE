@@ -4,6 +4,9 @@ import dateparser
 import spacy
 import re
 
+#in clean doc, add ' between a simple character and upper case character
+
+
 nlp = spacy.load('fr_core_news_md')
 
 def strip_accent (doc) :
@@ -70,7 +73,7 @@ def find_dates (txt) :
 
 	#remove special characters
 	pattern = re.compile (r"[^\s\w]")
-	dates = clean_dates_string ([pattern.sub ('', date.lower ()) for date in dates])
+	dates = clean_dates_string (remove_same ([pattern.sub ('', date.lower ()) for date in dates]))	#remove_same allow a big gain in speed
 	
 	pattern = re.compile (r"[ (),]")
 	dates += clean_dates_slash ([pattern.sub ('', date) for date in dates_slash])

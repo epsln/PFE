@@ -1,0 +1,91 @@
+Tutoriel mise en ligne et envoi du RAA
+Se connecter à :
+www.mayenne.gouv.fr/user/login/
+
+Nom de l’utilisateur
+**********
+Mot de passe
+********
+Puis cliquer sur :
+
+Aller dans Publications – Recueil Actes Administratifs
+
+SDVCI - 08/12/2015
+
+1
+
+Pour ajouter le nouvel RAA, cliquer sur le crayon
+La fenêtre suivante s’ouvre :
+
+Se positionner sur la 1ère ligne du tableau (juste à la suite de Recueil spécial du 22 juillet 2015)
+Puis insérer une ligne au-dessus en cliquant sur le bouton encadré en rouge
+
+SDVCI - 08/12/2015
+
+2
+
+Taper dans la ligne insérée ;
+Recueil spécial du XX XX 2015
+
+Se positionner sur le trombone pour insérer le fichier RAA
+
+SDVCI - 08/12/2015
+
+3
+
+Cette fenêtre s’ouvre :
+Cliquer sur
+
+Choisir RAA$(\\PREF53-SVMCOMUN) et double cliquer sur le fichier à insérer
+
+SDVCI - 08/12/2015
+
+4
+
+Une fois le fichier inséré, dans Emplacement sélectionner
+
+Puis cliquer sur
+
+La fenêtre suivante s’ouvre puis cliquer sur OK
+SDVCI - 08/12/2015
+
+5
+
+Copier le raccourci comme indiqué ci-dessous
+
+Mettre
+
+en surbrillance et cliquer sur
+
+SDVCI - 08/12/2015
+
+6
+
+Un fois le lien collé, sélectionner
+
+puis valider avec le bouton OK
+
+SDVCI - 08/12/2015
+
+7
+
+Supprimer la ligne
+Puis cliquer sur Envoyer pour publication
+
+Retour à la page IDE avec le fichier inséré
+
+SDVCI - 08/12/2015
+
+8
+
+Envoi d’un message électronique
+DE PREF53 COMMUNICATION
+à
+
+Possibilité d’insertion du sommaire mais ce n’est pas une obligation.
+
+SDVCI - 08/12/2015
+
+9
+
+
