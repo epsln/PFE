@@ -64,11 +64,10 @@ else :
 	remove_last_line (jsonFile)
 
 docs = glob.glob (sys.argv [1] + "*.txt")
-for i in range (len (docs)) :
+for i, filename in enumerate(docs) :
 	if i > 0 :
 		with open (jsonFile, "a") as _file :
 			_file.write (",\n")
-	filename = docs [i]
 	print (i, " : ", filename)
 	add_doc_to_json (jsonFile, filename)
 
