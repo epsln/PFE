@@ -92,10 +92,9 @@ else :
 	index = find_index (jsonFile)
 	
 
-for filename in glob.glob (sys.argv [1] + "*.txt") :
-	print (index, " : ", filename)
-	add_doc_to_json (index, jsonFile, filename)
-	index += 1
+for i, filename in enumerate (glob.glob (sys.argv [1] + "*.txt")) :
+	print (i + index, " : ", filename)
+	add_doc_to_json (i + index, jsonFile, filename)
 
 with open (jsonFile, "a") as _file :
 	_file.write ("\n")
