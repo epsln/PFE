@@ -74,7 +74,6 @@ def findWordInTax(title, taxoTree):
         i = 0
         for line in taxo:
             i += 1
-            print(line)
             line = re.findall(r'".+?"', line)[0].replace('"',"")
             line = line.strip('"').strip(',')
             line = " " + line + " "
