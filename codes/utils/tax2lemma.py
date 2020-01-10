@@ -18,17 +18,19 @@ with open("taxonomieUTF.txt") as taxo:
         tokens = nlp(lineTreated)
         outLine = line.lower()
         outLine = find.strip_accent(outLine)
+        outLine = " " + outLine + " "
         #If the string contains only one word, just replace by the lemma
         if len(outLine.split()) == 1:
-            outLine = outLine.replace(str(word), str(word.lemma_))
+            outLine = outLine.replace(" "+str(word)+" ", " "+str(word.lemma_) + " ")
             outFile.write(outLine)
             continue
         #Else delete stopwords and replace by lemma 
         for word in tokens:
             if word.is_stop:
-                outLine = outLine.replace(str(word), "")
+                outLine = outLine.replace(" "+str(word)+" ", " ")
             if not word.is_stop:
-                outLine = outLine.replace(str(word), str(word.lemma_))
+                outLine = outLine.replace(" "+str(word)+" ", " " + str(word.lemma_) + " ")
+        print(outLine)
         outLine = outLine.replace("  ", " ")
         outFile.write(outLine)
                 
