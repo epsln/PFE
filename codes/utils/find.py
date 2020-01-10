@@ -121,7 +121,7 @@ def find_titles (txt) :
 
 def find_raa (txt) :
 	#find RAA names 12-9837-183
-	raa = re.findall (r"\d{1,2}-\d{4}-\d{1,4} ", txt)
+	raa = re.findall (r"0?\d{1,2}-[1-3]\d{3}-\d{1,3}\s", txt)
 	return remove_same ([r.replace (" ", "") for r in raa])
 
 def find_articles (txt) :
