@@ -1,3 +1,7 @@
+%Etude des solutions de réalisation technique possible
+%Choix technologique retenus
+%Justification de ces choix avec avantages et inconvénients
+
 \subsection{Taxonomie}%Martin
 L'ajout d'une taxonomie aux documents permet d'affiner considérablement la recherche.
 La taxonomie est un ensemble de mot fermé et fixe donnant une définition très précise, si ce n'est trop rigide aux documents.
@@ -63,9 +67,33 @@ Cette solution est non seulement bien plus simple et permet de vérifier la qual
 \end{figure}
 
 On notera que le système final n'utilise pas d'apprentissage.
-On peut y voir ici une piste d'amélioration: avec un corpus de données annotés, il devient trivial de construire un module taxonomique plus précis et perfomant, car prenant en compte le contexte, crucial dans le NLP.
+On peut y voir ici une piste d'amélioration: avec un corpus de données annotés, il devient trivial de construire un module taxonomique plus précis et performant, car prenant en compte le contexte, crucial dans le NLP.
 En effet, notre système ne peut distinguer "outre mer" de "mer". Si ces deux exemples contiennent le mot "mer", il est évident que leur sens sémantique est différent.
 Ce sens ne peut être compris que par le contexte; fonctionnalité qui manque a ce module. 
 
-\subsection{Recherche de mots d'importance} %Baptiste
+
+
+
+\subsection{Recherche de informations d'importance} %Baptiste
+Chaque document contient des informations d'importance qui doivent être extraites pour que le document en question soit correctement classé par la suite.
+Les informations d'importance, déterminées avec le commanditaire, sont les suivante :
+\begin {itemize}
+\item La référence du RAA
+\item La date de publication
+\item Les dates
+\item Les références des arrêtés
+\item Les références des décrets
+\item Les références des articles
+\item Les références des lois
+\item Les noms des parties prenantes
+\item Les lieux
+\end {itemize}
+
+ 
+
+
 \subsection{Moteur de recherche} %Stab
+
+
+
+
