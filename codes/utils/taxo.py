@@ -23,7 +23,7 @@ def tax2vec(vecIn):
 
 #Helper function to get the un-normalized taxonomy
 def getNormalWord(lineNum):
-    fp = open("utils/taxonomieLemma.txt")
+    fp = open("utils/taxonomieUTF.txt")
     for i, line in enumerate(fp):
         if i == lineNum:
             return line 
@@ -32,9 +32,13 @@ def getTaxoTree():
     parentArr = []
     taxoTree = Tree()
     taxoTree.create_node("Taxo", str(-1)) #Root
-    with open("utils/taxonomieLemma.txt") as fic:
+    with open("utils/taxonomieUTF.txt") as fic:
         for i, line in enumerate(fic):
-            currName = re.findall(r'".+?"', line)[0].replace('"',"")
+            currName = re.search(r'(?<=").+?(?=")', line)
+            if currName :
+                currName = currName.group()
+            else :
+                continue
             currName = currName.strip('"').strip(',')
             line = line.split('"')[0]
             virCount = line.count(',') - 2
@@ -71,21 +75,25 @@ def findWordInTax(title, taxoTree):
             titleTreated += word.lemma_+" "
     titleTreated = titleTreated[:-1]
     with open("utils/taxonomieLemma.txt") as taxo:
-        i = 0
-        for line in taxo:
-            line = re.findall(r'".+?"', line)[0].replace('"',"")
+        for i, line in enumerate(taxo):
+            line = re.search(r'(?<=").+?(?=")', line)
+            if line :
+                line = line.group()
+            else :
+                continue
             line = line.strip('"').strip(',')
             line = " " + line + " "
             if line in titleTreated:
-                print(line)
-                outputLine = getNormalWord(i)
-                outputLine = re.findall(r'".+?"', outputLine)[0].replace('"',"")
-                outputLine = outputLine.strip('"').strip(',')
-                outputLine = " " + outputLine + " "
-                outputLine = find.strip_accent(outputLine) #remplace accents and special chars by their ascii counterparts 
-                path = getPathFromNode(str(i+1), taxoTree)
-                taxoOutput.append(str(outputLine))
-            i += 1
+                outputLine = re.search(r'(?<=").+?(?=")', getNormalWord (i))
+                if outputLine :
+                    outputLine = outputLine.group()
+                else :
+                    continue
+                path = getPathFromNode(str(i), taxoTree)
+                taxoOutput += path
+                #favorise les termes taxo détectés dans les titres
+                for j in range (100) :
+                    taxoOutput.append(outputLine)
 
     return taxoOutput
 
@@ -110,4 +118,4 @@ def get_taxo(text, taxoTree):
     for elem in dictDuplicates:
         outList.append(elem[0])
     return outList
-        
+     

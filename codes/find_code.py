@@ -36,8 +36,8 @@ print ("Orgs : ", len(orgs), orgs, "\n")
 
 print ("Taxo : ", len(taxo), taxo, "\n")
 
-#for title in clean_titles :
-#	print (title, "\n")
+for title in clean_titles :
+	print (title, "\n")
 print ("Raw titles : ", len (titles))
 print ("Cleaned titles : ", len (clean_titles))
-#print ("names : ", len (names), names, '\n')
+print ("names : ", len (names), names, '\n')

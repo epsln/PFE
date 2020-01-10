@@ -56,9 +56,9 @@ def find_arretes (txt) :
 
 def find_date_publi (dates) :
 	if len (dates) <= 0 :
-		return [""]
+		return ""
 	#first date is publication date
-	return [dates [0]]
+	return dates [0]
 	
 
 def find_dates (txt) :
@@ -175,12 +175,15 @@ def find_orgs (txt) :
 	#remove everything except chars, spaces and -
 	clean = re.compile (r"(?i)[^-a-z\s]")
 
+	#remove words shorter than 2 characters and words longer than 20 char
+	short = re.compile (r"\W*\b\w{1,2}\b")
+
 	#remove multiple spaces
 	spaces = re.compile (r" {1,}")
 
 	for ent in nlp (txt).ents: 
 		if "ORG" in ent.label_ :	#Personne
-			org = clean. sub ('', ent.text)
+			org = clean. sub ('', short.sub('', ent.text))
 			org = spaces.sub (' ', org)
 			orgs.append (org)
 
