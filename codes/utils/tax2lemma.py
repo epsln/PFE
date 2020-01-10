@@ -1,4 +1,5 @@
 import spacy
+import find
 import re
 
 #Simple script to lemmatize and delete stopwords from original taxonomy
@@ -16,6 +17,7 @@ with open("taxonomieUTF.txt") as taxo:
         lineTreated = line.strip('"').strip(',').lower()
         tokens = nlp(lineTreated)
         outLine = line.lower()
+        outLine = find.strip_accent(outLine)
         #If the string contains only one word, just replace by the lemma
         if len(outLine.split()) == 1:
             outLine = outLine.replace(str(word), str(word.lemma_))
