@@ -63,15 +63,18 @@ def getPathFromNode(idNode, taxoTree):
 def findWordInTax(title, taxoTree):
     taxoOutput = []
     lineOutput = []
+    title = title.lower()
     title = nlp(title)
     titleTreated = ""
     for word in title:
-        titleTreated += word.lemma_+" "
+        if not word.is_stop:
+            titleTreated += word.lemma_+" "
     titleTreated = titleTreated[:-1]
     with open("utils/taxonomieLemma.txt") as taxo:
         i = 0
         for line in taxo:
             i += 1
+            print(line)
             line = re.findall(r'".+?"', line)[0].replace('"',"")
             line = line.strip('"').strip(',')
             line = " " + line + " "
