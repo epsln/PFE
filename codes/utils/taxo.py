@@ -23,7 +23,7 @@ def tax2vec(vecIn):
 
 #Helper function to get the un-normalized taxonomy
 def getNormalWord(lineNum):
-    fp = open("utils/taxonomieUTF.txt")
+    fp = open("utils/taxonomieLemma.txt")
     for i, line in enumerate(fp):
         if i == lineNum:
             return line 
@@ -32,7 +32,7 @@ def getTaxoTree():
     parentArr = []
     taxoTree = Tree()
     taxoTree.create_node("Taxo", str(-1)) #Root
-    with open("utils/taxonomieUTF.txt") as fic:
+    with open("utils/taxonomieLemma.txt") as fic:
         for i, line in enumerate(fic):
             currName = re.findall(r'".+?"', line)[0].replace('"',"")
             currName = currName.strip('"').strip(',')
@@ -73,11 +73,11 @@ def findWordInTax(title, taxoTree):
     with open("utils/taxonomieLemma.txt") as taxo:
         i = 0
         for line in taxo:
-            i += 1
             line = re.findall(r'".+?"', line)[0].replace('"',"")
             line = line.strip('"').strip(',')
             line = " " + line + " "
             if line in titleTreated:
+                print(line)
                 outputLine = getNormalWord(i)
                 outputLine = re.findall(r'".+?"', outputLine)[0].replace('"',"")
                 outputLine = outputLine.strip('"').strip(',')
@@ -85,6 +85,7 @@ def findWordInTax(title, taxoTree):
                 outputLine = find.strip_accent(outputLine) #remplace accents and special chars by their ascii counterparts 
                 path = getPathFromNode(str(i+1), taxoTree)
                 taxoOutput.append(str(outputLine))
+            i += 1
 
     return taxoOutput
 
