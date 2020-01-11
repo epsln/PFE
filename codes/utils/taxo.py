@@ -36,7 +36,7 @@ def getTaxoTree():
         for i, line in enumerate(fic):
             currName = re.search(r'(?<=").+?(?=")', line)
             if currName :
-                currName = currName.group()
+                currName = find.strip_accent (currName.group())
             else :
                 continue
             currName = currName.strip('"').strip(',')
@@ -86,7 +86,7 @@ def findWordInTax(title, taxoTree):
             if line in titleTreated:
                 outputLine = re.search(r'(?<=").+?(?=")', getNormalWord (i))
                 if outputLine :
-                    outputLine = outputLine.group()
+                    outputLine = find.strip_accent (outputLine.group())
                 else :
                     continue
                 path = getPathFromNode(str(i), taxoTree)

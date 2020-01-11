@@ -62,6 +62,8 @@ def find_date_publi (dates) :
 	
 
 def find_dates (txt) :
+	spaces = re.compile (r" {1,}")
+
 	#find dates with format "13 janvier 2019", "1er février 97", ...
 	dates = re.findall (r"\d{1,2}e?r?(?:\W)*\s\b[A-zÀ-ÿ]{3,9}\b\s\d{4}", txt) 
 	#find dates with format "1/4/2013", "02/05/97", ...
@@ -73,7 +75,7 @@ def find_dates (txt) :
 
 	#remove special characters
 	pattern = re.compile (r"[^\s\w]")
-	dates = clean_dates_string (remove_same ([pattern.sub ('', date.lower ()) for date in dates]))	#remove_same allow a big gain in speed
+	dates = clean_dates_string (remove_same ([spaces.sub (" ", pattern.sub ('', date.lower ())) for date in dates]))	#remove_same allow a big gain in speed
 	
 	pattern = re.compile (r"[ (),]")
 	dates += clean_dates_slash ([pattern.sub ('', date) for date in dates_slash])

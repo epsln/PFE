@@ -2,11 +2,17 @@ import json
 import sys
 import glob
 import os
+import ntpath
 from utils.find import *
 from utils.taxo import *
 
 #create taxonomy tree
 taxoTree = getTaxoTree()
+
+def path_leaf(path):
+	head, tail = ntpath.split(path)
+	return tail or ntpath.basename(head)
+
 
 def remove_last_line (jsonFile) :
 	#remove last line
@@ -26,11 +32,12 @@ def add_json (jsonArray, jsonFile) :
 		#add new text
 		_file.write (json.dumps (jsonArray))
 
-def  add_meta (jsonDoc, metaFile) :
+def  add_meta (jsonDoc, metaFile, filename) :
 	dates = find_dates (metaFile)
 
 	jsonDoc ["raa"] = find_raa (metaFile)
 	jsonDoc ["publi"] = find_date_publi (dates)
+	jsonDoc ["name"] = filename
 	jsonDoc ["arretes"] = find_arretes (metaFile)
 	jsonDoc ["dates"] = dates
 	jsonDoc ["titres"] = clean_title (find_titles (metaFile))
@@ -48,7 +55,7 @@ def add_doc_to_json (jsonDoc, doc2analyze) :
 		metaFile = clean_doc (metaFile);
 
 		jsonArray = dict ()
-		add_meta (jsonArray, metaFile)
+		add_meta (jsonArray, metaFile, doc2analyze)
 		add_json (jsonArray, jsonDoc)
 
 	except Exception as e :
@@ -68,7 +75,7 @@ for i, filename in enumerate(glob.glob (sys.argv [1] + "*.txt")) :
 	if i > 0 :	#insert coma
 		with open (jsonFile, "a") as _file :
 			_file.write (",\n")
-	print (i, " : ", filename)
+	print (i, " : ", path_leaf(filename))
 	add_doc_to_json (jsonFile, filename)
 
 with open (jsonFile, "a") as _file :
