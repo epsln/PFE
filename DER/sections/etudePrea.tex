@@ -91,9 +91,75 @@ Les informations d'importance, déterminées avec le commanditaire, sont les sui
 
  
 
-
 \subsection{Moteur de recherche} %Stab
+\subsubsection{Elasticsearch/Kibana}
+Le moteur de recherche est la résultante visuelle de toutes les tâches techniques précédentes effectuées (reconnaissance des charactères, recherche de mots d’importance et la taxonomie). Après une étude de l’art, nous avions relevé le moteur de recherche Elasticsearch. 
+Elasticsearch est moteur de recherche open source basé sous le logiciel Apache Lucene. A l’aide d’un fichier JSON (JavaScript Object Notation) qui nous permet de représenter de l’information structurée, il indexe des documents orientés textes via des requêtes HTTP. Cette approche nous permet de ne pas avoir à nous préoccuper des problématiques complexes d’indexations par score des documents. Plusieurs sociétés, telles que Uber, Stack Overflow ou Udemy se basent sur ce serveur pour la recherche de produits/documents sur leurs sites. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{ArchitectureElasticsearchKibana.PNG}
+	\caption[]{Architecture Elasticsearch Kibana}
+  \label{}
+\end{figure}
 
 
+Elasticsearch à lui tout seul ne suffit pas pour visualiser ses données depuis un fichier JSON. Comme dit précédemment, c’est à l’aide des requêtes HTTP que l’on peut effectuer une recherche. Par-dessus, nous avons Kibana qui est un greffon de visualisation de données pour Elasticsearch. Il fournit plusieurs fonctions de visualisations et les utilisateurs peuvent créer des diagrammes en bar, en ligne, des nuages de points, des camemberts et des cartes de grands volumes de données avec leurs données JSON.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{visualisationKibana.png}
+	\caption[]{Exemple de visualisation des données JSON sur KIBANA}
+  \label{}
+\end{figure}
 
 
+Avec le couple Elasticseach/kibana, nous avons un moteur de recherche avec une visualisation intéressante. Cela nous évite d’avoir à développer une page web. 
+Cependant, cette approche est très orientée analyse de données. Il ne faut pas que l’on oublie que le POC (Proof Of Concept) doit être « user-friendly » pour la préfecture. Premièrement, l’utilisateur doit spécifier son champ de recherche en écrivant « fields.champs » afin d’effectuer une recherche. Sachant que l’utilisation du moteur de recherche sera effectuée par plusieurs personnes de la préfecture, il serait préférable qu’il soit simple d’utilisation. De plus, comme inconvénient nous avons aussi les fonctionnalités de KIBANA qui sont orientés analyse de données.
+
+\begin{enumerate}
+    \item Avantages 
+        \begin{enumerate}
+            \item Indexation avec elasticsearch
+            \item Pas besoin de développer une page web : Visualisation des données avec Kibana
+        \end{enumerate}
+    \item Inconvénient 
+        \begin{enumerate}
+        \item Orienté analyse de données avec Kibana
+        \end{enumerate}
+\end{enumerate}
+
+Malgré les multiples avantages, l’inconvénient de la fonctionnalité de Kibana a une importance plus élevée. Même si pour un POC, cela est présentable mais il est loin d’être ergonomique pour l’utilisateur.
+Il faut comprendre que Kibana est une extension d’Elasticsearch. Le seul défaut listé ci-dessus ne concerne que Kibana. Nous avons donc continué nos recherches afin de trouver une extension basée sur Elasticsearch avec une visualisation plus intéressante.
+
+\subsubsection{Reactivesearch/Appbase.io}
+
+Reactivesearch comme son nom l’indique se compose de React et de Elasticsearch. React aussi appelé React.js ou ReactJS est une bibliothèque JavaScript libre développée par Facebook en 2013. Le but principal de cette bibliothèque est de faciliter la création d’application web monopage, via la création de composants dépendant d'un état et générant une page (ou portion) HTML à chaque changement d'état.
+Plusieurs sociétés telles que Facebook, Netflix, Yahoo ou WhatsApp l’utilisent. Son avantage est que son implémentation. En une heure nous pouvons avoir un site web. Afin d’arriver à ce résultat, il faut installer ReactivSearch, le connecter avec ElasticSearch, importer nos données JSON puis ajouter les composants UI (User Interface) que nous souhaitons. 
+Depuis le site https://appbase.io/ programmé avec ReactivSearch est encore plus intuitif. Ce site permet d’importer des données et d’avoir un template de site monopage avec nos données JSON. De plus, il est possible d’analyser les recherches qui ont été effectué. Appbase se compose d’un « Daily search volume » listant l’historique des recherches effectuées sur la page ReactivSearch. 
+Lors de l’import des données JSON, nous recevons un mail nous donnant un « credentials ». C’est un id personnel qui nous permet d’accéder au JSON. De cette manière, seules les personnes en possession de cet id peuvent accéder et développer une page web avec les données importées. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/ArchitectureElasticsearchAppbase.png}
+	\caption[]{Architecture Appbase.io et Elasticsearch}
+  \label{}
+\end{figure}
+
+\begin{enumerate}
+    \item Avantages 
+        \begin{enumerate}
+            \item Indexation avec elasticsearch
+            \item Simple d’implémentation
+            \item Sécurité d’accès aux données avec les credentials
+            \item L’analyse des historiques de recherche
+            \item Multiplateforme
+        \end{enumerate}
+    \item Inconvénients 
+        \begin{enumerate}
+        \item Monopage
+        \item Codes générés à reverse enginneer pour modifier le programme
+        \end{enumerate}
+\end{enumerate}
+
+Cette approche d’implémentation répond aux inconvénients de la visualisation avec Kibana. Ainsi son utilisation multiplateforme et facile à prendre en main est le choix que nous avons fait de moteur de recherche.  
