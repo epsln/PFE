@@ -23,7 +23,7 @@ function renderItem(res, triggerClickAnalytics) {
   
   if (res.taxo.length > 0)
     var taxo = "Classement taxonomique : ";
-    for (var i=0; i < res.taxo.length && i < 3; i++)
+    for (var i=0; i < res.taxo.length && i < 4; i++)
       taxo += res.taxo[i] + ", ";
 
   var publi = res.publi.split ("-");
