@@ -8,15 +8,39 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{import}
+\usepackage{fancyhdr}
 \usepackage{subcaption}
 \usepackage[sorting=none]{biblatex}
 \usepackage{float}
 \usepackage{caption}
 \usepackage{parskip}
 \usepackage{hyperref}
-\usepackage[margin=0.5in]{geometry}
+\usepackage[margin=0.75in]{geometry}
 
 
+%Header section 
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\rightmark}
+\fancyhead[R]{Dossier d'Etude et de Réalisation}
+\renewcommand{\headrulewidth}{1pt}
+
+%Glossaire
+\usepackage[toc,acronyms, automake]{glossaries-extra}
+\makeglossaries
+
+\renewcommand*{\glslinkcheckfirsthyperhook}{%
+  \ifglsused{\glslabel}%
+  {%
+    \setkeys{glslink}{hyper=false}%
+  }%
+  {}%
+}
+
+\loadglsentries{sections/glossaire}
+\setabbreviationstyle{long-short}
+
+%Image Folder
 \graphicspath{{images/}}
 \addbibresource{biblio.bib}
 
@@ -47,6 +71,11 @@
 \section{Réalisation}
 \import{sections/}{real}
 \newpage
+
+\printglossary[title=Acronymes,type=\acronymtype]
+\newpage 
+\printglossary
+\newpage 
 
 \printbibliography
 \end{document}

@@ -109,57 +109,58 @@ Elasticsearch à lui tout seul ne suffit pas pour visualiser ses données depuis
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\textwidth]{visualisationKibana.png}
-	\caption[]{Exemple de visualisation des données JSON sur KIBANA}
+	\caption[]{Exemple de visualisation des données JSON sur Kibana}
   \label{}
 \end{figure}
 
 
-Avec le couple Elasticseach/kibana, nous avons un moteur de recherche avec une visualisation intéressante. Cela nous évite d’avoir à développer une page web. 
-Cependant, cette approche est très orientée analyse de données. Il ne faut pas que l’on oublie que le POC (Proof Of Concept) doit être « user-friendly » pour la préfecture. Premièrement, l’utilisateur doit spécifier son champ de recherche en écrivant « fields.champs » afin d’effectuer une recherche. Sachant que l’utilisation du moteur de recherche sera effectuée par plusieurs personnes de la préfecture, il serait préférable qu’il soit simple d’utilisation. De plus, comme inconvénient nous avons aussi les fonctionnalités de KIBANA qui sont orientés analyse de données.
+Avec le couple Elasticseach/Kibana, nous avons un moteur de recherche combinée avec une visualisation intéressante. Cela nous évite d’avoir à développer une page web. 
+Cependant, cette approche est très orientée analyse de données. Il ne faut pas que l’on oublie que le PoC (\textit{Proof Of Concept}) doit être \textit{user-friendly} pour la préfecture. Premièrement, l’utilisateur doit spécifier son champ de recherche en écrivant fields.champ afin d’effectuer une recherche. Sachant que l’utilisation du moteur de recherche sera effectuée par plusieurs personnes de la préfecture, il serait préférable qu’il soit simple d’utilisation. De plus, comme inconvénient nous avons aussi les fonctionnalités de Kibana qui sont orientés analyse de données.
 
-\begin{enumerate}
+\begin{itemize}
     \item Avantages 
-        \begin{enumerate}
+        \begin{itemize}
             \item Indexation avec elasticsearch
             \item Pas besoin de développer une page web : Visualisation des données avec Kibana
-        \end{enumerate}
+        \end{itemize}
     \item Inconvénient 
-        \begin{enumerate}
+        \begin{itemize}
         \item Orienté analyse de données avec Kibana
-        \end{enumerate}
-\end{enumerate}
+        \end{itemize}
+\end{itemize}
 
-Malgré les multiples avantages, l’inconvénient de la fonctionnalité de Kibana a une importance plus élevée. Même si pour un POC, cela est présentable mais il est loin d’être ergonomique pour l’utilisateur.
+Malgré les multiples avantages, l’inconvénient de la fonctionnalité de Kibana a une importance plus élevée. Même si pour un PoC, cela est présentable mais il est loin d’être ergonomique pour l’utilisateur.
 Il faut comprendre que Kibana est une extension d’Elasticsearch. Le seul défaut listé ci-dessus ne concerne que Kibana. Nous avons donc continué nos recherches afin de trouver une extension basée sur Elasticsearch avec une visualisation plus intéressante.
 
 \subsubsection{Reactivesearch/Appbase.io}
 
 Reactivesearch comme son nom l’indique se compose de React et de Elasticsearch. React aussi appelé React.js ou ReactJS est une bibliothèque JavaScript libre développée par Facebook en 2013. Le but principal de cette bibliothèque est de faciliter la création d’application web monopage, via la création de composants dépendant d'un état et générant une page (ou portion) HTML à chaque changement d'état.
 Plusieurs sociétés telles que Facebook, Netflix, Yahoo ou WhatsApp l’utilisent. Son avantage est que son implémentation. En une heure nous pouvons avoir un site web. Afin d’arriver à ce résultat, il faut installer ReactivSearch, le connecter avec ElasticSearch, importer nos données JSON puis ajouter les composants UI (User Interface) que nous souhaitons. 
-Depuis le site https://appbase.io/ programmé avec ReactivSearch est encore plus intuitif. Ce site permet d’importer des données et d’avoir un template de site monopage avec nos données JSON. De plus, il est possible d’analyser les recherches qui ont été effectué. Appbase se compose d’un « Daily search volume » listant l’historique des recherches effectuées sur la page ReactivSearch. 
-Lors de l’import des données JSON, nous recevons un mail nous donnant un « credentials ». C’est un id personnel qui nous permet d’accéder au JSON. De cette manière, seules les personnes en possession de cet id peuvent accéder et développer une page web avec les données importées. 
+Depuis le site https://appbase.io/ programmé avec ReactivSearch est encore plus intuitif. Ce site permet d’importer des données et d’avoir un template de site monopage avec nos données JSON. De plus, il est possible d’analyser les recherches qui ont été effectué. Appbase se compose d’un 'Daily search volume ' listant l’historique des recherches effectuées sur la page ReactivSearch. 
+Lors de l’import des données JSON, nous recevons un mail nous donnant des \textit{credentials} : un ID personnel nous permettant d’accéder au JSON. De cette manière, seules les personnes en possession de cet ID peuvent accéder et développer une page web avec les données importées. 
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.8\textwidth]{images/ArchitectureElasticsearchAppbase.png}
+  \includegraphics[width=\textwidth]{images/ArchitectureElasticsearchAppbase.png}
 	\caption[]{Architecture Appbase.io et Elasticsearch}
   \label{}
 \end{figure}
 
-\begin{enumerate}
+\newpage
+\begin{itemize}
     \item Avantages 
-        \begin{enumerate}
+        \begin{itemize}
             \item Indexation avec elasticsearch
             \item Simple d’implémentation
             \item Sécurité d’accès aux données avec les credentials
             \item L’analyse des historiques de recherche
             \item Multiplateforme
-        \end{enumerate}
+        \end{itemize}
     \item Inconvénients 
-        \begin{enumerate}
+        \begin{itemize}
         \item Monopage
         \item Codes générés à reverse enginneer pour modifier le programme
-        \end{enumerate}
-\end{enumerate}
+        \end{itemize}
+\end{itemize}
 
 Cette approche d’implémentation répond aux inconvénients de la visualisation avec Kibana. Ainsi son utilisation multiplateforme et facile à prendre en main est le choix que nous avons fait de moteur de recherche.  
