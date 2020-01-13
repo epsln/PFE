@@ -76,7 +76,7 @@ for i, filename in enumerate(glob.glob (sys.argv [1] + "*.txt")) :
 		with open (jsonFile, "a") as _file :
 			_file.write (",\n")
 	print (i, " : ", path_leaf(filename))
-	add_doc_to_json (jsonFile, filename)
+	add_doc_to_json (jsonFile, path_leaf(filename))
 
 with open (jsonFile, "a") as _file :
 	_file.write ("\n]")
