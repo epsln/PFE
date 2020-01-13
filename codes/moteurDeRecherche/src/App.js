@@ -17,7 +17,7 @@ function renderItem(res, triggerClickAnalytics) {
   var title = ""
   var url = ""
   if (res.raa.length <= 0)
-    title = "Pas un RAA";
+    title = "Reference RAA indisponible";
   else
     title = "RAA n° " + res.raa[0];
   
@@ -45,7 +45,7 @@ function renderItem(res, triggerClickAnalytics) {
       </font> </h3>
       <div><span className="publi-date">{date}</span> </div>
       <div> {taxo} </div>
-      <div> "Nom local du fichier :" {res.name} </div>
+      <div>Nom local du fichier: {res.name} </div>
     </Col>
       <div style={{ padding: "20px" }}>
         {url ? (
@@ -75,12 +75,12 @@ const App = () => (
       <Col span={5}>
         <Card>
           <MultiList
-            componentId="RAA"
+            componentId="raa"
             dataField="raa.keyword"
             queryFormat="or"
 	    showCount={false}
             sortBy="desc"
-            size={100}
+            size={10000}
             style={{
               marginBottom: 20
             }}
