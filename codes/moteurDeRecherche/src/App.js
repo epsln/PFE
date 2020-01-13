@@ -9,23 +9,8 @@ import {
   ReactiveList,
   RangeSlider,
 } from "@appbaseio/reactivesearch";
-import { Row, Button, Col, Card, Switch, Tree, Popover, Affix } from "antd";
+import { Row, Button, Col, Card} from "antd";
 import "antd/dist/antd.css";
-
-function getNestedValue(obj, path) {
-  const keys = path.split(".");
-  const currentObject = obj;
-  const nestedValue = keys.reduce((value, key) => {
-    if (value) {
-      return value[key];
-    }
-    return "";
-  }, currentObject);
-  if (typeof nestedValue === "object") {
-    return JSON.stringify(nestedValue);
-  }
-  return nestedValue;
-}
 
 
 function renderItem(res, triggerClickAnalytics) {
@@ -60,6 +45,7 @@ function renderItem(res, triggerClickAnalytics) {
       </font> </h3>
       <div><span className="publi-date">{date}</span> </div>
       <div> {taxo} </div>
+      <div> "Nom local du fichier :" {res.name} </div>
     </Col>
       <div style={{ padding: "20px" }}>
         {url ? (
@@ -89,9 +75,10 @@ const App = () => (
       <Col span={5}>
         <Card>
           <MultiList
-            componentId="raa"
+            componentId="RAA"
             dataField="raa.keyword"
             queryFormat="or"
+	    showCount={false}
             sortBy="desc"
             size={100}
             style={{
@@ -120,6 +107,9 @@ const App = () => (
             showFilter={true}
             interval={2}
             title="Dates de publications"
+            react={{
+              and: ["taxonomie", "raa", "arretes", "search"]
+            }}
           />
           <MultiList
             componentId="taxonomie"
@@ -130,6 +120,9 @@ const App = () => (
               marginBottom: 40
             }}
             title="Taxonomie"
+            react={{
+              and: ["raa", "arretes", "dates_publi", "search"]
+            }}
           />
           <MultiList
             componentId="arretes"
@@ -140,6 +133,9 @@ const App = () => (
               marginBottom: 20
             }}
             title="Arretes"
+            react={{
+              and: ["taxonomie", "raa", "dates_publi", "search"]
+            }}
           />
         </Card>
       </Col>
@@ -167,24 +163,24 @@ const App = () => (
           autosuggest={true}
           componentId="search"
           dataField={[
+            "raa",
+            "publi",
+            "taxo",
+            "noms",
+            "dates",
             "arretes",
             "articles",
-            "dates",
             "decrets",
             "lieux",
             "lois",
-            "noms",
             "orgs",
-            "publi",
-            "raa",
-            "taxo",
             "titres"
           ]}
           fieldWeights={[
-            1,
-            1,
-            1,
-            1,
+            10,
+            6,
+            6,
+            4,
             1,
             1,
             1,
@@ -238,11 +234,30 @@ const App = () => (
             react={{
               and: ["taxonomie", "raa", "arretes", "dates_publi", "search"]
             }}
+	    loader="Chargement..."
+	    noResults="Pas de resultats correspondants a votre recherche"
             renderItem={renderItem}
-            size={10}
+            size={12}
             style={{
               marginTop: 20
             }}
+            sortOptions={[
+                {
+                  dataField: "_score",
+                  sortBy: "desc",
+                  label: "Pertinence"
+                },
+                {
+                  dataField: "publi.keyword",
+                  sortBy: "desc",
+                  label: "Date de publication (desc)"
+                },
+                {
+                  dataField: "publi.keyword",
+                  sortBy: "asc",
+                  label: "Date de publication (asc)"
+                }
+            ]}
           />
         </div>
       </Col>
