@@ -1,26 +1,53 @@
 import sys
+import time
+startTime = time.time ()
+endTime = time.time ()
+
 from utils.find import *
 from utils.taxo import *
+
+def display_time (arg) :
+	global endTime
+	global startTime
+	endTime = time.time ()
+	print (arg, " ", endTime-startTime)
+	startTime = time.time ()
+
+display_time ("Loading models")
 
 txt = open (sys.argv [1]).read ()
 txt = clean_doc (txt)
 
 taxoTree = getTaxoTree()
+display_time ("Building taxo tree")
 
 arretes = find_arretes (txt)
+display_time ("finding arretes")
+
 titles = find_titles (txt)
 clean_titles = clean_title (titles)
+display_time ("finding titles")
+
 dates = find_dates (txt)
+display_time ("finding dates")
+
 datePubli = find_date_publi (dates)
 raa = find_raa (txt)
 articles = find_articles (txt)
 decret = find_decrets (txt)
 lois = find_lois (txt)
-names = find_names (txt)
-orgs = find_orgs (txt)
-locs = find_locs (txt)
-taxo = get_taxo(txt, taxoTree)
+display_time ("Finding other infos")
 
+names = find_names (txt)
+display_time ("finding names")
+locs = find_locs (txt)
+display_time ("finding locs")
+orgs = find_orgs (txt)
+display_time ("finding orgs")
+
+
+taxo = get_taxo(txt, taxoTree)
+display_time ("finding taxonomie")
 
 
 print ("Arretes : ", len (arretes), arretes, "\n")
