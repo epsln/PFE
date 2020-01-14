@@ -37,7 +37,7 @@ def  add_meta (jsonDoc, metaFile, filename) :
 
 	jsonDoc ["raa"] = find_raa (metaFile)
 	jsonDoc ["publi"] = find_date_publi (dates)
-	jsonDoc ["name"] = filename
+	jsonDoc ["name"] = path_leaf (filename)
 	jsonDoc ["arretes"] = find_arretes (metaFile)
 	jsonDoc ["dates"] = dates
 	jsonDoc ["titres"] = clean_title (find_titles (metaFile))
@@ -76,7 +76,7 @@ for i, filename in enumerate(glob.glob (sys.argv [1] + "*.txt")) :
 		with open (jsonFile, "a") as _file :
 			_file.write (",\n")
 	print (i, " : ", path_leaf(filename))
-	add_doc_to_json (jsonFile, path_leaf(filename))
+	add_doc_to_json (jsonFile, filename)
 
 with open (jsonFile, "a") as _file :
 	_file.write ("\n]")

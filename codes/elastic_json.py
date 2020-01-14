@@ -2,6 +2,7 @@ import json
 import sys
 import glob
 import os
+import ntpath
 from utils.find import *
 from utils.taxo import *
 
@@ -42,12 +43,13 @@ def add_field (jsonDoc) :
 	if "fieds" not in jsonDoc :
 		jsonDoc ["fields"] = dict ()
 
-def  add_meta (jsonDoc, metaFile) :
+def  add_meta (jsonDoc, metaFile, filename) :
 	add_field (jsonDoc)
 	dates = find_dates (metaFile)
 
 	jsonDoc ["fields"] ["raa"] = find_raa (metaFile)
 	jsonDoc ["fields"] ["publi"] = find_date_publi (dates)
+	jsonDoc ["fields"] ["name"] = path_leaf (filename)
 	jsonDoc ["fields"] ["arretes"] = find_arretes (metaFile)
 	jsonDoc ["fields"] ["dates"] = dates
 	jsonDoc ["fields"] ["titres"] = clean_title (find_titles (metaFile))
@@ -75,7 +77,7 @@ def add_doc_to_json (_id, jsonDoc, doc2analyze) :
 		
 		jsonArray = dict ()
 
-		add_meta (jsonArray, metaFile)
+		add_meta (jsonArray, metaFile, path_leaf (doc2analyze))
 		add_json (jsonArray, jsonDoc)
 
 	except Exception as e :
@@ -93,7 +95,7 @@ else :
 	
 
 for i, filename in enumerate (glob.glob (sys.argv [1] + "*.txt")) :
-	print (i + index, " : ", filename)
+	print (i + index, " : ", path_leaf (filename))
 	add_doc_to_json (i + index, jsonFile, filename)
 
 with open (jsonFile, "a") as _file :

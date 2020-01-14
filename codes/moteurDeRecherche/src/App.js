@@ -13,9 +13,15 @@ import { Row, Button, Col, Card} from "antd";
 import "antd/dist/antd.css";
 
 
+function errorRenderer (error) {
+  return (
+  <div>Error : {error}</div>
+  );
+}
+
 function renderItem(res, triggerClickAnalytics) {
   var title = ""
-  var url = ""
+  var url = "https://github.com/smallito/PFE/tree/master/codes/transcripts/" + res.name
   if (res.raa.length <= 0)
     title = "Reference RAA indisponible";
   else
@@ -115,7 +121,7 @@ const App = () => (
             componentId="taxonomie"
             dataField="taxo.keyword"
             queryFormat="and"
-            size={100}
+            size={100000}
             style={{
               marginBottom: 40
             }}
@@ -174,7 +180,6 @@ const App = () => (
             "lieux",
             "lois",
             "orgs",
-            "titres"
           ]}
           fieldWeights={[
             10,
@@ -202,27 +207,12 @@ const App = () => (
             1
           ]}
           fuzziness={1}
-          highlight={false}
-          highlightField={[
-            "arretes",
-            "articles",
-            "dates",
-            "decrets",
-            "lieux",
-            "lois",
-            "noms",
-            "orgs",
-            "publi",
-            "raa",
-            "taxo",
-            "titres"
-          ]}
           queryFormat="and"
           size={10}
           style={{
             marginBottom: 20
           }}
-          title="Receuil Search Engine"
+          title="Recueil Search Engine"
         />
 
         <SelectedFilters />
@@ -244,7 +234,7 @@ const App = () => (
             sortOptions={[
                 {
                   dataField: "_score",
-                  sortBy: "desc",
+                  sortBy: "asc",
                   label: "Pertinence"
                 },
                 {
