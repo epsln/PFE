@@ -60,6 +60,7 @@ def  add_meta (jsonDoc, metaFile, filename) :
 	jsonDoc ["fields"] ["taxo"] = get_taxo (metaFile, taxoTree)
 	jsonDoc ["fields"] ["lieux"] = find_locs (metaFile)
 	jsonDoc ["fields"] ["orgs"] = find_orgs (metaFile)
+	restore ()
 
 def add_doc_to_json (_id, jsonDoc, doc2analyze) :
 	try :

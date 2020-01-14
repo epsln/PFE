@@ -151,6 +151,10 @@ def analyse_text (txt) :
 	global analysedText
 	analysedText = nlp (txt)
 
+def restore () :
+	global analysedText
+	analysedText = ""
+
 
 def find_names (txt) :
 	if analysedText == "" :
@@ -199,7 +203,6 @@ def find_orgs (txt) :
 			org = clean. sub ('', short.sub('', ent.text))
 			org = spaces.sub (' ', org)
 			orgs.append (org)
-	analysedText = ""
 	return remove_same (orgs)
 
 
