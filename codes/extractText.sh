@@ -10,22 +10,40 @@ if [ ! -d "$OPATH" ]; then
     mkdir -p "$OPATH"
 fi
 
-rm $BUILD*.tif
+rm $BUILD*
 
-for FILEPATH in $BPATH*; do
-	echo "Processing" $FILEPATH
+for FILEPATH in $BPATH*pdf; do
+	echo "Processing" "$FILEPATH"
 
 	# Path to text file to be created. E.g. ./myfile.txt
 	OUTFILE="${FILEPATH##*/}"
 	OUTFILE="$OPATH${OUTFILE%%.*}".txt
 	
 	touch "$OUTFILE"    # The text file will be created regardless of whether
-    
-	echo -n "Attempting pdftotext extraction..."
+
+	#try to unpack files
+    	pdftk "$FILEPATH" unpack_files output "$BUILD"
+	
+	#count if created >0 files
+	shopt -s nullglob
+	numfiles=("$BUILD"*)
+	numfiles=${#numfiles[@]}
+	if [ $numfiles -gt 0 ]
+	then
+		echo "Unpacked"
+		gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=.out.pdf "$BUILD"*.pdf
+		rm "$BUILD"*
+		FILEPATH="./.out.pdf"
+	fi
+	
+
+	echo -n "Attempting text extraction..."
 	echo "$OUTFILE"
 	pdftotext "$FILEPATH" "$OUTFILE"
 	FILESIZE=$(wc -w < "$OUTFILE")
 	echo " extracted $FILESIZE words."
+
+	continue
 
 	# If that fails, try Tesseract.
 	if [ $FILESIZE -lt $MIN_WORDS ]
