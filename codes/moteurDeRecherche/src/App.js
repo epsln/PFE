@@ -13,12 +13,6 @@ import { Row, Button, Col, Card} from "antd";
 import "antd/dist/antd.css";
 
 
-function errorRenderer (error) {
-  return (
-  <div>Error : {error}</div>
-  );
-}
-
 function renderItem(res, triggerClickAnalytics) {
   var title = ""
   var url = "https://github.com/smallito/PFE/tree/master/codes/transcripts/" + res.name
@@ -91,6 +85,10 @@ const App = () => (
               marginBottom: 20
             }}
             title="Références RAA"
+	    loader="Chargement..."
+	    showMissing={true}
+	    missingLabel="Référence inconnue"
+	    filterLabel="Référence RAA"
           />
           <RangeSlider
             componentId="dates_publi"
@@ -129,6 +127,9 @@ const App = () => (
             react={{
               and: ["raa", "arretes", "dates_publi", "search"]
             }}
+	    loader="Chargement..."
+	    showMissing={true}
+	    missingLabel="Non classé"
           />
           <MultiList
             componentId="arretes"
@@ -142,6 +143,7 @@ const App = () => (
             react={{
               and: ["taxonomie", "raa", "dates_publi", "search"]
             }}
+	    loader="Chargement..."
           />
         </Card>
       </Col>
@@ -166,7 +168,6 @@ const App = () => (
           </div>
         </div>
         <DataSearch
-          autosuggest={true}
           componentId="search"
           dataField={[
             "raa",
@@ -206,9 +207,10 @@ const App = () => (
             1,
             1
           ]}
+	  autosuggest={true}
           fuzziness={1}
+	  debounce={100}
           queryFormat="and"
-          size={10}
           style={{
             marginBottom: 20
           }}
