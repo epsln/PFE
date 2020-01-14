@@ -45,7 +45,7 @@ def find_arretes (txt) :
 	refArretes = re.findall (r"\d{2,3}-\d{4}-\d{2}-\d{2}-\d{1,4}", txt)
 
 	#find all arrete refs with format "arrete [...] AB/123.12-ABC/...
-	arretes = re.findall(r"(?i)(?<=\barrete)(((?:[. *](?:prefectoral)?(?:ministeriel)?|n.)*?)(\w{2,8}(?:[\/_.-]\w{1,5}){1,5})\b){1,2}", txt)
+	arretes = re.findall(r"(?i)(?<=\barrete)(((?:[. *](?:prefectoral)?(?:ministeriel)?|n.)*?)(\w{2,8}(?:[\/_.-][a-z0-9]{1,5}){1,5})\b){1,2}", txt)
 
 	#only take third capturing group
 	arretes = [ref [2] for ref in arretes]
@@ -146,8 +146,16 @@ def find_decrets (txt) :
 					)
 			)
 
+analysedText = ""
+def analyse_text (txt) :
+	global analysedText
+	analysedText = nlp (txt)
+
 
 def find_names (txt) :
+	if analysedText == "" :
+		analyse_text (txt)
+	
 	names = []
 
 	#remove everything except chars, spaces and -
@@ -162,7 +170,7 @@ def find_names (txt) :
 	#remove multiple spaces
 	spaces = re.compile (r" {1,}")
 
-	for ent in nlp (txt).ents: 
+	for ent in analysedText.ents : 
 		if "PER" in ent.label_ :	#Personne
 			name = clean. sub ('', ent.text.lower ())
 			name = spaces.sub (' ', short.sub ('', remove.sub ('', name)))
@@ -172,6 +180,9 @@ def find_names (txt) :
 	return remove_same (names)
 
 def find_orgs (txt) :
+	if analysedText == "" :
+		analyse_text (txt)
+
 	orgs = []
 
 	#remove everything except chars, spaces and -
@@ -183,16 +194,19 @@ def find_orgs (txt) :
 	#remove multiple spaces
 	spaces = re.compile (r" {1,}")
 
-	for ent in nlp (txt).ents: 
+	for ent in analysedText.ents : 
 		if "ORG" in ent.label_ :	#Personne
 			org = clean. sub ('', short.sub('', ent.text))
 			org = spaces.sub (' ', org)
 			orgs.append (org)
-
+	analysedText = ""
 	return remove_same (orgs)
 
 
 def find_locs (txt) :
+	if analysedText == "" :
+		analyse_text (txt)
+
 	locs = []
 
 	#remove everything except chars, spaces and -
@@ -211,7 +225,7 @@ def find_locs (txt) :
 	#remove multiple spaces
 	spaces = re.compile (r" {1,}")
 
-	for ent in nlp (txt).ents: 
+	for ent in analysedText.ents : 
 		if "LOC" in ent.label_ :	#Personne
 			loc = "".join (re.findall (remove, ent.text.replace ("_", " ")))
 			#insert space before every majuscules

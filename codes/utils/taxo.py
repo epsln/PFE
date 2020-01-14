@@ -6,7 +6,7 @@ import unidecode
 from treelib import Node, Tree
 from utils import find 
 
-nlp = spacy.load('fr_core_news_sm')
+nlp = spacy.load('fr_core_news_md')
 
 def tax2vec(vecIn):
     mini = 100000
@@ -101,14 +101,9 @@ def findWordInTax(title, taxoTree):
 def get_taxo(text, taxoTree):
     out = list()
     outList = list()
-    #Remove all problematic characters
-    text = find.clean_doc(text)
-    #Find the arretes 
-    arrete = find.find_arretes(text)
+
     #Get their titles
-    title = find.find_titles(text)
-    #remove Duplicates
-    title = find.remove_same(title)
+    title = find.clean_title (find.find_titles(text))
 
     for t in title:
         out += findWordInTax(t, taxoTree)
