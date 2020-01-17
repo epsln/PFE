@@ -21,7 +21,7 @@
 %Header section 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\rightmark}
+\fancyhead[L]{\leftmark}
 \fancyhead[R]{Dossier d'Etude et de Realisation}
 \fancyfoot[LE,RO]{\thepage}
 
@@ -80,6 +80,14 @@
 
 \section{Réalisation}
 \import{sections/}{real}
+\newpage
+
+\section{Recette de test}
+\import{sections/}{recetteTests}
+\newpage
+
+\section{Conclusion}
+\import{sections/}{conclusion}
 \newpage
 
 \printglossary[title=Acronymes,type=\acronymtype]
