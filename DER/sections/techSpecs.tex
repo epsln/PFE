@@ -55,22 +55,15 @@ Pour des raisons d'efficacité et de précision, ce module extrait d'abord le ti
 Cette normalisation consiste en un nettoyage des accents et caractères spéciaux, ainsi qu'une lemmatization, procédure où l'on remplace un mot par sa racine.
 Ces opérations permettent une comparaison plus robuste et moins dépendante du contexte de la phrase. 
 
-Pour chaque mot de la taxonomie, le module va vérifier si celui ci est présent dans le titre qu'il est en train d'analyser.
-Si oui, ce mot est ajouté a la taxonomie du document.
-
-Pour obtenir une taxonomie plus vaste, nous prenons également en compte la structure de la taxonomie.
-En effet, celle ci se présente sous forme d'un arbre, structure que nous pouvons observer en figure \ref{fig:tree}.
-Chaque sections possèdes des sous sections, qui permettent un affinage et une grande précision dans la classification.
-L'idée principale étant de considérer que si un document possède comme taxonomie une feuille ou un noeud de cette arbre, alors il doit nécessairement posséder comme taxonomie tout les parents de ce noeud.
-Nous remontons donc jusqu'à la racine de l'arbre depuis le noeud, en ajoutant a la taxonomie du document tous les noeuds que nous rencontrons en chemin.
-Cette approche nous permet d'obtenir une plus grande variété de taxonomie sans avoir a utiliser une analyse plus lourde sur le texte.
-De plus ces taxonomies, parce qu'elles sont des parents de la taxonomie initiale, sont des sur-ensembles.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\textwidth]{TaxoTree.png}
 	\caption[]{Aperçu de l'arbre taxonomique}
   \label{fig:tree}
 \end{figure}
+
+Pour chaque mot de la taxonomie, le module va vérifier si celui ci est présent dans le titre qu'il est en train d'analyser.
+Si oui, ce mot est ajouté a la taxonomie du document.
 
 \subsection{Extraction des métadonnées}
 Les métadonnées sont des informations \textit{concernant} le document.
