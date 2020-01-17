@@ -1,6 +1,13 @@
 
 \subsection {Pistes d'amélioration}
+On notera que le système final d'extraction de taxonomies n'utilise pas d'apprentissage sous quelque forme que ce soit.
 
+On peut y voir ici une piste d'amélioration: avec un corpus de données annotés, il devient trivial de construire un module taxonomique plus précis et performant, car prenant en compte le contexte, crucial dans le \gls{nlp}.
+En effet, notre système ne peut distinguer "outre mer" de "mer". Si ces deux exemples contiennent le mot "mer", il est évident que leur sens sémantique est différent. Ce sens ne peut être compris que par le contexte; fonctionnalité qui manque à ce module. 
+
+L'utilisation d'un véritable système de Machine Learning nous permettrait d'obtenir des taxonomies bien plus précises et sensée dans le contexte du document. En se projettant plus loin que les simples RAA, qui était le coeur de notre projet, on peut imaginer appliquer un système de Machine Learning sur tout les documents administratifs, qui les regrouperait selon l'usage. Par exemple, pour le cas d'un renouvellement d'une carte d'identité, un agent administratif pourrait récupérer tout les documents nécessaire a cette procédure, car ceux-ci aurait été au préalable tous correctement taggué avec une taxonomie appropriée. 
+
+Il est important de noter que le moteur de recherche de documents, même si il reste un module crucial de notre projet, n'est qu'une partie des capacités de celui ci. En effet, nous avons également développé tout un système capable d'extraire les informations nécessaire pour classifier correctement un document, par le biais de la taxonomie ou des métadonnées. En ce sens, nous avons répondu a l'une des plus grandes problématiques de notre client, qui était la masse ingérable de documents non classé. Ce PoC prouve qu'il est possible de construire un système de classification automatique sur des RAA. Il est donc parfaitement imaginable d'étendre ce genre de système.
 
 \subsection {Conclusion}
 
