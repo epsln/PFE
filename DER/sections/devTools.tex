@@ -1,7 +1,20 @@
 %Outils matériels et logiciels nécessaires de la phase de conception à la phase de réalisation  d'intégration et de test
 
 %liste des pdf raa
+\subsection{Langages}
+L'extraction du texte depuis les PDFs a été écrite sous forme de script Bash. En effet, comme nous appelons un programme d'OCR externe, Tesseract, ainsi qu'une librairie de modifications d'image, il était plus aisée pour nous de simplement écrire un script bash combinant ces outils.
 
+Pour le développement des scripts nécessaire pour l'extraction des métadonnées et des taxonomies, nous avons décidé de n'utiliser que le langage Python3. En effet, non seulement toute l'équipe était déjà très familière avec ce langage, mais les librairies d'analyse de \gls{nlp} et de Machine Learning sont généralement développé pour ce langage. La grande variété de librairie et de fonction pré implémenté en Python nous a permis de développer rapidement et d'itérer sur les prototypes existants. 
+
+L'\gls{ui} du moteur de recherche a elle été développé en Javascript, qui est le langage utilisé pour quasiment toutes les applications web. 
+
+\subsection{Moteur de recherche}
+Le développement du moteur de recherche a été énormément simplifié par l'utilisation d' \href{https://appbase.io}{Appbase}. Appbase est un site permettant de hoster des applications de recherche basée sur ElasticSearch ou ReactiveSearch. A l'aide d'un simple fichier JSON, nous étions capable de créer une page de moteur de recherche indexant la totalité de nos articles administratifs. Comme cette version était hoster sur le site Appbase, elle est accessible par n'importe qui ayant le lien. Ainsi nous évitions de devoir acheter un nom de domaine ainsi qu'un emplacement serveur et de passer par les étapes de l'installation d'une application et de sa mise en service. 
+
+\subsection{Autres Outils}
+Pour le partage du code source et la gestion des versions, nous avons utilisé Git combiné à github. Git nous a permis d'avoir un contrôle de versions très robuste, que ce soit pour le code source en lui même ou pour les dossiers requis tout au long du projet. 
+
+Une grande part des tâches de calcul a été effectuée sur le serveur de la DTRE, qui nous a été gracieusement prêté pour ce projet. Ainsi, nous pouvions lancer des programmes prenant une quantité de ressources importante et continuer de travailler sur des tâches annexes.
 %python
 %scripts sh
 %appbase.io
