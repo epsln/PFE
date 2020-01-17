@@ -58,17 +58,17 @@ Ces opérations permettent une comparaison plus robuste et moins dépendante du 
 Pour chaque mot de la taxonomie, le module va vérifier si celui ci est présent dans le titre qu'il est en train d'analyser.
 Si oui, ce mot est ajouté a la taxonomie du document.
 
-Pour obtenir une taxonomie plus vaste, nous prennons également en compte la structure de la taxonomie.
+Pour obtenir une taxonomie plus vaste, nous prenons également en compte la structure de la taxonomie.
 En effet, celle ci se présente sous forme d'un arbre, structure que nous pouvons observer en figure \ref{fig:tree}.
 Chaque sections possèdes des sous sections, qui permettent un affinage et une grande précision dans la classification.
 L'idée principale étant de considérer que si un document possède comme taxonomie une feuille ou un noeud de cette arbre, alors il doit nécessairement posséder comme taxonomie tout les parents de ce noeud.
-Nous remontons donc jusqu'a la racine de l'arbre depuis le noeud, en ajoutant a la taxonomie du document tout les noeuds que nous rencontrons en chemin.
-Cette approche nous permet d'obtenir une plus grande varietés de taxonomie sans avoir a utiliser une analyse plus lourde sur le texte.
+Nous remontons donc jusqu'à la racine de l'arbre depuis le noeud, en ajoutant a la taxonomie du document tous les noeuds que nous rencontrons en chemin.
+Cette approche nous permet d'obtenir une plus grande variété de taxonomie sans avoir a utiliser une analyse plus lourde sur le texte.
 De plus ces taxonomies, parce qu'elles sont des parents de la taxonomie initiale, sont des sur-ensembles.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\textwidth]{TaxoTree.png}
-	\caption[]{Apercu de l'arbre taxonomique}
+	\caption[]{Aperçu de l'arbre taxonomique}
   \label{fig:tree}
 \end{figure}
 
@@ -78,7 +78,8 @@ Nous avons choisi de construire des modules spécialisés, chacun ayant pour rô
 Cette spécialisation nous permet de facilement ajouter des types de métadonnées a la sortie finale et respecte une volonté de compartementalisation des responsabilités du programme: pour chaque type d'information a extraire du texte, i.e\. taxonomie, numéro d'article, date de publication, un module lui est dédié. 
 
 Pour le cas de la taxonomie, le schéma global de fonctionnement est le suivant: une fonction d'ajout de métadonnées au fichier .json appelle chaque fonction d'extraction individuellement.
-La figure \ref{globalMeta} représente un diagramme fonctionnel général de l'extraction de métadonnées. Ces fonctions sont généralement courtes et consiste de regex spécialement construite pour extraire l'information demandé.
+La figure \ref{globalMeta} représente un diagramme fonctionnel général de l'extraction de métadonnées. 
+Ces fonctions sont généralement courtes et consiste de regex spécialement construite pour extraire l'information demandé.
 Pour rappel, une regex est une séquence de caractère définissant un critère de recherche précis.
 Ces fonctions ont l'avantage d'être extrêmement rapide, avec un temps d'execution dans les millisecondes, mêmes pour des documents ayant des centaines de pages. 
 
@@ -110,20 +111,14 @@ Ces tableaux sont ensuite directement insérées dans le fichier JSON, qui const
 
 \subsubsection{Moteur de recherche avec Reactivsearch/Appbase.io}
 Appbase est le site qui va centraliser l'ensemble des données et les rendre visible à travers une première version d'interface.
-Le module moteur de recherche fonctionne indépendamment des autres modules. Une fois les données métadonnées et la taxonomie importer dans le format Json, le moteur effectue l'indexation. Avec reactivsearch il existe plusieurs modules tels que les champs de recherche avec l'autosuggestion ou l'ajout des filtres.  
+Le module moteur de recherche fonctionne indépendamment des autres modules. Une fois les données métadonnées et la taxonomie importer dans le format Json, le moteur effectue l'indexation.
+Avec reactivsearch il existe plusieurs modules tels que les champs de recherche avec l'autosuggestion ou l'ajout des filtres.  
 
-Afin d'importer nos données, nous devons respecter le format JSON.
-Dans un premier temps, nous créons une application depuis Appbase.io. 
-Un Json se compose de plusieurs documents où chaque document est enlacé par des accolades. Dans un document, nous avons des "fields" (champs) qui correspondent aux différentes familles de données récoltés. Dans notre cas, nous avons comme exemple de champs les noms, les arrêtés ou les numéros de recueils. La structure du JSON est la suivante :
+Le résultat des recherches se compose d'un titre, d'une description et d'une url que nous ajoutons. De plus, nous avons la possibilité d'ajouter des filtres.
+Ils permettent de spécifier le type de recherche que nous souhaitons.
 
 
-\begin{figure}[h!]
-  \centering
-	\includegraphics[width=0.5\textwidth]{FormatJsonAppbase.PNG}
-	\caption[]{Exemple de format accepté sous Appbase}
-  \label{}
-\end{figure}
+\subsection {Utilisation globale}
+%detail de l'utilisation 
+%parcours de l'ajout pdf jusqu'au site internet
 
-Lorsque les données sont correctement importé un mail est envoyé contenant le "credentials" (identifiant) afin de sécuriser l'accessibilité aux données. 
-Les données sont visibles sous la forme d'un tableau. Cela nous permet de visualiser ce qui a été importé. 
-Depuis l'onglet « search preview » nous avons une première visualisation du moteur de recherche. Depuis la bar de recherche généré, nous pouvons spécifier les champs qui sont recherchables. Le résultat des recherches se compose d'un titre, d'une description et d'une url que nous ajoutons. De plus, nous avons la possibilité d'ajouter des filtres. Ils permettent de spécifier le type de recherche que nous souhaitons.
