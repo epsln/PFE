@@ -2,8 +2,37 @@
 %Choix technologique retenus
 %Justification de ces choix avec avantages et inconvénients
 
+Pour notre commanditaire, il est également essentiel que l'ensemble du projet et les outils utilisés soient open source.
+Cette contrainte a été respectée, et nous n'avons donc pas jugé utile de préciser que tous les outils suivants sont open source.
+
+\subsection{Extraction du transcript}
+Afin d'analyser un document pdf, nous devons en premier lieux en extraire le texte brut, appelé ici \textit{transcript}.
+L'extraction du transcript dépend de la manière dont le document a été enregistré : Souvent le texte est directement présent dans le document lui même, mais il arrive que le pdf soit stocké sous la forme d'une suite d'images (lorsque le document est un scan par exemple).
+
+\subsubsection {Cas du pdf \textit{full text}}
+Le format pdf contient normalement directement le transcript du document.
+Dans ce cas, plusieurs méthodes très simples existent pour le récupérer : pdftotext, poppler, \ldots 
+Nous avons choisis pdftotext car c'est l'outil open source le plus suivi et le plus utilisé, ce qui le rend très probable d'être déjà présent.
+De plus sa popularité le rend très probablement plus durable.
+
+\subsubsection {Cas du pdf image}
+Si le document pdf ne contient pas de texte, nous devons passer par des techniques d'OCR (Optical Character Recognition).
+Ces techniques nous permettent d'extraire le texte d'une image grâce a des techniques avancées de machine learning.
+
+Nos recherches pour l'état de l'art a relevé les techniques suivantes :
+\begin {itemize}
+\item Tesseract : État de l'art de l'OCR open source pour le moment (score d'environ 90\%)
+\item OCRupus : Logiciel très réputé d'OCR (score d'environ 70\%)
+\end {itemize}
+Nous avons écarté l'idée de construire notre propre modèle au vu du temps très limité du projet.
+Notre choix s'est porté sur l'état de l'art actuel, Tesseract, pour ses plus grandes performances et le fait qu'une librairie python est disponible pour l'utiliser directement.
+
+Les logiciels d'OCR peuvent être utilisés directement sur les documents pdf transformés en images mais les performances obtenues ne seront pas optimales.
+Le document traité doit passer par une étape de traitement d'image, puis de nettoyage du texte obtenu, qui contient de nombreuses erreurs.
+
 \subsection{Extraction de la taxonomie}
 %inventaire des méthodes d'extraction de taxonomie 
+%TODO
 L'ajout d'une taxonomie aux documents étudiés permet d'affiner considérablement la recherche.
 La taxonomie est un ensemble de mot fermé et fixe donnant une définition très précise, si ce n'est trop rigide aux documents.
 En somme, il s'agit d'un système de tagging de documents. 
