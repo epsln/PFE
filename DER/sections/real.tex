@@ -2,29 +2,32 @@
 %Preuve du fonctionnement de chaque modules
 
 \subsection{Taxonomie}%Martin
-Nous avons rencontrés deux problème majeurs avec cette technique.
-D'abord, le temps d'execution de cette méthode pour un seul document sur le texte en entier dépassait largement les limites de l'acceptable.
+\subsubsection{Approche par Word2Vec}
+Pour tenter d'extraire la taxonomie des documents, nous avons débuté sur une approche basée sur des \textit{embeddings} construit a partir d'un Word2Vec entrainé sur un corpus français. Idéalement, ce réseau nous permettrait d'obtenir des taxonomies en comparant les mots du documents avec ceux présent dans la liste de taxonomies, et d'ajouter ceux dont la distance (définie en \ref{eq:distCosine}) était sous un seuil. Cette approche, ne nécessitant pas de corpus annotée semblait correspondre a nos besoins, même si il n'existait pas de cas dans la littérature scientifique ou elle fut appliquée avec succès. %Réecrire...
+
+
+Après implémentation de cette méthode, plusieurs difficultés sont apparue.
+D'abord, le temps d'exécution de cette méthode pour un seul document sur le texte en entier dépassait largement les limites de l'acceptable.
 En effet, un document administratif est presque par nécessité très verbeux, et donc long. La majorité du texte ne nous est cependant pas utile pour notre but; 
 il ne sert qu'à donner du contexte pour le lecteur et ne donne pas forcément d'information concernant le sujet du document en lui même. 
 
-Deuxièmement, nous n'avons pas pu obtenir les résultats escomptés.
-Le principal obstacle venant du fait que les mots de la taxonomie peuvent être en fait des phrases, ou tout du moins de multiples mots dont les sens ne sont pas forcément corrélés.
-On trouve par exemple "amménagement foncier", mais aussi "fromage au lait cru" ou bien encore "médecine physique et de réadaptation".
-La technique que nous utilisions pour obtenir les \textit{embeddings}, word2vec, ne fonctionne pas sur des \textit{groupes de mots} ou \textit{n-grammes}, mais sur des mots seuls.
-Doc2vec, qui lui peut fonctionner sur des n-grammes, voires des paragraphes ou documents entier a besoin d'être entrainé sur des documents qui lui apporteront le contexte nécessaire pour former des \textit{embeddings} correct.
-Cependant, la taxonomie ne donne aucun contexte.
-Il s'agit seulement d'une liste de mot et de phrase ordonnée seulement sous la forme d'un arbre.
-Il ne s'agit pas d'un document ordinaire, et nous pouvions pas utiliser les techniques courantes dans ce cas. 
+Deuxièmement, nous n'avons pas pu obtenir les résultats escomptés. Le principal obstacle venant du fait que les mots de la taxonomie peuvent être en fait des phrases, ou tout du moins de multiples mots dont les sens ne sont pas forcément corrélés.
 
-Pour essayer de contrer ce problème, la décision initale fut de transformer chaque mot de la phrase en sa racine par le procédé de la lemmatization a l'aide de la librairie spacy\cite{spacy} et d'enlever les \textit{stopwords} de la phrase.
-Les \textit{stopwords} sont des mots apparant très fréquement dans les phrases, comme les déterminants.
+On trouve par exemple "aménagement foncier", mais aussi "fromage au lait cru" ou bien encore "médecine physique et de réadaptation".
+La technique que nous utilisions pour obtenir les \textit{embeddings}, word2vec, ne fonctionne pas sur des \textit{groupes de mots} ou \textit{n-grammes}, mais sur des mots seuls. Doc2vec, qui lui peut fonctionner sur des n-grammes, voire des paragraphes ou documents entier a besoin d'être entrainé sur des documents qui lui apporteront le contexte nécessaire pour former des \textit{embeddings} correct.
+Cependant, la taxonomie ne donne aucun contexte. Il s'agit seulement d'une liste de mot et de phrase ordonnée seulement sous la forme d'un arbre (voir figure \ref{fig:tree}). Il ne s'agit pas d'un document ordinaire, et nous pouvions pas utiliser les techniques courantes dans ce cas. 
+
+Pour essayer de contrer ce problème, la décision initiale fut de transformer chaque mot de la phrase en sa racine par le procédé de la lemmatization a l'aide de la librairie spacy\cite{spacy} et d'enlever les \textit{stopwords} de la phrase.
+Les \textit{stopwords} sont des mots apparent très fréquemment dans les phrases, comme les déterminants.
 Ainsi la phrase "médecine physique et de réadaptation" se trouve transformée en "médecine physique réadaptation".
-On utilise ensuite un word2vec sur chaque mot pour obtenir plusieurs vecteurs. Pour obtenir un seul vecteur que nous comparerons avec les mots du documents, nous effectuons un simple moyennage.
+On utilise ensuite un word2vec sur chaque mot pour obtenir plusieurs vecteurs. Pour obtenir un seul vecteur que nous comparerons avec les mots du documents, nous effectuons un simple moyen-âge.
+
+Malgré ces efforts pour contrer les problèmes rencontrés, les taxonomies
 Cependant, cette solution n'as pas fonctionné et les taxonomies que nous trouvions a l'aide de ce système ne correspondait simplement pas au document. 
 
-La solution finale adaptée fut celle de simplement extraire les titres d'arrétées administratifs, qui sont les documents a classer, et a les prétraiter par lemmatization et élimination des stopwords avant d'effectuer une simple recherche dans la taxonomie.
-Si un mot de la taxonomie se trouve dans le titre de l'article administratif, alors celui ci est ajouté au document.
-Cette solution est non seulement bien plus simple et permet de vérifier la qualité des résultats plus aisément qu'à l'aide d'un \textit{embedding}, et elle est de plus bien plus rapide, permettant l'analyse d'un document entier en quelques secondes à peine contre plusieurs minutes a l'aide d'un word2vec.
+\subsubsection{Approche par détection de mots commun}
+La solution finale adaptée fut celle de simplement extraire les titres d'arrêtées administratifs, qui sont les documents a classer, et à les prétraiter par lemmatization et élimination des stopwords avant d'effectuer une simple recherche dans la taxonomie.
+Si un mot de la taxonomie se trouve dans le titre de l'article administratif, alors celui ci est ajouté au document. Cette solution est non seulement bien plus simple et permet de vérifier la qualité des résultats plus aisément qu'à l'aide d'un \textit{embedding}, et elle est de plus bien plus rapide, permettant l'analyse d'un document entier en quelques secondes à peine contre plusieurs minutes à l'aide d'un word2vec.
 
 \begin{figure}[h!]
   \centering
@@ -35,5 +38,18 @@ Cette solution est non seulement bien plus simple et permet de vérifier la qual
 
 On notera que le système final n'utilise pas d'apprentissage.
 On peut y voir ici une piste d'amélioration: avec un corpus de données annotés, il devient trivial de construire un module taxonomique plus précis et performant, car prenant en compte le contexte, crucial dans le NLP.
-En effet, notre système ne peut distinguer "outre mer" de "mer". Si ces deux exemples contiennent le mot "mer", il est évident que leur sens sémantique est différent.
-Ce sens ne peut être compris que par le contexte; fonctionnalité qui manque a ce module. 
+En effet, notre système ne peut distinguer "outre mer" de "mer". Si ces deux exemples contiennent le mot "mer", il est évident que leur sens sémantique est différent. Ce sens ne peut être compris que par le contexte; fonctionnalité qui manque à ce module. 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{remontageArbre.png}
+	\caption[]{}
+  \label{}
+\end{figure}
+
+Pour obtenir une taxonomie plus vaste, nous prenons également en compte la structure de la taxonomie. En effet, celle ci se présente sous forme d'un arbre, structure que nous pouvons observer en figure \ref{fig:tree}. Chaque sections possèdes des sous sections, qui permettent un affinage et une grande précision dans la classification.
+L'idée principale étant de considérer que si un document possède comme taxonomie une feuille ou un noeud de cette arbre, alors il doit nécessairement posséder comme taxonomie tout les parents de ce noeud.
+Nous remontons donc jusqu'à la racine de l'arbre depuis le noeud, en ajoutant a la taxonomie du document tous les noeuds que nous rencontrons en chemin.
+Cette approche nous permet d'obtenir une plus grande variété de taxonomie sans avoir a utiliser une analyse plus lourde sur le texte.
+De plus ces taxonomies, parce qu'elles sont des parents de la taxonomie initiale, sont des sur-ensembles.
+

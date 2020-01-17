@@ -55,22 +55,15 @@ Pour des raisons d'efficacité et de précision, ce module extrait d'abord le ti
 Cette normalisation consiste en un nettoyage des accents et caractères spéciaux, ainsi qu'une lemmatization, procédure où l'on remplace un mot par sa racine.
 Ces opérations permettent une comparaison plus robuste et moins dépendante du contexte de la phrase. 
 
-Pour chaque mot de la taxonomie, le module va vérifier si celui ci est présent dans le titre qu'il est en train d'analyser.
-Si oui, ce mot est ajouté a la taxonomie du document.
-
-Pour obtenir une taxonomie plus vaste, nous prenons également en compte la structure de la taxonomie.
-En effet, celle ci se présente sous forme d'un arbre, structure que nous pouvons observer en figure \ref{fig:tree}.
-Chaque sections possèdes des sous sections, qui permettent un affinage et une grande précision dans la classification.
-L'idée principale étant de considérer que si un document possède comme taxonomie une feuille ou un noeud de cette arbre, alors il doit nécessairement posséder comme taxonomie tout les parents de ce noeud.
-Nous remontons donc jusqu'à la racine de l'arbre depuis le noeud, en ajoutant a la taxonomie du document tous les noeuds que nous rencontrons en chemin.
-Cette approche nous permet d'obtenir une plus grande variété de taxonomie sans avoir a utiliser une analyse plus lourde sur le texte.
-De plus ces taxonomies, parce qu'elles sont des parents de la taxonomie initiale, sont des sur-ensembles.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\textwidth]{TaxoTree.png}
 	\caption[]{Aperçu de l'arbre taxonomique}
   \label{fig:tree}
 \end{figure}
+
+Pour chaque mot de la taxonomie, le module va vérifier si celui ci est présent dans le titre qu'il est en train d'analyser.
+Si oui, ce mot est ajouté a la taxonomie du document.
 
 \subsection{Extraction des métadonnées}
 Les métadonnées sont des informations \textit{concernant} le document.
@@ -94,28 +87,36 @@ Chacune de ces fonctions prends en entrée le texte brut initial, et ressort un 
 Ces tableaux sont ensuite directement insérées dans le fichier JSON, qui constitue la base sur lequel le moteur de recherche fonctionne.
 
 
-\subsection{Module moteur de recherche}
-\subsubsection{Analyse des données avec Elasticsearch/Kibana}
-% Format JSON
-% Commande curl pour push les données dans elasticsearch
-% Lancer la commande pour lancer elasticsearch sur anaconda par ex 
-% connexion sur le port http:9200
-% Visualisation du mapping du JSON
-% Requetes http et affichage des documents indexer
 
-% Lancer la commande pour lancer Kibana
-% Connexion sur le port http:5600
-% Selection du des données JSON à afficher
-% Visualisation des donnée avec Kibana
-% Creation des graphes pour analyser la corélation des données 
-
-\subsubsection{Moteur de recherche avec Reactivsearch/Appbase.io}
+\subsection{Moteur de recherche avec Reactivsearch/Appbase.io}
 Appbase est le site qui va centraliser l'ensemble des données et les rendre visible à travers une première version d'interface.
-Le module moteur de recherche fonctionne indépendamment des autres modules. Une fois les données métadonnées et la taxonomie importer dans le format Json, le moteur effectue l'indexation.
-Avec reactivsearch il existe plusieurs modules tels que les champs de recherche avec l'autosuggestion ou l'ajout des filtres.  
+Le module moteur de recherche fonctionne indépendamment des autres modules. Une fois les métadonnées et la taxonomie importés dans le format Json, le elasticsearch effectue l'indexation. Avec reactivsearch il existe plusieurs modules tels que les champs de recherche avec l'autosuggestion ou l'ajout des filtres.  
 
-Le résultat des recherches se compose d'un titre, d'une description et d'une url que nous ajoutons. De plus, nous avons la possibilité d'ajouter des filtres.
-Ils permettent de spécifier le type de recherche que nous souhaitons.
+Afin d'importer nos données, nous devons respecter le format JSON.
+Dans un premier temps, nous créons une application depuis Appbase.io. 
+Un Json se compose de plusieurs documents où chaque document est enlacé par des accolades. Dans un document, nous avons des "fields" (champs) qui correspondent aux différentes familles de données récoltés. Dans notre cas, nous avons comme exemple de champs les noms, les arrêtés ou les numéros de recueils. La structure du JSON est la suivante :
+
+
+\begin{figure}[h!]
+  \centering
+	\includegraphics[width=0.5\textwidth]{FormatJsonAppbase.PNG}
+	\caption[]{Exemple format JSON}
+  \label{}
+\end{figure}
+
+Lorsque les données sont correctement importées un mail est envoyé contenant le "credentials" (identifiant) afin de sécuriser l'accessibilité aux données et visibles sous la forme d'un tableau. Cela nous permet de visualiser ce qui a été importé. 
+
+\begin{figure}[h!]
+  \centering
+	\includegraphics[width=0.5\textwidth]{SpecTechArchiMoteur.png}
+	\caption[]{Diagramme fonctionnel du moteur de recherche}
+  \label{}
+\end{figure}
+
+Depuis l’onglet « search preview » nous avons une première visualisation du moteur de recherche. Avec la bar de recherche généré, nous pouvons spécifier les champs qui sont recherchables. 
+Le résultat des recherches se composent d’un titre, d’une description et d’une url que nous ajoutons. De plus, nous avons la possibilité d’ajouter des filtres. Ils permettent de spécifier le type de recherche que nous souhaitons.
+
+Il existe CodesSandbox qui permet d’avoir accès au code javascript généré par appebase.io. Ce dernier a la particularité d’être multiplateforme et de nous donner accès un lien d’acces web vers l’application.
 
 
 \subsection {Utilisation globale}
