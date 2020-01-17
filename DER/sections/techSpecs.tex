@@ -23,9 +23,7 @@ Ce texte sera ensuite utilisé pour l'extraction des métadonnées et l'ajout de
 Nous utilisons une approche double, qui nous assure une haute qualité d'extraction avec un temps d'exécution raisonnable.
 A l'aide d'un script bash, nous listons tout les fichiers disponibles dans le dossier initial donné par l'utilisateur. 
 
-Nous utilisons d'abord un utilitaire appelé "pdftotext" qui tente d'abord une extraction simple en analysant le fichier pdf.
-Il se peut cependant que cette approche faille a extraire le texte demandé.
-Dans ce cas, nous avons développé une approche basé sur Tesseract, un programme d'OCR (Optical Character Recognition) développé en partie par Google. 
+Nous utilisons d'abord un utilitaire appelé "pdftotext" qui tente d'abord une extraction simple en analysant le fichier pdf. Il se peut cependant que cette approche faille a extraire le texte demandé. Dans ce cas, nous avons développé une approche basé sur Tesseract, un programme d'\gls{ocr} (Optical Character Recognition) développé en partie par Google. 
 
 L'OCR tente d'extraire du texte depuis une image.
 Les techniques actuelles se basent sur des modèles de Deep Learning tels que le LSTM et les CNNs, qui vont essayer de localiser les zones de textes et d'en tirer les caractères présent.
@@ -113,7 +111,7 @@ Lorsque les données sont correctement importées un mail est envoyé contenant 
   \label{}
 \end{figure}
 
-Depuis l’onglet « search preview » nous avons une première visualisation du moteur de recherche. Avec la bar de recherche généré, nous pouvons spécifier les champs qui sont recherchables. 
+Depuis l’onglet ' search preview ' nous avons une première visualisation du moteur de recherche. Avec la bar de recherche généré, nous pouvons spécifier les champs qui sont recherchables. 
 Le résultat des recherches se composent d’un titre, d’une description et d’une url que nous ajoutons. De plus, nous avons la possibilité d’ajouter des filtres. Ils permettent de spécifier le type de recherche que nous souhaitons.
 
 Il existe CodesSandbox qui permet d’avoir accès au code javascript généré par appebase.io. Ce dernier a la particularité d’être multiplateforme et de nous donner accès un lien d’acces web vers l’application.
