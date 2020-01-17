@@ -1,6 +1,6 @@
 %Description des fonctions à servir (diagramme des cas d'utilisation)
 
-\subsection {Cadre de travail}
+\subsection{Cadre de travail}
 La quantité de documents non organisé de la prefecture de Mayenne est considérable.
 Aussi, réaliser un système permettant de traiter tous ces documents, de styles et de types très différents, n'était pas réalisable dans les 6 mois du projet.
 Nous avons et le commanditaire on donc convenu de la réalisation d'un \textit{Proof Of Concept} se focalisant uniquement sur les documents de type Recueil des Actes Administratifs (RAA).
@@ -13,7 +13,7 @@ Chaque RAA regroupe plusieurs arrêtés pouvant traiter de sujets très diverses
 
 Le cadre d'étude du projet est donc très large mais suffisamment restreinte pour qu'il soit possible de produire un POC dans les délais impartis. 
 
-\subsection {Extraction du texte brut}
+\subsection{Extraction du texte brut}
 Tous les RAA récents sont disponibles en version PDF, ce qui leur permet d'être accessible facilement par n'importe qui sur le site de la prefecture.
 Nous avons besoin de récupérer le texte brut (appelé transcript) des documents afin d'en extraire les informations d'importance.
 
@@ -24,8 +24,8 @@ Les documents ainsi scannés ne contiennent pas le texte brut, et récupérer le
 
 \subsection{Recherche d'informations d'importance} 
 Chaque document contient des informations d'importance qui doivent être extraites pour que le document en question soit correctement classé par la suite.
-Les informations d'importance, déterminées avec le commanditaire, sont les suivantes :
-\begin {itemize}
+Les informations d'importance, déterminées avec le commanditaire, sont les suivantes:
+\begin{itemize}
 \item Référence du RAA
 \item Nom du signataire
 \item Date de publication
@@ -38,17 +38,17 @@ Les informations d'importance, déterminées avec le commanditaire, sont les sui
 \item Noms des parties prenantes
 \item Lieux mentionnés
 \item Noms d'organisation et d'organismes
-\end {itemize}
+\end{itemize}
 
-Ces éléments sont les plus susceptibles d'être utilisés lors de la recherche par un utilisateur de notre POC.
+Ces éléments sont les plus susceptibles d'être utilisés lors de la recherche par un utilisateur de notre POC\@.
 
 
 
 \subsection{Classement par taxonomie}
-Une taxonomie est un ensemble de mots organisés sous la forme d'un arbre permettant de \textit{tagger} précisément un document en fonction de son contenu afin de normaliser sa classification.
+Une taxonomie est un ensemble de mots organisés sous la forme d'un arbre permettant de \textit{tagger} précisément un document en fonction de son contenu afin de normaliser sa classification (Voir figure~\ref{fig:tree}).
 L'utilisation d'une taxonomie permet de regrouper les documents selon des critères objectifs et standards, indépendant de la méthode de classification individuelle utilisée par les employés de la prefecture.
-L'administration Francaise a établi plusieurs taxonomies en fonction des services.
-L'inconvénient de la taxonomie est sa taille : il est impossible de connaitre parfaitement l'ensemble de l'arbre et donc par conséquent, le classement taxonomique d'un document par un humain est incomplet, incorrect, voir le plus souvent totalement absent.
+L'administration Française a établi plusieurs taxonomies en fonction des services.
+L'inconvénient de la taxonomie est sa taille: il est impossible de connaitre parfaitement l'ensemble de l'arbre et donc par conséquent, le classement taxonomique d'un document par un humain est incomplet, incorrect, voir le plus souvent totalement absent.
 
 Pour le commanditaire, il est essentiel que nous ajoutions une taxonomie au document.
 Il nous a donc fourni une taxonomie réduite de plus de 6000 termes.
@@ -56,15 +56,13 @@ Il nous a donc fourni une taxonomie réduite de plus de 6000 termes.
 
 \subsection{Moteur de recherche}
 Afin de montrer l'utilité des informations extraites des documents, nous devons également réaliser un moteur de recherche basique.
-Ce moteur de recherche a deux utilisations principales : 
+Ce moteur de recherche a deux utilisations principales: 
 \begin{itemize}
-\item Suggestions de recherche :
+\item Suggestions de recherche:
 Afin de retrouver des documents, nous devons mettre en place un système de recherche intelligente.
 Ce système devrait agir comme une barre de recherche google, en proposant des résultats pertinents.
-\item Apparence :
+\item Apparence:
 Le moteur de recherche permettra aussi a notre commanditaire de présenter le projet à la prefecture devant un public.
 Donner une apparence simple a un projet complexe est une tâche très importante pour des clients qui recherchent justement la simplicité.
 \end{itemize}
-
-
 
