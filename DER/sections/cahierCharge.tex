@@ -13,7 +13,17 @@ Chaque RAA regroupe plusieurs arrêtés pouvant traiter de sujets très diverses
 
 Le cadre d'étude du projet est donc très large mais suffisamment restreinte pour qu'il soit possible de produire un POC dans les délais impartis. 
 
-\subsection{Recherche d'informations d'importance} %Baptiste
+
+\subsection {Extraction du texte brut}
+Tous les RAA récents sont disponibles en version PDF, ce qui leur permet d'être accessible facilement par n'importe qui sur le site de la prefecture.
+Nous avons besoin de récupérer le texte brut (appelé transcript) des documents afin d'en extraire les informations d'importance.
+
+Généralement, le format PDF contient le texte brut du document afin d'en réduire le poids de stockage, une image nécessitant plus de mémoire que du simple texte.
+Malheureusement certains RAA ont d'abord été imprimés pour être signés, puis scannés pour leur mise en ligne.
+Les documents ainsi scannés ne contiennent pas le texte brut, et récupérer le transcript est bien plus complexe.
+
+
+\subsection{Recherche d'informations d'importance} 
 Chaque document contient des informations d'importance qui doivent être extraites pour que le document en question soit correctement classé par la suite.
 Les informations d'importance, déterminées avec le commanditaire, sont les suivantes :
 \begin {itemize}
@@ -22,6 +32,7 @@ Les informations d'importance, déterminées avec le commanditaire, sont les sui
 \item Date de publication
 \item Dates mentionnées
 \item Références des arrêtés
+\item Titre des arrêtés
 \item Références des décrets
 \item Références des articles
 \item Références des lois
@@ -30,11 +41,31 @@ Les informations d'importance, déterminées avec le commanditaire, sont les sui
 \item Noms d'organisation et d'organismes
 \end {itemize}
 
+Ces éléments sont les plus susceptibles d'être utilisés lors de la recherche par un utilisateur de notre POC.
+
 
 
 \subsection{Classement par taxonomie}
-Pour pouvoir obtenir une classification précise des documents administratifs, une taxonomie contenant plus de 6000 termes a été développée par l'administration Française. Cette taxonomie permet de tagger précisément le contenu d'un document.
-Il était donc impératif de pouvoir extraire depuis le texte assez d'information pour pouvoir assigner au document une ou plusieurs taxonomies.
+Une taxonomie est un ensemble de mots organisés sous la forme d'un arbre permettant de \textit{tagger} précisément un document en fonction de son contenu afin de normaliser sa classification.
+L'utilisation d'une taxonomie permet de regrouper les documents selon des critères objectifs et standards, indépendant de la méthode de classification individuelle utilisée par les employés de la prefecture.
+L'administration Francaise a établi plusieurs taxonomies en fonction des services.
+L'inconvénient de la taxonomie est sa taille : il est impossible de connaitre parfaitement l'ensemble de l'arbre et donc par conséquent, le classement taxonomique d'un document par un humain est incomplet, incorrect, voir le plus souvent totalement absent.
+
+Pour le commanditaire, il est essentiel que nous ajoutions une taxonomie au document.
+Il nous a donc fourni une taxonomie réduite de plus de 6000 termes.
+
 
 \subsection{Moteur de recherche}
+Afin de montrer l'utilité des informations extraites des documents, nous devons également réaliser un moteur de recherche basique.
+Ce moteur de recherche a deux utilisations principales : 
+\begin{itemize}
+\item Suggestions de recherche :
+Afin de retrouver des documents, nous devons mettre en place un système de recherche intelligente.
+Ce système devrait agir comme une barre de recherche google, en proposant des résultats pertinents.
+\item Apparence :
+Le moteur de recherche permettra aussi a notre commanditaire de présenter le projet à la prefecture devant un public.
+Donner une apparence simple a un projet complexe est une tâche très importante pour des clients qui recherchent justement la simplicité.
+\end{itemize}
+
+
 
