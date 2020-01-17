@@ -23,12 +23,12 @@ Ce texte sera ensuite utilisé pour l'extraction des métadonnées et l'ajout de
 Nous utilisons une approche double, qui nous assure une haute qualité d'extraction avec un temps d'exécution raisonnable.
 A l'aide d'un script bash, nous listons tout les fichiers disponibles dans le dossier initial donné par l'utilisateur. 
 
-Nous utilisons d'abord un utilitaire appelé "pdftotext" qui tente d'abord une extraction simple en analysant le fichier pdf. Il se peut cependant que cette approche faille a extraire le texte demandé. Dans ce cas, nous avons développé une approche basé sur Tesseract, un programme d'\gls{ocr} (Optical Character Recognition) développé en partie par Google. 
+Nous utilisons d'abord un utilitaire appelé "pdftotext" qui tente d'abord une extraction simple en analysant le fichier PDF. Il se peut cependant que cette approche faille a extraire le texte demandé. Dans ce cas, nous avons développé une approche basé sur Tesseract\cite{tess}, un programme d'\gls{ocr} (Optical Character Recognition) développé en partie par Google. 
 
 L'OCR tente d'extraire du texte depuis une image.
-Les techniques actuelles se basent sur des modèles de Deep Learning tels que le LSTM et les CNNs, qui vont essayer de localiser les zones de textes et d'en tirer les caractères présent.
-Cette approche, bien que souvent efficace, peut également faillir, et donner en sortie des caractères éronnés.
-La qualité du texte extrait étant critique pour le reste du projet, beaucoup de soins ont été donnée dans le pré traitement du fichier pdf pour obtenir une qualité d'extraction optimale.
+Les techniques actuelles se basent sur des modèles de Deep Learning tels que le \glspl{lstm} et les \glspl{cnn}, qui vont essayer de localiser les zones de textes et d'en tirer les caractères présent.
+Cette approche, bien que souvent efficace, peut également faillir, et donner en sortie des caractères erronés.
+La qualité du texte extrait étant critique pour le reste du projet, beaucoup de soins ont été donnée dans le pré traitement du fichier PDF pour obtenir une qualité d'extraction optimale.
 
 \begin{figure}[h!]
   \centering
@@ -48,9 +48,11 @@ La qualité du texte extrait étant critique pour le reste du projet, beaucoup d
 \end{figure}
 
 
-Le module taxonomique a pour charge d'extraire et d'assigner une ou plusieurs taxonomie a un document.
-Pour des raisons d'efficacité et de précision, ce module extrait d'abord le titre des arrêtés administratifs contenu dans le texte, puis les compare avec les taxonomies après une normalisation.
-Cette normalisation consiste en un nettoyage des accents et caractères spéciaux, ainsi qu'une lemmatization, procédure où l'on remplace un mot par sa racine.
+Le module taxonomique a pour charge d'extraire et d'assigner une ou plusieurs taxonomie à un document.
+
+Pour des raisons d'efficacité et de précision que nous détaillerons en sous-section~\ref{word2vecReal}, ce module extrait d'abord le titre des arrêtés administratifs contenu dans le texte, puis les compare avec les taxonomies après une normalisation.
+
+Cette normalisation consiste en un "nettoyage" des accents et caractères spéciaux, ainsi qu'une lemmatization, procédure où l'on remplace un mot par sa racine.
 Ces opérations permettent une comparaison plus robuste et moins dépendante du contexte de la phrase. 
 
 \begin{figure}[h!]
@@ -61,7 +63,7 @@ Ces opérations permettent une comparaison plus robuste et moins dépendante du 
 \end{figure}
 
 Pour chaque mot de la taxonomie, le module va vérifier si celui ci est présent dans le titre qu'il est en train d'analyser.
-Si oui, ce mot est ajouté a la taxonomie du document.
+Si oui, ce mot est ajouté à un tableau contenant les taxonomies du document.
 
 \subsection{Extraction des métadonnées}
 Les métadonnées sont des informations \textit{concernant} le document.
