@@ -96,13 +96,18 @@ Afin d'importer nos données, nous devons respecter le format JSON.
 Dans un premier temps, nous créons une application depuis Appbase.io. 
 Un Json se compose de plusieurs documents où chaque document est enlacé par des accolades. Dans un document, nous avons des "fields" (champs) qui correspondent aux différentes familles de données récoltés. Dans notre cas, nous avons comme exemple de champs les noms, les arrêtés ou les numéros de recueils. La structure du JSON est la suivante :
 
-
-\begin{figure}[h!]
-  \centering
-	\includegraphics[width=0.5\textwidth]{FormatJsonAppbase.PNG}
-	\caption[]{Exemple format JSON}
-  \label{}
-\end{figure}
+\begin{lstlisting}
+[
+	{
+		"field": "value",
+		"nested_field": { "field": "value" }
+		"array_field": ["A", "B"]
+	},
+	{
+		...
+	}
+]
+\end{lstlisting}
 
 Lorsque les données sont correctement importées un mail est envoyé contenant le "credentials" (identifiant) afin de sécuriser l'accessibilité aux données et visibles sous la forme d'un tableau. Cela nous permet de visualiser ce qui a été importé. 
 
