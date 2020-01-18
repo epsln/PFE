@@ -1,11 +1,79 @@
 %liste des modules réalisés
 %Preuve du fonctionnement de chaque modules
 
-\subsection{Traitement des documents avec OCR}
+\subsection{Extraction du texte des documents}
+Le module d'extraction de texte se présente sous la forme d'un script Bash pouvant être lancé sur l'intégralité du contenu d'un dossier.
+Notre script va lire les documents contenus dans le dossier un par uns et écrire dans un dossier de sortie un nouveau fichier contenant le texte d'un des documents analysé.
+
+Pour ce module, nous avons commencé par étudier les différents types de documents que nous pouvions trouver:
+\begin{itemize}
+\item PDF full text
+\item PDF scanné
+\item PDF mixte
+\item PDF compressé
+\item autres formats (DOCX, OBS, \ldots)
+\end{itemize}
+
+\subsubsection{PDF full text}
+Le type de document que nous observons le plus souvent est le document PDF full text.
+Le texte de celui ci est assez facile a extraire : on peut utiliser un programme natif Linux comme pdftotext qui renverra directement le contenu textuel d'un PDF dans un nouveau fichier.
+
+Si le nombre de caractères présents dans le document est inférieur a un certain seuil (une dizaines de caractères), on considère que le texte n'a pas été extrait et que le document doit être considéré comme un PDF scanné.
+
+\subsubsection{PDF scanné}
+Le PDF scanné ne contient pas de directement de texte inscrit.
+Il se présente comme une suite d'images scannées, dans notre cas de scans d'un document.
+La raison pour laquelle un document PDF est scanné plutôt que full text est très généralement due a une signature ou un tampon que la prefecture a jugé nécessaire d'inclure.
+
+Pour lire ce type de document, nous avons mis en place un système d'OCR (Optical Character Recognition) appelé Tesseract pour extraire les visuellement les caractères.
+Tesseract est l'état de l'art de l'OCR open source mais ne peux pas être utilisé tel quel et donner d'excellents résultats: il possède de nombreux paramètres et spécifications qui permettent de maximiser les résultats pour des cas d'utilisation spécifiques.
+
+Afin d'évaluer la performance de notre OCR, nous avons mis en place une méthode d'évaluation de performance basée sur deux paramètres: la proximité du transcript par rapport a la sortie de l'OCR et la présence de certains termes d'importance (voir~\ref{testOCR} pour le détail des méthodes de test).
+
+Les performances de l'OCR ainsi paramétré se sont révélées insuffisantes.
+Le score de proximité et le score de mots clefs étaient tout deux en dessous de 70\%.
+
+
+Pour la amélioré ce score, nous avons décidé de mettre en place un traitement d'image sur le document avant de l'envoyer dans le système d'OCR\@.
+Le processus de traitement se déroule comme suit:
+\begin{itemize}
+\item le document est découpé en pages stockées en format TIF
+\item chaque pages est traité individuellement par des méthodes de seuillage, ouverture, floutage, \ldots
+\item l'ensemble des pages traitées est rassemblé en une seule image TIFF, format adapté à Tesseract
+\end{itemize}
+
+La méthode de traitement à également été optimisée avec les tests mentionnés précédemment (voir~\ref{testOCR}).
+
+Le résultat final est bien plus satisfaisant que les premiers résultats de 70\%: nos nouveaux résultats se situent autour de 85\% de précision pour les mots clefs et 88\% pour le score de proximité.
+
+Cette méthode n'est cependant pas parfaite: de nombreux `e' se transforment en `c' par exemple, et les tampons et sinatures ne sont pas reconnus comme du texte et provoquent l'apparition de caractères spéciaux au milieu du transcrit.
+
+Les résultats ont été jugés suffisant en accord avec le commanditaire, l'extraction de texte par OCR n'étant pas le sujet principal du PFE\@.
+
+\subsubsection{PDF mixte}
+Certains PDFs peuvent également être des PDF full text contenant une ou deux pages scannées.
+Ce type de PDF est simplement considéré comme un PDF full text par notre programme, nous n'avons pas eu le temps de mettre en place une méthode d'extraction pour ce cas particulier, de toutes façons assez rare.
+
+Une méthode pour s'occuper d'un document de ce genre serait de découper le document d'entré par pages avant d'en extraire le texte individuellement, afin de détecter quel page ne contient pas de texte et l'envoyer à l'OCR\@.
+Cette méthode nécessiterait cependant une refonte du script.
+
+\subsubsection{Récupération des données d'importance}
+Nos test expérimentaux nous ont également mis en valeur un type de PDF ne contenant qu'un texte très court conseillant d' `obtenir `un lecteur de PDF' pour pouvoir ouvrir un document de ce type'.
+Après discutions avec notre commanditaire, nous avons découvert que ce type de stockage avait été utilisé entre les années 2015 et 2016, et représentait donc une part non négligeable de nos documents d'étude.
+
+Ce type de format est en fait un format de PDF similaire pour le principe au format TIFF pour les images: il sagit d'un PDF contenant une suite de PDF individuels.
+Nous avons donc utilisé un programme de décompression de PDF pour en sortir les PDF inclus, puis un autre programme permettant de recréer un seul PDF avec tous les PDF extrais précédaient.
+Ce nouveau PDF peut ainsi être fourni directement à l'extracteur de texte pour en récupérer le transcript.
+
+\subsubsection{Autres formats}
+Il arrive rarement que le document d'entrée soit d'un format différent que PDF, mais cette possibilité existe.
+Pour ne pas exclure ces documents sans pour autant développer des solutions dédiées (ce qui aurait pris beaucoup de temps), nous avons réglé pdftotext pour qu'il tente d'effectuer une conversion en PDF du document avant de le traiter normalement.
+Si cette étape échoue, le document est simplement ignoré.
 
 
 
-\subsection{Récupération des données d'importance}
+\subsection{Extraction des données spécifiques}
+
 
 
 
@@ -106,4 +174,9 @@ Le parcours d'arbre apportant une très grande quantité de nouveaux mots pour c
 Pour se faire, nous appliquons un simple système de poids au taxonomies détectées: une taxonomie initiale aura un poids 100 supérieur a une taxonomie récupéré par le parcours d'arbre.
 
 Cela permettra de garder uniquement les taxonomies les plus pertinentes.
+
+
+
+
+Le résultat final se présente sous la forme d'un module python pouvant être importé et utilisé directement.
 
