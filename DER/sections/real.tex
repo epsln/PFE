@@ -16,7 +16,7 @@ Pour ce module, nous avons commencé par étudier les différents types de docum
 
 \subsubsection{PDF full text}
 Le type de document que nous observons le plus souvent est le document PDF full text.
-Le texte de celui ci est assez facile a extraire : on peut utiliser un programme natif Linux comme pdftotext qui renverra directement le contenu textuel d'un PDF dans un nouveau fichier.
+Le texte de celui ci est assez facile a extraire: on peut utiliser un programme natif Linux comme pdftotext qui renverra directement le contenu textuel d'un PDF dans un nouveau fichier.
 
 Si le nombre de caractères présents dans le document est inférieur a un certain seuil (une dizaines de caractères), on considère que le texte n'a pas été extrait et que le document doit être considéré comme un PDF scanné.
 
@@ -73,9 +73,108 @@ Si cette étape échoue, le document est simplement ignoré.
 
 
 \subsection{Extraction des données spécifiques}
+Une fois le transcript obtenu, l'extraction des données du document peut commencer.
+La listes des données d'importance a été déterminée avec le commanditaire (Liste des informations: voir~\ref{infosImp}).
+Nous avons séparé ces données d'importance en deux catégories:
+\begin{itemize}
+\item Données respectant une norme de notation stricte ou presque stricte.\newline
+Par exemple, les références de RAA ont toujours le même format: numéroDuDépartement-année-indice
+\item Données non normées.\newline
+Ces données n'ont pas de format spécifique défini.
+Par exemple, un nom propre.
+\end{itemize}
+
+Les données normées sont bien plus faciles a repérer que les données non normées dans un texte car les formats qu'elles présentent sont similaires.
+
+\subsubsection{Données normées}
+%dates, raa, arretes, articles, lois, decrets, titres
+Afin de trouver les données normées de chaque documents, nous avons utilisé des RegEx (Regular Expression).
+Un RegEx est une suite de caractères qui décrit un ensemble de chaines de caractères selon une syntaxe précise.
+Cette méthode est extrêmement rapide a l'exécution et fiable, mais elle demande beaucoup de travail d'analyse pour bien inclure toutes les informations désirées, et présente le désavantage majeur d'être très rigide.
+Un RegEx est en effet purement logique, ses frontières de détection sont très rigides et il suffit d'un petit écart de format pour que l'information ne soit pas récupérée.
+Le RegEx est très mécanique.
+Tout résultat qui correspond au pattern sera gardé, peut importe sa pertinence, ce qui nous oblige a faire passer nos résultats par une étape de tri et de filtrage par la suite.
+
+L'utilisation des RegEx nous a demandé beaucoup de travail, la syntaxe étant quelque peu complexe.
+
+Pour retrouver une donnée normée comme un numéro de RAA, on peut décomposer sa forme générale: 53-2019-010 par exemple, se décompose en deux chiffres, un tiret, 4 chiffres, tiret, 2 chiffres, tiret et 3 chiffres.
+Un RegEx peut facilement retrouver ce numéro dans l'ensemble du texte, mais ne prendra pas en compte un numéro de la forme 053-2019-010 a cause du chiffre de référence au début.
+
+Nous avons donc conduit une étude de toutes les variations de notation pouvant exister pour nos termes a rechercher.
+Ces résultats nous ont permis de créer des RegEx adaptés a la plupart des cas particuliers rencontrés.
+Nous avons donc crée au moins un pattern RegEx pour chaque information normée.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{regex_RAA.png}
+	\caption[]{RegEx pour les numéros de RAA et exemples de détection}
+	\label{fig:regexRAA}
+\end{figure}
+
+Certains des RegEx développés sont bien plus complexes que celui de l'image~\ref{fig:regexRAA}.
+Les numéros d'arrêtés, de décrets et de lois ont été bien plus difficiles a différencier car ils ont une syntaxe similaire.
+Les RegEx se basent sur le mot précédent le numéro pour déterminer sa catégorie (arrêté, décret ou lois).
+
+
+L'extraction des titres des arrêtés a également été réalisée avec des RegEx.
+Cette détection était la plus difficile car cette fois il ne suffit pas de trouver un pattern de nombres ou quelques caractères mais des phrases entières, sans formats particuliers.
+Nos observations sur les documents ont montrés que les titres commençaient toujours par `arrêté' et pouvaient fini par `arrêté', `article', `préfet', \ldots
+Le RegEx est dans ce cas bien plus complexe que les autres et l'ensemble des titres du document sont renvoyés, mais n'est pas parfait: certains titres sont des morceaux de texte sans grand intérêt, vides, \ldots
+Les titres d'arrêtés sont donc traités bien plus en profondeur que les autres informations.
+L'image~\ref{fig:regexTitles} montre quelques résultats de titres nettoyés d'un document par RegEx.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{title_results.png}
+	\caption[]{Titres avant et après nettoyage}
+	\label{fig:regexTitles}
+\end{figure}
+
+On peut remarquer que le nombre de titres passe de 215 a 138 après nettoyage.
+Cette étape permet donc de gagner beaucoup de place de stockage de métadonnées et de temps de recherche d'informations dans les titres (comme la taxonomie).
+
+
+La detection des dates est aussi gérée par RegEx.
+Il existe deux formats principaux de dates: le format `jour/mois/année' et le format `jour mois année' (en lettres).
+Ces deux patterns sont reconnus par des RegEx distincts, puis transformés en format unique `année-mois-jour' afin de pouvoir facilement trier les documents par date et de ne pas mélanger les formats de stockage.
+C'est lors de la transformation en format unique qu'on peut détecter si le RegEx ne nous a pas renvoyé une date valable.
+Pour le moment, cette date invalide est simplement ignorée, mais une future version du programme pourrait utiliser une méthode comme la distance de levenstein ou un Word2Vec pour reconnaitre si la date est mal écrite ou invalide.
 
 
 
+
+\subsubsection{Données spéciales}
+%noms propres, lieux, orgs
+La recherche des données non normée est une tâche pour laquelle on ne peux pas utiliser de RegEx.
+Les noms et prénoms ne suivent pas de règle de notation particulière pour les différencier du reste du texte, tout comme les noms de lieux et d'organisation.
+
+
+Pour trouver ces informations dans le texte, nous avons utilisé une librairie python nommé Spacy offrant des fonctions avancées de NLP\@.
+Spacy analyse le transcript en nous renvoyant des ensembles de mots classés selon le model.
+
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{spacyNLP.png}
+	\caption[]{Catégories de Spacy}
+	\label{fig:spacyNLP}
+\end{figure}
+
+Comme montré dans l'image~\ref{fig:spacyNLP}, Spacy analyse plusieurs catégories:
+\begin{itemize}
+\item LOC\@: Lieux
+\item ORG\@: organisation
+\item PER\@: personne
+\item MISC\@: non défini
+\end{itemize}
+
+Ces catégories correspondent assez bien a ce que nous recherchons, même si les résultats ne sont pas exacts.
+La précision des résultats peut être améliorée en utilisant un plus gros modèle pré entrainé.
+
+Cependant les modèles préentrainés Français sont assez peu répandus, et un plus gros modèle entraine un temps de chargement et d'exécution du modèle bien plus long.
+Pour notre POC, le modèle Français medium suffit amplement.
+
+Des méthodes de filtrage/nettoyage ont toutefois été mise en place avec des RegEx afin de supprimer les erreurs majeures.
 
 \subsection{Taxonomie}%Martin
 \subsubsection{Approche par Word2Vec\label{word2vecReal}}
