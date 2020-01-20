@@ -3,17 +3,24 @@
 \subsection{Qualité d'extraction de texte}\label{testOCR}
 %tests de l'OCR sur un échantillon de documents
 Le module d'extraction de texte par OCR est critique, car sa sortie détermine ensuite la qualité de l'indexage et de la classification du document.
-Si le module extrait du texte incorrect, avec des fautes et/ou des modifications de lettres, il y a un risque que les modules d'extractions de métadonnées ou de taxonomies ne puissent pas correctement reconnaitre les mots clefs. 
+Si le module revoit un texte incorrect, avec des fautes et/ou des lettres modifiées, les modules d'extractions de métadonnées ou de taxonomies ne pourront pas correctement reconnaitre les mots clefs.
+Cela est d'autant plus vrai que nos méthodes de détection par RegEx sont par nature très sensibles au format du texte a détecter.
 
-La qualité d'extraction de l'\gls{ocr} est directement corrélé au prétraitement, nous voulions obtenir les meilleurs paramètres de ce prétraitement pour avoir une qualité d'extraction optimale.
 
-Deux méthodes ont donc été utilisée ainsi que deux métriques.
-Nous avons effectué plus de 50 tests avec différents paramètres.
+La qualité d'extraction de l'\gls{ocr} est directement corrélé au prétraitement d'image.
+Nous voulions obtenir les meilleurs paramètres de ce prétraitement pour obtenir une qualité d'extraction optimale pour notre cas d'application.
+Nous avons effectué plus de 50 tests avec différents paramètres de traitement graphique.
+
+Deux métriques de test ont été analysées.
 La première méthodes fut de transcrire à la main 12 documents administratifs afin d'en obtenir le texte brut.
-Nous avons ensuite sélectionné une liste de mots clefs que nous exigions important, comme des noms ou des dates et pour chaque ensemble de paramètres et chaque test nous avons calculé deux métriques nous indiquant la qualité de l'extraction.
+Nous avons ensuite sélectionné une liste de mots clefs que nous estimions importants, comme des noms ou des dates, et relevé leurs présences dans chaque documents dans un fichier a part.
 
-La première métrique est celle des mots clefs.
-On calcule le pourcentage de mots clefs extrait correctement en comptant simplement le nombre de mots clefs présent dans le texte divisé par le nombre de mots clefs total. 
+Il faut se replacer dans le contexte du début de projet: a cette époque nous n'avions encore que quelques documents exemple, et nous n'avions pas défini les informations importantes avec le commanditaire.
+
+
+La première métrique d'évaluation de qualité de texte est celle des mots clefs.
+On calcule le pourcentage de mots clefs extraits correctement en comptant simplement le nombre de mots clefs présents dans le texte en sortie de l'OCR divisé par le nombre de mots clefs total trouvé précédent. 
+
 
 La deuxième métrique est la distance de Levenshtein.
 Cette distance indique le degré de séparation entre deux chaines de caractères, c'est a dire le nombre minimum de modifications (ajout, suppression, modifications) a faire pour passer d'une chaine a l'autre. Elle est donnée par la formule suivante:
@@ -29,26 +36,54 @@ Cette distance indique le degré de séparation entre deux chaines de caractère
 	\end{matrix}\right.
 \end{equation}
 
-Pour chaque document, nous avons donc 2 valeurs de métriques nous donnant une indication sur la qualité du texte extrait.
-Nous voulions trouver les meilleurs paramètres du prétraitement, qui donnerait de valeurs de métriques élevées.
-Nous avons donc procédé a une analyse statistique, en testant plus d'une cinquantaine de paramètres différents.
-Pour chacun de ses paramètres nous calculions la distance de Levenshtein ainsi que le pourcentage de mots clefs extraits.
+Pour chaque document, nous obtenons donc 2 valeurs de métriques nous donnant une indication sur la qualité du texte extrait.
+Pour trouver les meilleurs paramètres du prétraitement, nous devions donc trouver la méthode qui donnerait le meilleur score pour les deux métriques.
+Nous avons donc procédé a une analyse statistique, en testant plus d'une cinquantaine de paramètres de traitement graphique différents.
+
+Pour chacun de ces paramètres nous calculions la distance de Levenshtein ainsi que le pourcentage de mots clefs extraits.
 Nous calculons ensuite la variance ainsi que la moyenne pour chacune de ces deux métriques.
-Finalement, nous avons normalisé sur l'ensemble des paramètres, c'est a dire que l'ensemble de paramètres qui donnait les meilleurs résultats pour une métriques obtenait un score de 100, et le pire obtenait un score de 0.
-Après élimination des cas extrêmes, nous avons été en mesure de choisir les paramètres qui nous semblait donner les meilleurs résultats.
+L'ensemble des paramètres sont alors normalisés, c'est a dire que la méthode de traitement qui donne les meilleurs résultats obtient un score de 100, et la pire méthode obtient un score de 0.
+Après élimination des cas extrêmes qui provoquent l'aplatissement des valeurs `normales', nous avons été en mesure de choisir les paramètres qui nous semblaient donner la meilleure combinaison de résultats.
+
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{ocrAnalysis.png}
+	\caption[]{Résultat des tests de traitement d'image et les scores associés (meilleur résultat en vert)}
+	\label{fig:ocrRes}
+\end{figure}
+
+La colonne la plus a droite `Method score' est une simple formule mathématique qui détermine le score de la méthode étudiée.
+Cette formule favorise le score de la distance de Levenshtein, dont les variations sont bien plus significatives que les variations du score des mots clefs.
+
 %Pour comparer toutes les métriques, on a normalisé entre tout les documents (100 pour la meilleure méthodes et 0 pour la pire, avec elimination des outliers)
 %Deux méthodes: transcripts et mots clefs
-\subsection{Taxonomie}
-Comme nous ne possédions pas de corpus de données annotés, et que nous n'étions pas des experts dans la classification de documents administratifs, le développement d'une procédure de test était immédiatement plus difficile que pour l'extraction du texte.
-Néanmoins, quelques méthodes nous ont permis de mieux juger de la taxonomie extraite par ce module. 
 
-D'abord, nous avons utilisé un simple script de test, qui passait au module taxonomique des chaines de charactère de notre choix, qui contenait des taxonomies se trouvant dans la liste des taxonomies.
+\subsection{Test des métadonnées}
+
+
+
+\subsection{Taxonomie}
+Comme nous ne possédions pas de corpus de données annotés, et que nous n'étions pas des experts dans la classification de documents administratifs, le développement d'une procédure de test était hors de notre portée.
+C'est un travail spécialisé qui demande une expertise que nous n'avons pas.
+
+Néanmoins, quelques méthodes nous ont permis de mieux juger de la qualité de la taxonomie extraite par ce module. 
+
+Nous avons utilisé un script de test, qui passait au module taxonomique des chaines de caractères contenant des termes taxonomiques se trouvant dans le fichier taxonomique.
+En comparant simplement les résultats, on pouvait vérifier que notre programme renvoyait effectivement les termes taxonomiques correspondants.
 Avec cette méthode, nous étions capable de vérifier si les modifications dans le module taxonomique provoquait des dysfonctionnements au niveau de sa sortie. 
 
-Ensuite, nous avons passé au module taxonomique des titres provenant de documents administratifs réel, dont nous connaissions une partie des taxonomies.
+Ensuite, nous avons passé au module taxonomique des titres provenant de documents administratifs réels, dont nous connaissons les classements taxonomiques évidents.
 Ainsi, nous avons pu découvrir et corriger plusieurs bugs, car nous savions exactement a quoi nous attendre.
-Pour tenter de détecter et de corriger le plus d'erreur possible nous avons essayé le module taxonomique avec une très grande quantité de titres, vérifiant a chaque fois à la main la sortie de celui ci. 
 
+Pour tenter de détecter et de corriger le plus d'erreurs possible nous avons essayé le module taxonomique avec une très grande quantité de documents, vérifiant a chaque fois à la main la sortie de celui ci. 
+
+C'est cependant lorsque le module `moteur de recherche' fut implémenté que nous avons pu vraiment voir les bugs les moins évidents.
+L'affichage du moteur de recherche permet de voir une liste exhaustive des taxonomies, et certaines taxonomies n'étaient pas présentes.
+Ce bug était du a un problème du parcours de l'arbre taxonomique.
+
+
+Notre version finale revoit une taxonomie correcte, validée avec le commanditaire.
 
 %test de la recherche taxonomique
 %"outre mer" "delegation de signature"
