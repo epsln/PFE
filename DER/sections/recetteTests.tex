@@ -2,15 +2,21 @@
 %Recette du commanditaire 
 \subsection{Qualité d'extraction de texte}\label{testOCR}
 %tests de l'OCR sur un échantillon de documents
-Le module d'extraction de texte par OCR est critique, car sa sortie détermine ensuite la qualité de l'indexage et de la classification du document. Si le module extrait du texte incorrect, avec des fautes et/ou des modifications de lettres, il y a un risque que les modules d'extractions de métadonnées ou de taxonomies ne puissent pas correctement reconnaitre les mots clefs. 
+Le module d'extraction de texte par OCR est critique, car sa sortie détermine ensuite la qualité de l'indexage et de la classification du document.
+Si le module extrait du texte incorrect, avec des fautes et/ou des modifications de lettres, il y a un risque que les modules d'extractions de métadonnées ou de taxonomies ne puissent pas correctement reconnaitre les mots clefs. 
 
 La qualité d'extraction de l'\gls{ocr} est directement corrélé au prétraitement, nous voulions obtenir les meilleurs paramètres de ce prétraitement pour avoir une qualité d'extraction optimale.
 
-Deux méthodes ont donc été utilisée ainsi que deux métriques. Nous avons effectué plus de 50 tests avec différents paramètres. La première méthodes fut de transcrire à la main 12 documents administratifs afin d'en obtenir le texte brut. Nous avons ensuite sélectionné une liste de mots clefs que nous exigions important, comme des noms ou des dates et pour chaque ensemble de paramètres et chaque test nous avons calculé deux métriques nous indiquant la qualité de l'extraction.
+Deux méthodes ont donc été utilisée ainsi que deux métriques.
+Nous avons effectué plus de 50 tests avec différents paramètres.
+La première méthodes fut de transcrire à la main 12 documents administratifs afin d'en obtenir le texte brut.
+Nous avons ensuite sélectionné une liste de mots clefs que nous exigions important, comme des noms ou des dates et pour chaque ensemble de paramètres et chaque test nous avons calculé deux métriques nous indiquant la qualité de l'extraction.
 
-La première métrique est celle des mots clefs. On calcule le pourcentage de mots clefs extrait correctement en comptant simplement le nombre de mots clefs présent dans le texte divisé par le nombre de mots clefs total. 
+La première métrique est celle des mots clefs.
+On calcule le pourcentage de mots clefs extrait correctement en comptant simplement le nombre de mots clefs présent dans le texte divisé par le nombre de mots clefs total. 
 
-La deuxième métrique est la distance de Levenshtein. Cette distance indique le degré de séparation entre deux chaines de caractères, c'est a dire le nombre minimum de modifications (ajout, suppression, modifications) a faire pour passer d'une chaine a l'autre. Elle est donnée par la formule suivante:
+La deuxième métrique est la distance de Levenshtein.
+Cette distance indique le degré de séparation entre deux chaines de caractères, c'est a dire le nombre minimum de modifications (ajout, suppression, modifications) a faire pour passer d'une chaine a l'autre. Elle est donnée par la formule suivante:
 
 \begin{equation}
 	\text{lev}_{a,b}(i,j) = \left\{\begin{matrix}
@@ -23,15 +29,25 @@ La deuxième métrique est la distance de Levenshtein. Cette distance indique le
 	\end{matrix}\right.
 \end{equation}
 
-Pour chaque document, nous avons donc 2 valeurs de métriques nous donnant une indication sur la qualité du texte extrait. Nous voulions trouver les meilleurs paramètres du prétraitement, qui donnerait de valeurs de métriques élevées. Nous avons donc procédé a une analyse statistique, en testant plus d'une cinquantaine de paramètres différents. Pour chacun de ses paramètres nous calculions la distance de Levenshtein ainsi que le pourcentage de mots clefs extraits. Nous calculons ensuite la variance ainsi que la moyenne pour chacune de ces deux métriques. Finalement, nous avons normalisé sur l'ensemble des paramètres, c'est a dire que l'ensemble de paramètres qui donnait les meilleurs résultats pour une métriques obtenait un score de 100, et le pire obtenait un score de 0. Après élimination des cas extrêmes, nous avons été en mesure de choisir les paramètres qui nous semblait donner les meilleurs résultats.
+Pour chaque document, nous avons donc 2 valeurs de métriques nous donnant une indication sur la qualité du texte extrait.
+Nous voulions trouver les meilleurs paramètres du prétraitement, qui donnerait de valeurs de métriques élevées.
+Nous avons donc procédé a une analyse statistique, en testant plus d'une cinquantaine de paramètres différents.
+Pour chacun de ses paramètres nous calculions la distance de Levenshtein ainsi que le pourcentage de mots clefs extraits.
+Nous calculons ensuite la variance ainsi que la moyenne pour chacune de ces deux métriques.
+Finalement, nous avons normalisé sur l'ensemble des paramètres, c'est a dire que l'ensemble de paramètres qui donnait les meilleurs résultats pour une métriques obtenait un score de 100, et le pire obtenait un score de 0.
+Après élimination des cas extrêmes, nous avons été en mesure de choisir les paramètres qui nous semblait donner les meilleurs résultats.
 %Pour comparer toutes les métriques, on a normalisé entre tout les documents (100 pour la meilleure méthodes et 0 pour la pire, avec elimination des outliers)
 %Deux méthodes: transcripts et mots clefs
 \subsection{Taxonomie}
-Comme nous ne possédions pas de corpus de données annotés, et que nous n'étions pas des experts dans la classification de documents administratifs, le développement d'une procédure de test était immédiatement plus difficile que pour l'extraction du texte. Néanmoins, quelques méthodes nous ont permis de mieux juger de la taxonomie extraite par ce module. 
+Comme nous ne possédions pas de corpus de données annotés, et que nous n'étions pas des experts dans la classification de documents administratifs, le développement d'une procédure de test était immédiatement plus difficile que pour l'extraction du texte.
+Néanmoins, quelques méthodes nous ont permis de mieux juger de la taxonomie extraite par ce module. 
 
-D'abord, nous avons utilisé un simple script de test, qui passait au module taxonomique des chaines de charactère de notre choix, qui contenait des taxonomies se trouvant dans la liste des taxonomies. Avec cette méthode, nous étions capable de vérifier si les modifications dans le module taxonomique provoquait des dysfonctionnements au niveau de sa sortie. 
+D'abord, nous avons utilisé un simple script de test, qui passait au module taxonomique des chaines de charactère de notre choix, qui contenait des taxonomies se trouvant dans la liste des taxonomies.
+Avec cette méthode, nous étions capable de vérifier si les modifications dans le module taxonomique provoquait des dysfonctionnements au niveau de sa sortie. 
 
-Ensuite, nous avons passé au module taxonomique des titres provenant de documents administratifs réel, dont nous connaissions une partie des taxonomies. Ainsi, nous avons pu découvrir et corriger plusieurs bugs, car nous savions exactement a quoi nous attendre. Pour tenter de détecter et de corriger le plus d'erreur possible nous avons essayé le module taxonomique avec une très grande quantité de titres, vérifiant a chaque fois à la main la sortie de celui ci. 
+Ensuite, nous avons passé au module taxonomique des titres provenant de documents administratifs réel, dont nous connaissions une partie des taxonomies.
+Ainsi, nous avons pu découvrir et corriger plusieurs bugs, car nous savions exactement a quoi nous attendre.
+Pour tenter de détecter et de corriger le plus d'erreur possible nous avons essayé le module taxonomique avec une très grande quantité de titres, vérifiant a chaque fois à la main la sortie de celui ci. 
 
 
 %test de la recherche taxonomique
