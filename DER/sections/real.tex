@@ -46,7 +46,7 @@ La méthode de traitement à également été optimisée avec les tests mentionn
 
 Le résultat final est bien plus satisfaisant que les premiers résultats de 70\%: nos nouveaux résultats se situent autour de 85\% de précision pour les mots clefs et 88\% pour le score de proximité.
 
-Cette méthode n'est cependant pas parfaite: de nombreux `e' se transforment en `c' par exemple, et les tampons et sinatures ne sont pas reconnus comme du texte et provoquent l'apparition de caractères spéciaux au milieu du transcrit.
+Cette méthode n'est cependant pas parfaite: de nombreux `e' se transforment en `c' par exemple, et les tampons et signatures ne sont pas reconnus comme du texte et provoquent l'apparition de caractères spéciaux au milieu du transcrit.
 
 Les résultats ont été jugés suffisant en accord avec le commanditaire, l'extraction de texte par OCR n'étant pas le sujet principal du PFE\@.
 
@@ -61,7 +61,7 @@ Cette méthode nécessiterait cependant une refonte du script.
 Nos test expérimentaux nous ont également mis en valeur un type de PDF ne contenant qu'un texte très court conseillant d' `obtenir `un lecteur de PDF' pour pouvoir ouvrir un document de ce type'.
 Après discutions avec notre commanditaire, nous avons découvert que ce type de stockage avait été utilisé entre les années 2015 et 2016, et représentait donc une part non négligeable de nos documents d'étude.
 
-Ce type de format est en fait un format de PDF similaire pour le principe au format TIFF pour les images: il sagit d'un PDF contenant une suite de PDF individuels.
+Ce type de format est en fait un format de PDF similaire pour le principe au format TIFF pour les images: il s'agit d'un PDF contenant une suite de PDF individuels.
 Nous avons donc utilisé un programme de décompression de PDF pour en sortir les PDF inclus, puis un autre programme permettant de recréer un seul PDF avec tous les PDF extrais précédaient.
 Ce nouveau PDF peut ainsi être fourni directement à l'extracteur de texte pour en récupérer le transcript.
 
@@ -138,7 +138,7 @@ La detection des dates est aussi gérée par RegEx.
 Il existe deux formats principaux de dates: le format `jour/mois/année' et le format `jour mois année' (en lettres).
 Ces deux patterns sont reconnus par des RegEx distincts, puis transformés en format unique `année-mois-jour' afin de pouvoir facilement trier les documents par date et de ne pas mélanger les formats de stockage.
 C'est lors de la transformation en format unique qu'on peut détecter si le RegEx ne nous a pas renvoyé une date valable.
-Pour le moment, cette date invalide est simplement ignorée, mais une future version du programme pourrait utiliser une méthode comme la distance de levenstein ou un Word2Vec pour reconnaitre si la date est mal écrite ou invalide.
+Pour le moment, cette date invalide est simplement ignorée, mais une future version du programme pourrait utiliser une méthode comme la distance de Levenshtein ou un Word2Vec pour reconnaitre si la date est mal écrite ou invalide.
 
 
 

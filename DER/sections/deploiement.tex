@@ -2,8 +2,8 @@
 
 %déploiement sur appbase.io
 
-Le déploiment de l'application se passe en trois étapes.
-Premièrement, les documents a traiter (au format pdf) doivent être placés dans un dossier, où ils seront récupérés un par un par un script qui en extrayera la texte brut, qui sera lui même analysé pour en tirer les données.
+Le déploiement de l'application se passe en trois étapes.
+Premièrement, les documents a traiter (au format pdf) doivent être placés dans un dossier, où ils seront récupérés un par un par un script qui va en extraire la texte brut, qui sera lui même analysé pour en tirer les données.
 Ensuite, ces données seront ajouté à un fichier JSON dont le format correspond à ce que Reactivesearch attend.
 Enfin le JSON ainsi crée doit être ajouté dans notre moteur de recherche.
 
@@ -11,12 +11,12 @@ Enfin le JSON ainsi crée doit être ajouté dans notre moteur de recherche.
 La chaine de traitement commence par l'extraction du texte des documents PDF.
 Pour cela, le script `extractText.sh' va tester tous les documents selon la méthode suivante:\newline
 Utilisation de pdftotext: Si du texte peut être extrait du PDF courant, ce texte est stocké dans un nouveau fichier et le script passe au document suivant.\newline
-Si aucun texte n'a pu être extrait, le script charge Tesseract (OCR) en mémoire, découpe le document en pages qui sont individuellement passées par un script de traitement d'image.
+Si aucun texte n'a pu être extrait, le script charge Tesseract (\gls{OCR}) en mémoire, découpe le document en pages qui sont individuellement passées par un script de traitement d'image.
 Les images traitées individuellement sont alors rassemblées dans un fichier au format TIFF, transmis à Tesseract qui se charge d'en extraire le texte.
 
 L'extraction dure environ 1h10 pour nos 431 fichiers.
 
-Quand l'exécution de ce script est terminée, on obtient un dossier contenant les transcripts de chaque fichiers traités en format TXT.
+Quand l'exécution de ce script est terminée, on obtient un dossier contenant les transcripts de chaque fichiers traités en format TXT\@.
 
 \subsection{Extraction des données}
 L'utilisation du script python `reactiv\_json.py' permet de créer un fichier au format JSON pouvant être lu par Reactivesearch.
