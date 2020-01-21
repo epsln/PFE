@@ -2,19 +2,30 @@
 
 %liste des pdf raa
 \subsection{Langages}
-L'extraction du texte depuis les PDFs a été écrite sous forme de script Bash. En effet, comme nous appelons un programme d'\gls{OCR} externe, Tesseract, ainsi qu'une librairie de modifications d'image, il était plus aisée pour nous de simplement écrire un script bash combinant ces outils.
+L'extraction du texte depuis les PDFs a été écrite sous forme de script Bash.
+En effet, comme nous appelons un programme d'\gls{OCR} externe, Tesseract, ainsi qu'une librairie de modification d'image, il était plus aisé de simplement écrire un script bash combinant ces outils.
 
-Pour le développement des scripts nécessaire pour l'extraction des métadonnées et des taxonomies, nous avons décidé de n'utiliser que le langage Python3. En effet, non seulement toute l'équipe était déjà très familière avec ce langage, mais les librairies d'analyse de \gls{NLP} et de Machine Learning sont généralement développé pour ce langage. La grande variété de librairie et de fonction pré implémenté en Python nous a permis de développer rapidement et d'itérer sur les prototypes existants. 
-
-L'\gls{ui} du moteur de recherche a elle été développé en Javascript, qui est le langage utilisé pour quasiment toutes les applications web. 
+Pour le développement des scripts nécessaires pour l'extraction des métadonnées et des taxonomies, nous avons décidé de n'utiliser que le langage Python3.
+En effet, toute l'équipe est déjà familière avec ce langage, et les librairies d'analyse de \gls{NLP} et de Machine Learning sont généralement développées pour ce langage.
+La grande variété de librairies et de fonctions pré implémentées en Python nous a permis de développer rapidement et d'itérer sur les prototypes existants. 
 
 \subsection{Moteur de recherche}
-Le développement du moteur de recherche a été énormément simplifié par l'utilisation d' \href{https://appbase.io}{Appbase}. Appbase est un site permettant de hoster des applications de recherche basée sur ElasticSearch ou ReactiveSearch. A l'aide d'un simple fichier JSON, nous étions capable de créer une page de moteur de recherche indexant la totalité de nos articles administratifs. Comme cette version était hoster sur le site Appbase, elle est accessible par n'importe qui ayant le lien. Ainsi nous évitions de devoir acheter un nom de domaine ainsi qu'un emplacement serveur et de passer par les étapes de l'installation d'une application et de sa mise en service. 
+Le développement du moteur de recherche a été grandement simplifié par l'utilisation d' \href{https://appbase.io}{Appbase}.
+Appbase est un site permettant d'héberger des applications moteur de recherche basées sur ElasticSearch ou Reactivesearch.
+
+Comme notre moteur de recherche est hébergée sur le site Appbase, il est accessible par n'importe qui avec un accès internet.
+Ainsi nous évitons l'achat d'un nom de domaine, d'un emplacement serveur, et nous ne nous occupons pas des étapes d'installation d'une application et sa mise en service. 
+
+L'\gls{ui} du moteur de recherche a été développée en Javascript, qui est le langage utilisé pour quasiment toutes les applications web. 
+Le code a été généré par une application de code graphique d'AppBase, puis améliorée localement par nos soins.
 
 \subsection{Autres Outils}
-Pour le partage du code source et la gestion des versions, nous avons utilisé Git combiné à github. Git nous a permis d'avoir un contrôle de versions très robuste, que ce soit pour le code source en lui même ou pour les dossiers requis tout au long du projet. 
+Pour le partage du code source et la gestion des versions, nous avons utilisé Git avec github.
+Git nous a permis de gérer les versions du programme, que ce soit pour le code source en lui même ou pour les dossiers requis tout au long du projet, comme celui ci. 
 
-Une grande part des tâches de calcul a été effectuée sur le serveur de la DTRE, qui nous a été gracieusement prêté pour ce projet. Ainsi, nous pouvions lancer des programmes prenant une quantité de ressources importante et continuer de travailler sur des tâches annexes.
+Une grande part des tâches de calcul ont été effectuées sur le serveur de la DTRE, qui nous a été gracieusement prêté pour ce projet.
+Ainsi, nous avons pu lancer des programmes demandant une quantité de ressources importante sur le serveur tout en continuant de travailler sur des tâches moins nécessiteuses localement.
+
 %python
 %scripts sh
 %appbase.io
