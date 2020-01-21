@@ -1,16 +1,50 @@
 
 \subsection {Pistes d'amélioration}
-On notera que le système final d'extraction de taxonomies n'utilise pas d'apprentissage sous quelque forme que ce soit.
+Notre POC, bien que satisfaisant, est loin d'être parfait.
+
+Pour le moment, le système est adapté uniquement aux RAA, qui représentent une partie très réduite des documents de la prefecture.
+La spécificité n'est pas un problème dans notre cadre, mais notre projet n'est pas pas destiné uniquement a la classification de RAA.
+
+
+On notera que le système final d'extraction de données n'utilise que très peu de méthodes d'apprentissage.
 
 On peut y voir ici une piste d'amélioration: avec un corpus de données annotés, il devient trivial de construire un module taxonomique plus précis et performant, car prenant en compte le contexte, crucial dans le \gls{nlp}.
-En effet, notre système ne peut distinguer "outre mer" de "mer". Si ces deux exemples contiennent le mot "mer", il est évident que leur sens sémantique est différent. Ce sens ne peut être compris que par le contexte; fonctionnalité qui manque à ce module. 
+En effet, notre système ne peut par exemple pas distinguer "outre mer" de "mer".
+Si ces deux exemples contiennent le mot "mer", il est évident que leur sens sémantique est différent.
+Ce sens ne peut être compris que par le contexte; fonctionnalité qui manque à ce module. 
 
-L'utilisation d'un véritable système de Machine Learning nous permettrait d'obtenir des taxonomies bien plus précises et sensée dans le contexte du document. En se projetant plus loin que les simples RAA, qui était le coeur de notre projet, on peut imaginer appliquer un système de Machine Learning sur tout les documents administratifs, qui les regrouperait selon l'usage. Par exemple, pour le cas d'un renouvellement d'une carte d'identité, un agent administratif pourrait récupérer tout les documents nécessaire a cette procédure, car ceux-ci aurait été au préalable tous correctement taggué avec une taxonomie appropriée. 
+L'utilisation d'un véritable système de Machine Learning nous permettrait d'obtenir des taxonomies bien plus précises et sensées dans le contexte du document.
+En se projetant plus loin que les RAA, qui étaient le coeur de notre projet, on peut imaginer un système de Machine Learning utilisable sur tous les documents administratifs, qui les regrouperait selon l'usage.
 
-Il est important de noter que le moteur de recherche de documents, même si il reste un module crucial de notre projet, n'est qu'une partie des capacités de celui ci. En effet, nous avons également développé tout un système capable d'extraire les informations nécessaire pour classifier correctement un document, par le biais de la taxonomie ou des métadonnées. En ce sens, nous avons répondu a l'une des plus grandes problématiques de notre client, qui était la masse ingérable de documents non classé. Ce PoC prouve qu'il est possible de construire un système de classification automatique sur des RAA. Il est donc parfaitement imaginable d'étendre ce genre de système à tout types de documents. 
+Par exemple, pour le cas du renouvellement d'une carte d'identité, un agent administratif pourrait récupérer tous les documents nécessaires a cette procédure, car ceux-ci auraient été préalablement correctement taggués avec une taxonomie appropriée. 
+
+Nous avons tenté de palier a ce problème en organisant les taxonomies par pertinence, en favorisant les termes revenants le plus souvent.
+Les termes les plus présents indiquent en effet que le parcours de l'arbre taxonomique est repassé plusieurs fois par ce noeud, et qu'il a donc une plus forte probabilité d'être significatif.
+Cela n'est pas encore assez efficace pour que la taxonomie donnée soit effectivement considérée parfaitement correcte.
+
+
+De même, l'extraction des données normées par RegEx est une méthode efficace mais les résultats sont probablement incomplets.
+Cette méthode devrait être améliorée par l'utilisation de plus de filtres pour affiner les résultats.
+Cette reflexion est également valable pour les données non normées.
+Leur détection ne se base pour le moment que sur l'utilisation de Spacy, sans tests supplémentaires.
+Cela conduit certains noms complexes a être relevés de facon incomplète (exemple : `Jean-Pierre' sera uniquement détecté en tant que `Jean').
+Pour corriger cela, des tests supplémentaires pourront être mis en place.
+
+
+Notre moteur de recherche est également améliorable: plus d'informations devraient être affichées, comme un bref résumé du document, et un lien vers sa version en ligne originale plutôt que le transcript que nous avons posté nous même.
 
 \subsection {Conclusion}
+Ce projet était d'une ampleur très importante et nous pensions au départ qu'il était impossible de concevoir un POC fonctionnel en une durée aussi courte.
+Le passage du projet en XL et notre méthode organisationnelle sont des éléments qui ont portés leurs fruits: Un POC fonctionnel a été réalisé et notre commanditaire en est extrêmement satisfait.
 
+Il est important de noter que le moteur de recherche de documents, même si il reste un module crucial de notre projet, n'est que la partie visible des vrais fonctionnalités du projet.
+En effet, le coeur du projet était de développer tout un système capable d'extraire les informations nécessaire a la classification d'un document.
+En ce sens, nous avons répondu a l'une des plus grandes problématiques de notre client, qui était de prouver qu'une solution pour gérer la masse de documents non classé était possible.
 
+Ce PoC prouve qu'il est possible de construire un système de classification automatique de RAA.
+Il est donc parfaitement imaginable d'étendre ce genre de système à tout types de documents et résoudre le problème organisationnel principal de la prefecture.
+
+Ce projet a été une occasion pour nous d'avoir une bref introduction au monde de la classification et de l'archivage, ainsi que d'utiliser de nouvelles méthodes et techniques.
+Nous espérons voir un jour une version terminée de ce projet ambitieux que nous avons eu l'honneur de commencer.
 
 
