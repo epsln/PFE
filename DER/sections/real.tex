@@ -4,6 +4,7 @@
 \subsection{Extraction du texte des documents}
 Le module d'extraction de texte se présente sous la forme d'un script Bash pouvant être lancé sur l'intégralité du contenu d'un dossier.
 Notre script va lire les documents contenus dans le dossier un par uns et écrire dans un dossier de sortie un nouveau fichier contenant le texte d'un des documents analysé.
+Les résultats ont également été stockés sur \href{https://github.com/smallito/PFE/tree/master/codes/transcripts}{GitHub}.
 
 Pour ce module, nous avons commencé par étudier les différents types de documents que nous pouvions trouver:
 \begin{itemize}
@@ -16,35 +17,36 @@ Pour ce module, nous avons commencé par étudier les différents types de docum
 
 \subsubsection{PDF full text}
 Le type de document que nous observons le plus souvent est le document PDF full text.
-Le texte de celui ci est assez facile a extraire: on peut utiliser un programme natif Linux comme pdftotext qui renverra directement le contenu textuel d'un PDF dans un nouveau fichier.
+Le texte de celui ci est assez facile a extraire: on peut utiliser un programme commun comme pdftotext qui renverra directement le contenu textuel d'un PDF dans un nouveau fichier.
 
 Si le nombre de caractères présents dans le document est inférieur a un certain seuil (une dizaines de caractères), on considère que le texte n'a pas été extrait et que le document doit être considéré comme un PDF scanné.
 
 \subsubsection{PDF scanné}
-Le PDF scanné ne contient pas de directement de texte inscrit.
+Le PDF scanné ne contient pas directement de texte inscrit.
 Il se présente comme une suite d'images scannées, dans notre cas de scans d'un document.
 La raison pour laquelle un document PDF est scanné plutôt que full text est très généralement due a une signature ou un tampon que la prefecture a jugé nécessaire d'inclure.
 
-Pour lire ce type de document, nous avons mis en place un système d'OCR (Optical Character Recognition) appelé Tesseract pour extraire les visuellement les caractères.
+Pour lire ce type de document, nous avons mis en place un système d'OCR (Optical Character Recognition) appelé Tesseract pour extraire visuellement les caractères.
 Tesseract est l'état de l'art de l'OCR open source mais ne peux pas être utilisé tel quel et donner d'excellents résultats: il possède de nombreux paramètres et spécifications qui permettent de maximiser les résultats pour des cas d'utilisation spécifiques.
 
-Afin d'évaluer la performance de notre OCR, nous avons mis en place une méthode d'évaluation de performance basée sur deux paramètres: la proximité du transcript par rapport a la sortie de l'OCR et la présence de certains termes d'importance (voir~\ref{testOCR} pour le détail des méthodes de test).
+Afin d'évaluer la performance de notre OCR, nous avons mis en place une méthode d'évaluation de performances basée sur deux paramètres: la proximité du transcript par rapport a la sortie de l'OCR et la présence de certains termes d'importance (voir~\ref{testOCR} pour le détail des méthodes de test).
 
 Les performances de l'OCR ainsi paramétré se sont révélées insuffisantes.
 Le score de proximité et le score de mots clefs étaient tout deux en dessous de 70\%.
 
 
-Pour la amélioré ce score, nous avons décidé de mettre en place un traitement d'image sur le document avant de l'envoyer dans le système d'OCR\@.
+Pour améliorer ce score, nous avons effectué un traitement d'image sur le document avant de l'envoyer dans le système d'OCR\@.
+
 Le processus de traitement se déroule comme suit:
 \begin{itemize}
-\item le document est découpé en pages stockées en format TIF
-\item chaque pages est traité individuellement par des méthodes de seuillage, ouverture, floutage, \ldots
-\item l'ensemble des pages traitées est rassemblé en une seule image TIFF, format adapté à Tesseract
+\item Le document est découpé en pages stockées en format TIF
+\item Chaque page est traitée individuellement par des méthodes de seuillage, ouverture, fermeture, floutage, \ldots
+\item L'ensemble des pages traitées est rassemblé en une seule image TIFF, format adapté à Tesseract
 \end{itemize}
 
-La méthode de traitement à également été optimisée avec les tests mentionnés précédemment (voir~\ref{testOCR}).
+La méthode de traitement a également été optimisée avec les tests mentionnés précédemment (voir~\ref{testOCR}).
 
-Le résultat final est bien plus satisfaisant que les premiers résultats de 70\%: nos nouveaux résultats se situent autour de 85\% de précision pour les mots clefs et 88\% pour le score de proximité.
+Le résultat final est bien plus satisfaisant que les premiers résultats de 70\%: nos nouveaux scores se situent autour de 85\% de précision pour les mots clefs et 88\% pour le score de proximité.
 
 \begin{figure}[h!]
   \centering
@@ -53,23 +55,25 @@ Le résultat final est bien plus satisfaisant que les premiers résultats de 70\
 	\label{fig:defautsOCR}
 \end{figure}
 
-Cette méthode n'est cependant pas parfaite: de nombreux `e' se transforment en `c' par exemple, et les tampons et signatures ne sont pas reconnus comme du texte et provoquent l'apparition de caractères spéciaux au milieu du transcrit.
+Cette méthode n'est cependant pas parfaite: de nombreux `e' se transforment en `c' par exemple, et les tampons et signatures ne sont pas reconnus comme du texte et provoquent l'apparition de caractères spéciaux au milieu du transcrit (exemple ci dessus).
 
-Les résultats ont été jugés suffisant en accord avec le commanditaire, l'extraction de texte par OCR n'étant pas le sujet principal du PFE\@.
+Les résultats ont été jugés suffisants en accord avec le commanditaire, l'extraction de texte par OCR n'étant pas le sujet principal du PFE\@.
 
 \subsubsection{PDF mixte}
 Certains PDFs peuvent également être des PDF full text contenant une ou deux pages scannées.
-Ce type de PDF est simplement considéré comme un PDF full text par notre programme, nous n'avons pas eu le temps de mettre en place une méthode d'extraction pour ce cas particulier, de toutes façons assez rare.
+Ce type de PDF est simplement considéré comme un PDF full text par notre programme, nous n'avons pas eu le temps de mettre en place une méthode d'extraction pour ce cas particulier, de toute façon assez rare.
 
 Une méthode pour s'occuper d'un document de ce genre serait de découper le document d'entré par pages avant d'en extraire le texte individuellement, afin de détecter quel page ne contient pas de texte et l'envoyer à l'OCR\@.
-Cette méthode nécessiterait cependant une refonte du script.
+
+Cette méthode nécessiterait cependant une refonte du script et serait plus longue a l'exécution.
 
 \subsubsection{Récupération des données d'importance}
-Nos test expérimentaux nous ont également mis en valeur un type de PDF ne contenant qu'un texte très court conseillant d' `obtenir `un lecteur de PDF' pour pouvoir ouvrir un document de ce type'.
-Après discutions avec notre commanditaire, nous avons découvert que ce type de stockage avait été utilisé entre les années 2015 et 2016, et représentait donc une part non négligeable de nos documents d'étude.
+Nos test expérimentaux ont également mis en valeur un type de PDF ne contenant qu'un texte très court conseillant d' "obtenir `un lecteur de PDF' pour pouvoir ouvrir un document de ce type".
 
-Ce type de format est en fait un format de PDF similaire pour le principe au format TIFF pour les images: il s'agit d'un PDF contenant une suite de PDF individuels.
-Nous avons donc utilisé un programme de décompression de PDF pour en sortir les PDF inclus, puis un autre programme permettant de recréer un seul PDF avec tous les PDF extrais précédaient.
+Après discussion avec notre commanditaire, nous avons découvert que ce type de stockage avait été utilisé entre les années 2014 et 2016, et représentait donc une part non négligeable de nos documents d'étude.
+
+Ce type de format est en fait un format de PDF similaire sur le principe au format TIFF pour les images: il s'agit d'un PDF contenant une suite de PDF individuels.
+Nous avons donc utilisé un programme de décompression de PDF pour en sortir les PDF inclus, puis un autre programme permettant de recréer un seul PDF avec tous les PDF extrais précédemment.
 Ce nouveau PDF peut ainsi être fourni directement à l'extracteur de texte pour en récupérer le transcript.
 
 \subsubsection{Autres formats}
@@ -96,16 +100,16 @@ Les données normées sont bien plus faciles a repérer que les données non nor
 \subsubsection{Données normées}
 %dates, raa, arretes, articles, lois, decrets, titres
 Afin de trouver les données normées de chaque documents, nous avons utilisé des RegEx (Regular Expression).
+
 Un RegEx est une suite de caractères qui décrit un ensemble de chaines de caractères selon une syntaxe précise.
-Cette méthode est extrêmement rapide a l'exécution et fiable, mais elle demande beaucoup de travail d'analyse pour bien inclure toutes les informations désirées, et présente le désavantage majeur d'être très rigide.
+Cette méthode est extrêmement fiable et rapide a l'exécution, mais elle demande beaucoup de travail d'analyse pour bien inclure toutes les informations désirées, et présente le désavantage majeur d'être très rigide.
 Un RegEx est en effet purement logique, ses frontières de détection sont très rigides et il suffit d'un petit écart de format pour que l'information ne soit pas récupérée.
-Le RegEx est très mécanique.
-Tout résultat qui correspond au pattern sera gardé, peut importe sa pertinence, ce qui nous oblige a faire passer nos résultats par une étape de tri et de filtrage par la suite.
+Le RegEx est également absolument mécanique: Tout résultat qui correspond au pattern sera gardé, peut importe sa pertinence, ce qui nous oblige a faire passer nos résultats par une étape de tri et de filtrage par la suite.
 
 L'utilisation des RegEx nous a demandé beaucoup de travail, la syntaxe étant quelque peu complexe.
 
-Pour retrouver une donnée normée comme un numéro de RAA, on peut décomposer sa forme générale: 53-2019-010 par exemple, se décompose en deux chiffres, un tiret, 4 chiffres, tiret, 2 chiffres, tiret et 3 chiffres.
-Un RegEx peut facilement retrouver ce numéro dans l'ensemble du texte, mais ne prendra pas en compte un numéro de la forme 053-2019-010 a cause du chiffre de référence au début.
+Pour retrouver une donnée normée comme un numéro de RAA, on peut décomposer sa forme générale: 53-2019-010 par exemple, se décompose en deux chiffres, un tiret, 4 chiffres, tiret, 3 chiffres.
+Un RegEx basique peut facilement retrouver ce numéro dans l'ensemble du texte, mais ne prendra pas en compte un numéro de la forme 053-2019-010 a cause du 0 au début.
 
 Nous avons donc conduit une étude de toutes les variations de notation pouvant exister pour nos termes a rechercher.
 Ces résultats nous ont permis de créer des RegEx adaptés a la plupart des cas particuliers rencontrés.
@@ -119,14 +123,17 @@ Nous avons donc crée au moins un pattern RegEx pour chaque information normée.
 \end{figure}
 
 Certains des RegEx développés sont bien plus complexes que celui de l'image~\ref{fig:regexRAA}.
+
 Les numéros d'arrêtés, de décrets et de lois ont été bien plus difficiles a différencier car ils ont une syntaxe similaire.
-Les RegEx se basent sur le mot précédent le numéro pour déterminer sa catégorie (arrêté, décret ou lois).
+Ces RegEx se basent sur le mot précédent le numéro détecté pour déterminer sa catégorie (arrêté, décret ou lois).
 
 
 L'extraction des titres des arrêtés a également été réalisée avec des RegEx.
-Cette détection était la plus difficile car cette fois il ne suffit pas de trouver un pattern de nombres ou quelques caractères mais des phrases entières, sans formats particuliers.
-Nos observations sur les documents ont montrés que les titres commençaient toujours par `arrêté' et pouvaient fini par `arrêté', `article', `préfet', \ldots
-Le RegEx est dans ce cas bien plus complexe que les autres et l'ensemble des titres du document sont renvoyés, mais n'est pas parfait: certains titres sont des morceaux de texte sans grand intérêt, vides, \ldots
+
+Cette détection était la plus difficile car cette fois il ne suffit pas de trouver un pattern de nombres ou quelques caractères mais des phrases entières, sans format particulier.
+Nos observations sur les documents ont montrés que les titres commençaient toujours par `arrêté' et pouvaient finir par `arrêté', `article', `préfet', \ldots
+
+Le RegEx est dans ce cas bien plus complexe que les autres et l'ensemble des titres du document sont renvoyés, mais n'est pas parfait: certains titres sont des morceaux de texte sans grand intérêt, répétitifs, vides, \ldots
 Les titres d'arrêtés sont donc traités bien plus en profondeur que les autres informations.
 L'image~\ref{fig:regexTitles} montre quelques résultats de titres nettoyés d'un document par RegEx.
 
@@ -144,6 +151,7 @@ Cette étape permet donc de gagner beaucoup de place de stockage de métadonnée
 La detection des dates est aussi gérée par RegEx.
 Il existe deux formats principaux de dates: le format `jour/mois/année' et le format `jour mois année' (en lettres).
 Ces deux patterns sont reconnus par des RegEx distincts, puis transformés en format unique `année-mois-jour' afin de pouvoir facilement trier les documents par date et de ne pas mélanger les formats de stockage.
+
 C'est lors de la transformation en format unique qu'on peut détecter si le RegEx ne nous a pas renvoyé une date valable.
 Pour le moment, cette date invalide est simplement ignorée, mais une future version du programme pourrait utiliser une méthode comme la distance de Levenshtein ou un Word2Vec pour reconnaitre si la date est mal écrite ou invalide.
 
@@ -176,17 +184,17 @@ Comme montré dans l'image~\ref{fig:spacyNLP}, Spacy analyse plusieurs catégori
 \end{itemize}
 
 Ces catégories correspondent assez bien a ce que nous recherchons, même si les résultats ne sont pas exacts.
-La précision des résultats peut être améliorée en utilisant un plus gros modèle pré entrainé.
+La précision des résultats peut être améliorée en utilisant un plus gros modèle préentrainé.
 
 Cependant les modèles préentrainés Français sont assez peu répandus, et un plus gros modèle entraine un temps de chargement et d'exécution du modèle bien plus long.
-Pour notre POC, le modèle Français medium suffit amplement.
+Pour notre POC, le modèle Français de taille medium suffit amplement.
 
 Des méthodes de filtrage/nettoyage ont toutefois été mise en place avec des RegEx afin de supprimer les erreurs majeures.
 
 \subsection{Taxonomie}%Martin
 \subsubsection{Approche par Word2Vec\label{word2vecReal}}
 Pour extraire la taxonomie des documents, nous avons débuté par une approche basée sur des \textit{\gls{embed}} construits grâce à un réseau Word2Vec entrainé sur un corpus français.
-Idéalement, ce réseau nous permettrait d'obtenir des taxonomies en comparant les mots du documents avec ceux présent dans la liste de taxonomies (sous forme de vecteurs), et d'ajouter les mots dont la distance, définie en (~\ref{eq:distCosine}), est sous un seuil.
+Idéalement, ce réseau nous permettrait d'obtenir des taxonomies en comparant les mots du documents avec ceux présents dans la liste de taxonomies (sous forme de vecteurs), et d'ajouter les mots dont la distance, définie en (~\ref{eq:distCosine}), est sous un seuil.
 Cette approche, ne nécessitant pas de corpus annoté semblait correspondre à nos besoins, même si il n'existe pas de cas dans la littérature scientifique ou elle a été appliquée avec succès. %Réecrire...
 
 
@@ -289,6 +297,39 @@ Le résultat final se présente sous la forme d'un module python pouvant être i
 
 
 \subsection{Moteur de recherche}
-%TODO
+Nous avons commencé la réalisation du moteur de recherche quand un fichier JSON test contenant 5 documents analysés fut disponible.
+ElasticSearch et Kibana ont servit aux premiers tests fonctionnels, pour vérifier l'écriture de nos données et prendre en main l'utilisation d'ElasticSearch.
+
+Nous avons ensuite réalisé une interface graphiquement avec l'aide AppBase.io, qui génère un code JavaScript basique, donnant la résultat de l'image~\ref{fig:firstSearch}:
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{firstSearch.png}
+	\caption[]{Premier moteur de recherche}
+	\label{fig:firstSearch}
+\end{figure}
+
+Le code a ensuite été récupéré pour être amélioré localement.
+Nous nous somme alors basés sur un Use Case déterminé précédemment et sur les retours de notre commanditaire pour améliorer l'interface et les systèmes de filtre et de d'affichage des résultats, en mettant par exemple les 4 taxonomies les plus pertinentes et un lien vers le transcript du document.
+
+Pour cette version, nous n'avons pas pu mettre le lien vers le document directement cité sur le site de la prefecture car le format des url du site de la prefecture ne nous permettais pas un accès simple vers les documents.
+La version actuelle du moteur de recherche donne donc uniquement un lien vers le transcript du document que nous avons placé sur Github.
+
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{finalSearch.png}
+	\caption[]{Moteur de recherche final}
+	\label{fig:finalSearch}
+\end{figure}
+
+Cette version est bien meilleure pour un POC destiné a être montré a un public non initié, qui favorisera un support visuel agréable pour l'acceptation d'un projet.
+
+
+
+
+
+
+
+
 
 
