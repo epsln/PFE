@@ -1,20 +1,23 @@
 %Description des fonctions à servir (diagramme des cas d'utilisation)
 
 \subsection{Cadre de travail}
-La quantité de documents non organisé de la prefecture de Mayenne est considérable.
-Aussi, réaliser un système permettant de traiter tous ces documents, de styles et de types très différents, n'était pas réalisable dans les 6 mois du projet.
-Nous avons et le commanditaire on donc convenu de la réalisation d'un \textit{Proof Of Concept} se focalisant uniquement sur les documents de type Recueil des Actes Administratifs (RAA).
-Ces documents sont publiés publiquement au moins une fois par mois, et contiennent tous les actes a caractère réglementaires non personnels publiés durant le mois dernier.
+La quantité de documents non organisés de la prefecture de Mayenne est considérable.
+Aussi, réaliser un système permettant de traiter tous ces documents, de styles et de types très différents, n'était pas réalisable dans les 6 mois alloués au projet.
+Nous et le commanditaire avons donc convenu de la réalisation d'un \textit{Proof Of Concept} se focalisant uniquement sur les documents de type `Recueil des Actes Administratifs' (RAA).
+Ces documents sont publiés publiquement au moins une fois par mois, et contiennent tous les actes a caractère réglementaire non personnels publiés durant le mois dernier.
 Certains RAA qualifiés de \textit{spéciaux} peuvent également être publiés a titre exceptionnel durant le mois.
 On observe en moyenne 130 RAA publiés par ans.
 
 Dans le cadre du projet, nous avons récupéré tous les RAA de l'année 2016 à 2019, c'est a dire 431 documents.
-Chaque RAA regroupe plusieurs arrêtés pouvant traiter de sujets très diverses, de l'interdiction de manifestations à la délégation de signature.
+Chaque RAA regroupe plusieurs arrêtés pouvant traiter de sujets très diverses, de l'interdiction de manifestation à la délégation de signature.
 
-Le cadre d'étude du projet est donc très large mais suffisamment restreinte pour qu'il soit possible de produire un POC dans les délais impartis. 
+Le cadre d'étude du projet est donc très large mais suffisamment restreint pour qu'il soit possible de produire un POC dans les délais impartis. 
+
+Pour notre commanditaire, il est également essentiel que l'ensemble du projet et les outils utilisés soient open source.
+Cette contrainte a été respectée tout au long du projet, et nous n'avons donc pas jugé utile de préciser que tous les outils présentés sont open source.
 
 \subsection{Extraction du texte brut}
-Tous les RAA récents sont disponibles en version PDF, ce qui leur permet d'être accessible facilement par n'importe qui sur le site de la prefecture.
+Tous les RAA récents sont disponibles en ligne en version PDF, ce qui leur permet d'être accessible facilement par n'importe qui sur le site de la prefecture.
 Nous avons besoin de récupérer le texte brut (appelé transcript) des documents afin d'en extraire les informations d'importance.
 
 Généralement, le format PDF contient le texte brut du document afin d'en réduire le poids de stockage, une image nécessitant plus de mémoire que du simple texte.
@@ -40,15 +43,15 @@ Les informations d'importance, déterminées avec le commanditaire, sont les sui
 \item Noms d'organisation et d'organismes
 \end{itemize}
 
-Ces éléments sont les plus susceptibles d'être utilisés lors de la recherche par un utilisateur de notre POC\@.
+Ces éléments sont les plus susceptibles d'être utilisés lors de la recherche par un utilisateur de notre POC et sont également les plus pertinents pour la classification.
 
 
 
 \subsection{Classement par taxonomie}
-Une taxonomie est un ensemble de mots organisés sous la forme d'un arbre permettant de \textit{tagger} précisément un document en fonction de son contenu afin de normaliser sa classification (Voir figure~\ref{fig:tree}).
-L'utilisation d'une taxonomie permet de regrouper les documents selon des critères objectifs et standards, indépendant de la méthode de classification individuelle utilisée par les employés de la prefecture.
-L'administration Française a établi plusieurs taxonomies en fonction des services.
-L'inconvénient de la taxonomie est sa taille: il est impossible de connaitre parfaitement l'ensemble de l'arbre et donc par conséquent, le classement taxonomique d'un document par un humain est incomplet, incorrect, voir le plus souvent totalement absent.
+Une taxonomie est un ensemble fermé de termes organisés sous la forme d'un arbre permettant de \textit{tagger} précisément un document en fonction de son contenu afin de normaliser sa classification (Voir figure~\ref{fig:tree}).
+L'utilisation d'une taxonomie permet de regrouper les documents selon des critères objectifs et standards, indépendants de la méthode de classification individuelle utilisée par les employés de la prefecture.
+L'administration Française a établi plusieurs taxonomies en fonction des services (archives, \ldots).
+L'inconvénient de la taxonomie est sa taille importante: il est impossible de connaitre parfaitement l'ensemble de l'arbre et donc par conséquent, le classement taxonomique d'un document par un humain est probablement incomplet, incorrect, voir le plus souvent totalement absent.
 
 Pour le commanditaire, il est essentiel que nous ajoutions une taxonomie au document.
 Il nous a donc fourni une taxonomie réduite de plus de 6000 termes.
@@ -58,10 +61,11 @@ Il nous a donc fourni une taxonomie réduite de plus de 6000 termes.
 Afin de montrer l'utilité des informations extraites des documents, nous devons également réaliser un moteur de recherche basique.
 Ce moteur de recherche a deux utilisations principales: 
 \begin{itemize}
-\item Suggestions de recherche:
+\item \textbf{Suggestions de recherche}:\newline
 Afin de retrouver des documents, nous devons mettre en place un système de recherche intelligente.
-Ce système devrait agir comme une barre de recherche google, en proposant des résultats pertinents.
-\item Apparence:
+Ce système agira comme une barre de recherche google, en proposant des résultats pertinents, tout en mettant a disposition des filtres pour affiner les recherches.
+
+\item \textbf{Apparence}:\newline
 Le moteur de recherche permettra aussi a notre commanditaire de présenter le projet à la prefecture devant un public.
 Donner une apparence simple a un projet complexe est une tâche très importante pour des clients qui recherchent justement la simplicité.
 \end{itemize}
