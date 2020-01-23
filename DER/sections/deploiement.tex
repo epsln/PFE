@@ -4,7 +4,7 @@
 
 Le déploiement de l'application se passe en trois étapes.
 
-Premièrement, les documents a traiter (au format pdf) doivent être placés dans un dossier, où ils seront récupérés un par un par un script qui va en extraire le texte brut, qui sera lui même analysé pour en obtenir les données.
+Premièrement, les documents à traiter (au format pdf) doivent être placés dans un dossier, où ils seront récupérés un par un par un script qui va en extraire le texte brut, qui sera lui même analysé pour en obtenir les données.
 
 Ensuite, ces données sont ajoutées à un fichier JSON dont le format correspond a ce que Reactivesearch attend.
 
@@ -21,7 +21,7 @@ Les images traitées individuellement sont alors rassemblées dans une image au 
 
 L'extraction dure environ 1h10 pour nos 431 fichiers.
 
-Quand l'exécution de ce script est terminée, on obtient un dossier contenant les transcripts de chaque fichiers traités en format TXT\@.
+Quand l'exécution de ce script est terminée, on obtient un dossier contenant les transcripts de chaque fichier traités en format TXT\@.
 
 \subsection{Extraction des données}
 L'utilisation du script python `reactiv\_json.py' permet de créer un fichier au format JSON pouvant être lu par Reactivesearch.

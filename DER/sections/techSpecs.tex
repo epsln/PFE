@@ -14,7 +14,7 @@ Notre POC est composé des modules suivants:
 	\item Moteur de recherche
 \end{itemize}
 
-Ce choix de considérer le projet comme un ensemble de modules interagissants les uns avec les autres plutôt que comme un monolithe nous a permis une plus grande flexibilité de développement, ainsi qu'une meilleure testabilité.
+Ce choix de considérer le projet comme un ensemble de modules interagissant les uns avec les autres plutôt que comme un monolithe nous a permis une plus grande flexibilité de développement, ainsi qu'une meilleure testabilité.
 En effet le développement de chaque modules peut ainsi être réalisé en parallèle.
 Cette répartition du travail nous permet également de faire une liste des objectifs de développement plus précise. 
 
@@ -24,7 +24,7 @@ En effet, le but du premier module est d'extraire le texte des fichiers PDF\@.
 Ce texte est ensuite la base sur laquelle les modules d'extraction de métadonnées et de taxonomies pourront travailler.
 Ces modules sont appelés par un programme de création de fichier \gls{JSON}, fichier qui sera finalement utilisé par le module `Moteur de recherche'. 
 
-Il était donc important de s'accorder précisément sur le format de sortie de chaque modules pour assurer la compatibilité entre les modules.
+Il était donc important de s'accorder précisément sur le format de sortie de chaque module pour assurer la compatibilité entre les modules.
 
 \subsection{Extraction du texte brut}
 La majorité des documents que nous avons pu obtenir sont au format PDF\@.
@@ -58,10 +58,10 @@ La qualité du texte extrait étant critique pour le reste du projet, beaucoup d
 \subsection{Extraction des métadonnées}
 Les métadonnées sont des informations \textit{concernant} le document.
 Nous avons choisi de construire des fonctions spécialisées, chacune ayant pour rôle d'extraire un type de métadonnée particulière.
-Cette spécialisation nous permet de facilement ajouter des types de métadonnées à la sortie finale et respecte une volonté de compartimentalisation des responsabilités du programme: pour chaque type d'information à extraire du texte, i.e\. taxonomie, numéro d'article, date de publication, une fonction lui est dédié. 
-Cela nous permet d'effectuer des corrections spécifiques a chaque données.
+Cette spécialisation nous permet de facilement ajouter des types de métadonnées à la sortie finale et respecte une volonté de compartimentalisation des responsabilités du programme: pour chaque type d'information à extraire du texte, i.e\. taxonomie, numéro d'article, date de publication, une fonction lui est dédiée. 
+Cela nous permet d'effectuer des corrections spécifiques à chaque données.
 
-Pour le cas de la taxonomie, le schéma global de fonctionnement est le suivant: une fonction d'ajout de métadonnées au fichier JSON appelle chaque fonctions d'extraction individuellement.
+Pour le cas de la taxonomie, le schéma global de fonctionnement est le suivant: une fonction d'ajout de métadonnées au fichier JSON appelle chaque fonction d'extraction individuellement.
 La figure~\ref{fig:globalMeta} représente un diagramme fonctionnel général de l'extraction de métadonnées. 
 Ces fonctions sont généralement courtes et consistent de RegEx spécialement construites pour extraire l'information demandée.
 Pour rappel, une RegEx est une séquence de caractères définissant un schéma de recherche précis.
@@ -74,8 +74,8 @@ Ces fonctions ont l'avantage d'être extrêmement rapides, avec un temps d'exéc
   \label{fig:globalMeta}
 \end{figure}
 
-Chacune de ces fonctions prends en entrée le texte brut traité pour en enlever les accents et caractères spéciaux, et ressort un tableau comportant les métadonnées extraites.
-Ces tableaux sont directement insérées dans le fichier JSON, qui constitue la base sur lequel le moteur de recherche fonctionne.
+Chacune de ces fonctions prend en entrée le texte brut traité pour en enlever les accents et caractères spéciaux, et ressort un tableau comportant les métadonnées extraites.
+Ces tableaux sont directement insérés dans le fichier JSON, qui constitue la base sur lequel le moteur de recherche fonctionne.
 
 
 \subsection{Module taxonomique}
@@ -107,25 +107,28 @@ Si oui, ce terme est ajouté à un tableau contenant les taxonomies du document,
 
 \subsection{Moteur de recherche avec Reactivesearch/Appbase.io}
 Appbase est le site qui va centraliser l'ensemble des données et les rendre visibles à travers une interface.
-Le module moteur de recherche fonctionne indépendamment des autres modules. Une fois les métadonnées et la taxonomie importés dans le format JSON, ElasticSearch effectue l'indexation.
+Le module moteur de recherche fonctionne indépendamment des autres modules. Une fois les métadonnées et la taxonomie importées dans le format JSON, ElasticSearch effectue l'indexation.
 Avec Reactivesearch il existe plusieurs modules tels que les champs de recherche avec l'autosuggestion ou l'ajout des filtres.  
 
 Afin d'importer nos données, nous devons respecter le format JSON\@.
 Dans un premier temps, nous créons une application depuis Appbase.io. 
 Un JSON se compose de plusieurs documents où chaque document est enlacé par des accolades.
-Dans un document, nous avons des champs qui correspondent aux différentes familles de données récoltés.
+Dans un document, nous avons des champs qui correspondent aux différentes familles de données récoltées.
 Dans notre cas, nous avons comme exemple de champs les noms, les arrêtés ou les numéros de recueils.
 
 La structure du JSON pour ElasticSearch est la suivante :
 \begin{lstlisting}
 	{
-		"field": "value",
-		"index": 1
+		_index: 1,
+		_type: "raa",
+		_id: 1
 	},
-	{
-		"RAA": {"ref du RAA"},
-		"dates": {"2017-07-25", ...},
-		...
+	{	
+		fields: {
+			RAA: ref du RAA,
+			dates: {2017-07-25, ...},
+			...
+		}
 	},
 	...
 \end{lstlisting}
@@ -134,8 +137,8 @@ Cette structure est différente pour Reactivesearch :
 \begin{lstlisting}
 [
 	{
-		"RAA": {"ref du RAA"},
-		"dates": {"2017-07-25", ...},
+		RAA: ref du RAA,
+		dates: {2017-07-25, ...},
 		...
 	}, 
 	...
@@ -153,11 +156,11 @@ Cela nous permet de visualiser ce qui a été importé.
   \label{}
 \end{figure}
 
-Le résultat des recherches s'affichent sous la forme d'une suite de cartes composés chacune d’un titre, d’une description et d’une URL\@.
+Le résultat des recherches s'affichent sous la forme d'une suite de cartes composé d'un titre, d'une description et d'une URL\@.
 La description contient la date de publication du document et les 4 termes taxonomiques les plus pertinents.
 
 Nous avons également ajouté des filtres de recherche qui permettent de réduire le cadre de recherche pour obtenir des résultat plus précis.
 
-CodesSandbox permet d’avoir accès au code Javascript généré par Appbase.io.
-Ce dernier a la particularité d’être multiplateformes et de nous donner accès un lien d’accès web vers l'application.
+CodesSandbox permet d'avoir accès au code Javascript généré par Appbase.io.
+Ce dernier a la particularité d'être multiplateforme et de nous donner un lien d'accès web vers l'application.
 Notre moteur de recherche est donc accessible en ligne.

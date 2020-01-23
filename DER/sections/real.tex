@@ -1,5 +1,5 @@
 %liste des modules réalisés
-%Preuve du fonctionnement de chaque modules
+%Preuve du fonctionnement de chaque module
 
 \subsection{Extraction du texte des documents}
 Le module d'extraction de texte se présente sous la forme d'un script Bash pouvant être lancé sur l'intégralité du contenu d'un dossier.
@@ -99,7 +99,7 @@ Les données normées sont bien plus faciles a repérer que les données non nor
 
 \subsubsection{Données normées}
 %dates, raa, arretes, articles, lois, decrets, titres
-Afin de trouver les données normées de chaque documents, nous avons utilisé des RegEx (Regular Expression).
+Afin de trouver les données normées de chaque document, nous avons utilisé des RegEx (Regular Expression).
 
 Un RegEx est une suite de caractères qui décrit un ensemble de chaines de caractères selon une syntaxe précise.
 Cette méthode est extrêmement fiable et rapide a l'exécution, mais elle demande beaucoup de travail d'analyse pour bien inclure toutes les informations désirées, et présente le désavantage majeur d'être très rigide.
@@ -227,11 +227,11 @@ En calculant les vecteurs \textit{embedding} avant même l'exécution du module 
 Ensuite, plutôt que de traiter l'intégralité du texte avec Word2Vec, nous avons utilisé que les titres des arrêtés du RAA, qui peuvent constituer a eux seuls un résumé du RAA\@.
 Ainsi, la quantité de texte a analyser est grandement réduite et une dizaine de secondes d'analyse supplémentaire sont gagnées par documents.
 
-Pour essayer de contrer le problème des mauvais résultats, nous avons transformé chaque mots de la phrase en sa racine par le procédé dit la \textit{lemmatisation} à l'aide de la librairie Spacy\cite{spacy}.
+Pour essayer de contrer le problème des mauvais résultats, nous avons transformé chaque mot de la phrase en sa racine par le procédé dit la \textit{lemmatisation} à l'aide de la librairie Spacy\cite{spacy}.
 Nous avons également filtré les \textit{stopwords} du texte a analyser.
 Les \textit{stopwords} sont des mots très fréquemment dans les phrases, comme les déterminants, transformant la phrase `médecine physique et de réadaptation' en `médecine physique réadaptation'.
 On utilise ensuite un Word2Vec sur chaque mot de la taxonomie est du titre pour obtenir plusieurs vecteurs.
-Pour obtenir un seul vecteur que nous comparerons avec les mots du documents, nous effectuons un simple moyennage entre les valeurs de chaque mots de la phrase.
+Pour obtenir un seul vecteur que nous comparerons avec les mots du documents, nous effectuons un simple moyennage entre les valeurs de chaque mot de la phrase.
 
 
 Ces modifications ont améliorés significativement les performances en temps du programme et la pertinence des taxonomies obtenues.
@@ -272,7 +272,7 @@ Cette solution est non seulement bien plus simple, mais permet également de vé
 
 Pour obtenir une taxonomie plus vaste et contextuelle, nous prenons également en compte la structure de l'arbre taxonomique.
 En effet, celle ci se présente sous forme d'un arbre dont un exemple de la structure est présenté en figure~\ref{fig:tree}. 
-Chaque sections possède des sous sections, qui permettent un affinage et une grande précision dans la classification.
+Chaque section possède des sous sections, qui permettent un affinage et une grande précision dans la classification.
 
 L'idée centrale est de considérer que si un document possède comme taxonomie une feuille ou un noeud de cette arbre, alors il doit nécessairement posséder comme taxonomie tout les parents de ce noeud. 
 Nous remontons alors jusqu'à la racine de l'arbre depuis le noeud de la taxonomie ayant été détectée, en ajoutant à la taxonomie du document tous les noeuds que nous rencontrons en chemin.
@@ -284,7 +284,7 @@ En sortie, nous récupérons un grand nombre de taxonomie, données a la fois pa
 Pour obtenir les taxonomies les plus représentatives du document, nous procédons ensuite a un classement des termes selon le nombre de fois ou chacune apparait dans le tableau des taxonomies.
 Les taxonomies qui apparaissent souvent dans le document sont donc considérées comme plus `importante' que des taxonomies qui apparaissent plus rarement.
 
-Le parcours d'arbre apportant une très grande quantité de nouveaux mots pour chaque taxonomies, il est donc nécessaire d'équilibrer ce système.
+Le parcours d'arbre apportant une très grande quantité de nouveaux mots pour chaque taxonomie, il est donc nécessaire d'équilibrer ce système.
 Pour se faire, nous appliquons un simple système de poids au taxonomies détectées: une taxonomie initiale aura un poids 100 supérieur a une taxonomie récupéré par le parcours d'arbre.
 
 Cela permettra de garder uniquement les taxonomies les plus pertinentes.
