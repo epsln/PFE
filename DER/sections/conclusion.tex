@@ -3,8 +3,7 @@
 Notre POC, bien que satisfaisant, est loin d'être parfait.
 
 Pour le moment, le système est adapté uniquement aux RAA, qui représentent une partie très réduite des documents de la prefecture.
-La spécificité n'est pas un problème dans notre cadre, mais notre projet n'est pas pas destiné uniquement a la classification de RAA.
-
+La spécificité n'est pas un problème dans notre cadre, mais notre projet n'est pas pas destiné uniquement à la classification de RAA.
 
 On notera que le système final d'extraction de données n'utilise que très peu de méthodes d'apprentissage.
 
@@ -16,9 +15,9 @@ Ce sens ne peut être compris que par le contexte; fonctionnalité qui manque à
 L'utilisation d'un véritable système de Machine Learning nous permettrait d'obtenir des taxonomies bien plus précises et sensées dans le contexte du document.
 En se projetant plus loin que les RAA, qui étaient le coeur de notre projet, on peut imaginer un système de Machine Learning utilisable sur tous les documents administratifs, qui les regrouperait selon l'usage.
 
-Par exemple, pour le cas du renouvellement d'une carte d'identité, un agent administratif pourrait récupérer tous les documents nécessaires a cette procédure, car ceux-ci auraient été préalablement correctement taggués avec une taxonomie appropriée. 
+Par exemple, pour le cas du renouvellement d'une carte d'identité, un agent administratif pourrait récupérer tous les documents nécessaires à cette procédure, car ceux-ci auraient été préalablement correctement taggués avec une taxonomie appropriée. 
 
-Nous avons tenté de palier a ce problème en organisant les taxonomies par pertinence, en favorisant les termes revenants le plus souvent.
+Nous avons tenté de palier à ce problème en organisant les taxonomies par pertinence, en favorisant les termes revenants le plus souvent.
 Les termes les plus présents indiquent en effet que le parcours de l'arbre taxonomique est repassé plusieurs fois par ce noeud, et qu'il a donc une plus forte probabilité d'être significatif.
 Cela n'est pas encore assez efficace pour que la taxonomie donnée soit effectivement considérée parfaitement correcte.
 
@@ -27,24 +26,21 @@ De même, l'extraction des données normées par RegEx est une méthode efficace
 Cette méthode devrait être améliorée par l'utilisation de plus de filtres pour affiner les résultats.
 Cette reflexion est également valable pour les données non normées.
 Leur détection ne se base pour le moment que sur l'utilisation de Spacy, sans tests supplémentaires.
-Cela conduit certains noms complexes a être relevés de facon incomplète (exemple : `Jean-Pierre' sera uniquement détecté en tant que `Jean').
+Cela conduit certains noms complexes à être relevés de facon incomplète (exemple : `Jean-Pierre' sera uniquement détecté en tant que `Jean').
 Pour corriger cela, des tests supplémentaires pourront être mis en place.
 
 
 Notre moteur de recherche est également améliorable: plus d'informations devraient être affichées, comme un bref résumé du document, et un lien vers sa version en ligne originale plutôt que le transcript que nous avons posté nous même.
 
 \subsection {Conclusion}
-Ce projet était d'une ampleur très importante et nous pensions au départ qu'il était impossible de concevoir un POC fonctionnel en une durée aussi courte.
-Le passage du projet en XL et notre méthode organisationnelle sont des éléments qui ont portés leurs fruits: Un POC fonctionnel a été réalisé et notre commanditaire en est extrêmement satisfait.
+Ce projet était très ambitieux. L'immense quantité de documents administratifs, et le nombre de cas spéciaux inhérent à l'administrations rendait très difficile la construction d'un système utile et général de classification. Ce n'est qu'avec la proche collaboration avec notre commanditaire, avec qui nous avons pu réduire le périmètre et bien définir les besoins que nous avons pu créer un \gls{poc}. De plus, le passage en projet XL nous a permis de gagner beaucoup de temps de travail et d'offrir un produit bien plus peaufiné et poli. Enfin, nous estimons que notre méthode organisationnelle nous a donné les moyens de voir l'avancement du projet avec une grande précision, et de mieux le piloter. Ces élements ont portés leurs fruits; et grâce à leur combinaisons nous avons pu réalisé un PoC fonctionnel de haute qualité, avec un commanditaire très satisfait.
 
 Il est important de noter que le moteur de recherche de documents, même si il reste un module crucial de notre projet, n'est que la partie visible des vrais fonctionnalités du projet.
-En effet, le coeur du projet était de développer tout un système capable d'extraire les informations nécessaire a la classification d'un document.
-En ce sens, nous avons répondu a l'une des plus grandes problématiques de notre client, qui était de prouver qu'une solution pour gérer la masse de documents non classé était possible.
+En effet, le coeur du projet était de développer tout un système capable d'extraire les informations nécessaire à la classification d'un document.
+En ce sens, nous avons répondu à l'une des plus grandes problématiques de notre client, qui était de prouver qu'une solution pour gérer la masse de documents non classé était possible.
 
 Ce PoC prouve qu'il est possible de construire un système de classification automatique de RAA.
-Il est donc parfaitement imaginable d'étendre ce genre de système à tout types de documents et résoudre le problème organisationnel principal de la prefecture.
+Il est donc parfaitement imaginable d'étendre ce genre de système à tout types de documents et résoudre le problème organisationnel principal de la préfecture.
 
 Ce projet a été une occasion pour nous d'avoir une bref introduction au monde de la classification et de l'archivage, ainsi que d'utiliser de nouvelles méthodes et techniques.
 Nous espérons voir un jour une version terminée de ce projet ambitieux que nous avons eu l'honneur de commencer.
-
-
