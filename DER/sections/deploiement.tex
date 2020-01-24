@@ -6,7 +6,7 @@ Le déploiement de l'application se passe en trois étapes.
 
 Premièrement, les documents à traiter (au format pdf) doivent être placés dans un dossier, où ils seront récupérés un par un par un script qui va en extraire le texte brut, qui sera lui même analysé pour en obtenir les données.
 
-Ensuite, ces données sont ajoutées à un fichier JSON dont le format correspond a ce que Reactivesearch attend.
+Ensuite, ces données sont ajoutées à un fichier JSON dont le format correspond à ce que Reactivesearch attend.
 
 Enfin le JSON ainsi crée doit être uploadé dans notre moteur de recherche.
 
@@ -31,11 +31,11 @@ L'extraction de toutes les données pour le format JSON dure environ 40 minutes 
 
 Le fichier crée par ce script est directement utilisable avec le moteur de recherche.
 
-Un autre script appelé `elastic\_json.py' permet de créer un document JSON dont la syntaxe correspond a ElasticSearch.
+Un autre script appelé `elastic\_json.py' permet de créer un document JSON dont la syntaxe correspond à ElasticSearch.
 
 \subsection{Moteur de recherche}
 %Le moteur de recherche fonctionne comme machin machin machin
-Le moteur de recherche basé sur ElasticSearch et Reactivesearch est utilisable tel quel grâce a \href{https://ujcqr.csb.app}{ce lien}.
+Le moteur de recherche basé sur ElasticSearch et Reactivesearch est utilisable tel quel grâce à \href{https://ujcqr.csb.app}{ce lien}.
 Il est directement disponible en ligne et ne nécessite pas de nouvelle installation ou de logiciel supplémentaire.
 
 Cependant le moteur de recherche n'est pas interactif: aucune action n'est directement possible sur les données.
