@@ -17,19 +17,19 @@ Pour ce module, nous avons commencé par étudier les différents types de docum
 
 \subsubsection{PDF full text}
 Le type de document que nous observons le plus souvent est le document PDF full text.
-Le texte de celui ci est assez facile a extraire: on peut utiliser un programme commun comme pdftotext qui renverra directement le contenu textuel d'un PDF dans un nouveau fichier.
+Le texte de celui ci est assez facile à extraire: on peut utiliser un programme commun comme pdftotext qui renverra directement le contenu textuel d'un PDF dans un nouveau fichier.
 
-Si le nombre de caractères présents dans le document est inférieur a un certain seuil (une dizaines de caractères), on considère que le texte n'a pas été extrait et que le document doit être considéré comme un PDF scanné.
+Si le nombre de caractères présents dans le document est inférieur à un certain seuil (une dizaines de caractères), on considère que le texte n'a pas été extrait et que le document doit être considéré comme un PDF scanné.
 
 \subsubsection{PDF scanné}
 Le PDF scanné ne contient pas directement de texte inscrit.
 Il se présente comme une suite d'images scannées, dans notre cas de scans d'un document.
-La raison pour laquelle un document PDF est scanné plutôt que full text est très généralement due a une signature ou un tampon que la prefecture a jugé nécessaire d'inclure.
+La raison pour laquelle un document PDF est scanné plutôt que full text est très généralement due à une signature ou un tampon que la prefecture a jugé nécessaire d'inclure.
 
 Pour lire ce type de document, nous avons mis en place un système d'OCR (Optical Character Recognition) appelé Tesseract pour extraire visuellement les caractères.
 Tesseract est l'état de l'art de l'OCR open source mais ne peux pas être utilisé tel quel et donner d'excellents résultats: il possède de nombreux paramètres et spécifications qui permettent de maximiser les résultats pour des cas d'utilisation spécifiques.
 
-Afin d'évaluer la performance de notre OCR, nous avons mis en place une méthode d'évaluation de performances basée sur deux paramètres: la proximité du transcript par rapport a la sortie de l'OCR et la présence de certains termes d'importance (voir~\ref{testOCR} pour le détail des méthodes de test).
+Afin d'évaluer la performance de notre OCR, nous avons mis en place une méthode d'évaluation de performances basée sur deux paramètres: la proximité du transcript par rapport à la sortie de l'OCR et la présence de certains termes d'importance (voir~\ref{testOCR} pour le détail des méthodes de test).
 
 Les performances de l'OCR ainsi paramétré se sont révélées insuffisantes.
 Le score de proximité et le score de mots clefs étaient tout deux en dessous de 70\%.
@@ -65,7 +65,7 @@ Ce type de PDF est simplement considéré comme un PDF full text par notre progr
 
 Une méthode pour s'occuper d'un document de ce genre serait de découper le document d'entré par pages avant d'en extraire le texte individuellement, afin de détecter quel page ne contient pas de texte et l'envoyer à l'OCR\@.
 
-Cette méthode nécessiterait cependant une refonte du script et serait plus longue a l'exécution.
+Cette méthode nécessiterait cependant une refonte du script et serait plus longue à l'exécution.
 
 \subsubsection{Récupération des données d'importance}
 Nos test expérimentaux ont également mis en valeur un type de PDF ne contenant qu'un texte très court conseillant d' "obtenir `un lecteur de PDF' pour pouvoir ouvrir un document de ce type".
@@ -95,24 +95,24 @@ Ces données n'ont pas de format spécifique défini.
 Par exemple, un nom propre.
 \end{itemize}
 
-Les données normées sont bien plus faciles a repérer que les données non normées dans un texte car les formats qu'elles présentent sont similaires.
+Les données normées sont bien plus faciles à repérer que les données non normées dans un texte car les formats qu'elles présentent sont similaires.
 
 \subsubsection{Données normées}
 %dates, raa, arretes, articles, lois, decrets, titres
 Afin de trouver les données normées de chaque document, nous avons utilisé des RegEx (Regular Expression).
 
 Un RegEx est une suite de caractères qui décrit un ensemble de chaines de caractères selon une syntaxe précise.
-Cette méthode est extrêmement fiable et rapide a l'exécution, mais elle demande beaucoup de travail d'analyse pour bien inclure toutes les informations désirées, et présente le désavantage majeur d'être très rigide.
+Cette méthode est extrêmement fiable et rapide à l'exécution, mais elle demande beaucoup de travail d'analyse pour bien inclure toutes les informations désirées, et présente le désavantage majeur d'être très rigide.
 Un RegEx est en effet purement logique, ses frontières de détection sont très rigides et il suffit d'un petit écart de format pour que l'information ne soit pas récupérée.
-Le RegEx est également absolument mécanique: Tout résultat qui correspond au pattern sera gardé, peut importe sa pertinence, ce qui nous oblige a faire passer nos résultats par une étape de tri et de filtrage par la suite.
+Le RegEx est également absolument mécanique: Tout résultat qui correspond au pattern sera gardé, peut importe sa pertinence, ce qui nous oblige à faire passer nos résultats par une étape de tri et de filtrage par la suite.
 
 L'utilisation des RegEx nous a demandé beaucoup de travail, la syntaxe étant quelque peu complexe.
 
 Pour retrouver une donnée normée comme un numéro de RAA, on peut décomposer sa forme générale: 53-2019-010 par exemple, se décompose en deux chiffres, un tiret, 4 chiffres, tiret, 3 chiffres.
-Un RegEx basique peut facilement retrouver ce numéro dans l'ensemble du texte, mais ne prendra pas en compte un numéro de la forme 053-2019-010 a cause du 0 au début.
+Un RegEx basique peut facilement retrouver ce numéro dans l'ensemble du texte, mais ne prendra pas en compte un numéro de la forme 053-2019-010 à cause du 0 au début.
 
-Nous avons donc conduit une étude de toutes les variations de notation pouvant exister pour nos termes a rechercher.
-Ces résultats nous ont permis de créer des RegEx adaptés a la plupart des cas particuliers rencontrés.
+Nous avons donc conduit une étude de toutes les variations de notation pouvant exister pour nos termes à rechercher.
+Ces résultats nous ont permis de créer des RegEx adaptés à la plupart des cas particuliers rencontrés.
 Nous avons donc crée au moins un pattern RegEx pour chaque information normée.
 
 \begin{figure}[h!]
@@ -124,7 +124,7 @@ Nous avons donc crée au moins un pattern RegEx pour chaque information normée.
 
 Certains des RegEx développés sont bien plus complexes que celui de l'image~\ref{fig:regexRAA}.
 
-Les numéros d'arrêtés, de décrets et de lois ont été bien plus difficiles a différencier car ils ont une syntaxe similaire.
+Les numéros d'arrêtés, de décrets et de lois ont été bien plus difficiles à différencier car ils ont une syntaxe similaire.
 Ces RegEx se basent sur le mot précédent le numéro détecté pour déterminer sa catégorie (arrêté, décret ou lois).
 
 
@@ -144,7 +144,7 @@ L'image~\ref{fig:regexTitles} montre quelques résultats de titres nettoyés d'u
 	\label{fig:regexTitles}
 \end{figure}
 
-On peut remarquer que le nombre de titres passe de 215 a 138 après nettoyage.
+On peut remarquer que le nombre de titres passe de 215 à 138 après nettoyage.
 Cette étape permet donc de gagner beaucoup de place de stockage de métadonnées et de temps de recherche d'informations dans les titres (comme la taxonomie).
 
 
@@ -183,7 +183,7 @@ Comme montré dans l'image~\ref{fig:spacyNLP}, Spacy analyse plusieurs catégori
 \item MISC\@: non défini
 \end{itemize}
 
-Ces catégories correspondent assez bien a ce que nous recherchons, même si les résultats ne sont pas exacts.
+Ces catégories correspondent assez bien à ce que nous recherchons, même si les résultats ne sont pas exacts.
 La précision des résultats peut être améliorée en utilisant un plus gros modèle préentrainé.
 
 Cependant les modèles préentrainés Français sont assez peu répandus, et un plus gros modèle entraine un temps de chargement et d'exécution du modèle bien plus long.
@@ -204,7 +204,7 @@ Premièrement, le temps d'exécution de cette méthode pour un seul document ét
 En effet, un document administratif est par nature très verbeux, et donc long.
 
 La majorité du texte ne nous est cependant pas nécessaire pour une analyse taxonomique; 
-il sert en effet a donner un contexte précis pour le lecteur et ne donne pas forcément plus d'information concernant le sujet du document en lui même que le titre du document en question, qui contient souvent toutes les informations taxonomiques nécéssaires. 
+il sert en effet à donner un contexte précis pour le lecteur et ne donne pas forcément plus d'information concernant le sujet du document en lui même que le titre du document en question, qui contient souvent toutes les informations taxonomiques nécéssaires. 
 
 
 Deuxièmement, nous n'avons pas pu obtenir les résultats taxonomiques escomptés.
@@ -216,7 +216,7 @@ Word2Vec, que nous utilisions pour obtenir les \textit{embeddings}, ne fonctionn
 Doc2vec, qui lui peut fonctionner sur des n-grammes, voir des paragraphes ou documents entiers, a besoin d'être entrainé sur des documents labellisés qui lui apporteront le contexte nécessaire pour former des \textit{embeddings} cohérents.
 
 
-Cependant, la taxonomie donne un context très difficile a analyser pour un programme.
+Cependant, la taxonomie donne un context très difficile à analyser pour un programme.
 Il s'agit seulement d'une liste de mots et de phrasez ordonnée sous la forme d'un arbre (voir figure~\ref{fig:tree}).
 Cette disposition rend l'utilisation d'un Doc2Vec très inconventionnelle, et les test que nous avons mené n'ont pas donné de résultats.
 
@@ -224,33 +224,33 @@ Cette disposition rend l'utilisation d'un Doc2Vec très inconventionnelle, et le
 Nous tout d'abord amélioré la rapidité d'exécution en précalculant les vecteurs de la taxonomie.
 Initialement, nous itérions simplement sur la liste de taxonomies, et calculions les \textit{embeddings} à la volée.
 En calculant les vecteurs \textit{embedding} avant même l'exécution du module de détection de taxonomie, avons économisé une dizaine de secondes par documents.
-Ensuite, plutôt que de traiter l'intégralité du texte avec Word2Vec, nous avons utilisé que les titres des arrêtés du RAA, qui peuvent constituer a eux seuls un résumé du RAA\@.
-Ainsi, la quantité de texte a analyser est grandement réduite et une dizaine de secondes d'analyse supplémentaire sont gagnées par documents.
+Ensuite, plutôt que de traiter l'intégralité du texte avec Word2Vec, nous avons utilisé que les titres des arrêtés du RAA, qui peuvent constituer à eux seuls un résumé du RAA\@.
+Ainsi, la quantité de texte à analyser est grandement réduite et une dizaine de secondes d'analyse supplémentaire sont gagnées par documents.
 
 Pour essayer de contrer le problème des mauvais résultats, nous avons transformé chaque mot de la phrase en sa racine par le procédé dit la \textit{lemmatisation} à l'aide de la librairie Spacy\cite{spacy}.
-Nous avons également filtré les \textit{stopwords} du texte a analyser.
+Nous avons également filtré les \textit{stopwords} du texte à analyser.
 Les \textit{stopwords} sont des mots très fréquemment dans les phrases, comme les déterminants, transformant la phrase `médecine physique et de réadaptation' en `médecine physique réadaptation'.
 On utilise ensuite un Word2Vec sur chaque mot de la taxonomie est du titre pour obtenir plusieurs vecteurs.
 Pour obtenir un seul vecteur que nous comparerons avec les mots du documents, nous effectuons un simple moyennage entre les valeurs de chaque mot de la phrase.
 
 
 Ces modifications ont améliorés significativement les performances en temps du programme et la pertinence des taxonomies obtenues.
-Cependant, les taxonomies obtenues a l'aide de ce système n'étais pas encore d'une qualité suffisante pour nos standards.
+Cependant, les taxonomies obtenues à l'aide de ce système n'étais pas encore d'une qualité suffisante pour nos standards.
 Les taxonomies monotermes étaient bien mieux détectées mais les multitermes restaient inutilisées.
 
 
-Ce dysfonctionnement est du a la manière dont nous utilisons les vecteurs de mots produit par Word2Vec: une comparaison simple, ne donnant qu'une métrique de similarité ne suffit pas a établir un contexte suffisant pour ajouter des taxonomies sensées.
+Ce dysfonctionnement est du à la manière dont nous utilisons les vecteurs de mots produit par Word2Vec: une comparaison simple, ne donnant qu'une métrique de similarité ne suffit pas à établir un contexte suffisant pour ajouter des taxonomies sensées.
 En effet, si un mot dans un titre et un mot dans la taxonomie sont identiques, alors leur métrique sera forcément faible (ils seront considérés comme ayant un sens proche), même si ces deux mots sont utilisés différemment dans le contexte actuel.
 On peut prendre l'exemple du terme `montant': il peut avoir la signification d'un nombre, une action, un élément d'une porte, \ldots
 
-On se retrouve alors a obtenir une grande quantités de termes taxonomiques qui ne sont pas pertinentes.
+On se retrouve alors à obtenir une grande quantités de termes taxonomiques qui ne sont pas pertinentes.
 De plus, la question de la rapidité d'analyse n'as pas pu être totalement élucidée, même avec un prétraitement des vecteurs et l'utilisation des titres plutôt que du texte entier.
 Pour un seul document, on pouvait avoir jusqu'à plusieurs dizaines de secondes de calcul pour la seule taxonomie.
 Même si l'optimisation n'était pas une priorité dans ce projet, il devenait évident que cette approche ne fonctionnerait pas dans les délais impartis.
 
 
 \subsubsection{Approche par détection de mots commun}
-La solution donnant les meilleurs résultats fut d'extraire les titres d'arrêtées administratifs, qui sont les principaux constituants des RAA a classer, les traiter par lemmatisation et élimination des stopwords, puis d'effectuer une recherche des mots communs dans la taxonomie.
+La solution donnant les meilleurs résultats fut d'extraire les titres d'arrêtées administratifs, qui sont les principaux constituants des RAA à classer, les traiter par lemmatisation et élimination des stopwords, puis d'effectuer une recherche des mots communs dans la taxonomie.
 Si un terme lemmatisé de la taxonomie se trouve dans le titre de l'article administratif, alors celui ci est ajouté au document.
 Cette solution est non seulement bien plus simple, mais permet également de vérifier la qualité des résultats plus aisément qu'à l'aide d'un \textit{embedding}, et elle est bien plus rapide, permettant l'analyse d'un document entier en quelques secondes à peine.
 
@@ -276,16 +276,16 @@ Chaque section possède des sous sections, qui permettent un affinage et une gra
 
 L'idée centrale est de considérer que si un document possède comme taxonomie une feuille ou un noeud de cette arbre, alors il doit nécessairement posséder comme taxonomie tout les parents de ce noeud. 
 Nous remontons alors jusqu'à la racine de l'arbre depuis le noeud de la taxonomie ayant été détectée, en ajoutant à la taxonomie du document tous les noeuds que nous rencontrons en chemin.
-Cette approche nous permet d'obtenir une plus grande variété de taxonomie sans avoir a utiliser une analyse plus lourde sur le texte. 
+Cette approche nous permet d'obtenir une plus grande variété de taxonomie sans avoir à utiliser une analyse plus lourde sur le texte. 
 
 
 \subsubsection{Classement des taxonomies}
-En sortie, nous récupérons un grand nombre de taxonomie, données a la fois par la détection initiale et par le parcours de l'arbre.
-Pour obtenir les taxonomies les plus représentatives du document, nous procédons ensuite a un classement des termes selon le nombre de fois ou chacune apparait dans le tableau des taxonomies.
+En sortie, nous récupérons un grand nombre de taxonomie, données à la fois par la détection initiale et par le parcours de l'arbre.
+Pour obtenir les taxonomies les plus représentatives du document, nous procédons ensuite à un classement des termes selon le nombre de fois ou chacune apparait dans le tableau des taxonomies.
 Les taxonomies qui apparaissent souvent dans le document sont donc considérées comme plus `importante' que des taxonomies qui apparaissent plus rarement.
 
 Le parcours d'arbre apportant une très grande quantité de nouveaux mots pour chaque taxonomie, il est donc nécessaire d'équilibrer ce système.
-Pour se faire, nous appliquons un simple système de poids au taxonomies détectées: une taxonomie initiale aura un poids 100 supérieur a une taxonomie récupéré par le parcours d'arbre.
+Pour se faire, nous appliquons un simple système de poids au taxonomies détectées: une taxonomie initiale aura un poids 100 supérieur à une taxonomie récupéré par le parcours d'arbre.
 
 Cela permettra de garder uniquement les taxonomies les plus pertinentes.
 
@@ -308,7 +308,7 @@ Nous avons ensuite réalisé une interface graphiquement avec l'aide AppBase.io,
 	\label{fig:firstSearch}
 \end{figure}
 
-Le code a ensuite été récupéré pour être amélioré localement.
+Le code à ensuite été récupéré pour être amélioré localement.
 Nous nous somme alors basés sur un Use Case déterminé précédemment et sur les retours de notre commanditaire pour améliorer l'interface et les systèmes de filtre et de d'affichage des résultats, en mettant par exemple les 4 taxonomies les plus pertinentes et un lien vers le transcript du document.
 
 Pour cette version, nous n'avons pas pu mettre le lien vers le document directement cité sur le site de la prefecture car le format des url du site de la prefecture ne nous permettais pas un accès simple vers les documents.
@@ -322,7 +322,7 @@ La version actuelle du moteur de recherche donne donc uniquement un lien vers le
 	\label{fig:finalSearch}
 \end{figure}
 
-Cette version est bien meilleure pour un POC destiné a être montré a un public non initié, qui favorisera un support visuel agréable pour l'acceptation d'un projet.
+Cette version est bien meilleure pour un POC destiné à être montré à un public non initié, qui favorisera un support visuel agréable pour l'acceptation d'un projet.
 
 
 
