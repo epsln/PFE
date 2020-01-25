@@ -31,7 +31,6 @@
 %Glossaire
 \usepackage[toc,acronyms, automake]{glossaries-extra}
 \makeglossaries
-
 \renewcommand*{\glslinkcheckfirsthyperhook}{%
   \ifglsused{\glslabel}%
   {%
@@ -118,14 +117,16 @@
 \import{sections/}{conclusion}
 \newpage
 
+\printglossary[title=Acronymes,type=\acronymtype]
+\newpage 
+\printglossary~\newpage 
+\printbibliography~\newpage
 
+%PILOTAGE
 \part{pilotage}
 
 
-\printglossary[title=Acronymes,type=\acronymtype]
-\newpage 
-\printglossary
-\newpage 
+\newpage
 
-\printbibliography
+
 \end{document}
