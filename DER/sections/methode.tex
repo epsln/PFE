@@ -1,0 +1,45 @@
+\subsection{Démarche}
+\subsubsection{Méthode de gestion du projet}
+
+Au sein de l'équipe, nous avons adopté une méthode de fonctionnement agile avec une organisation du projet autour d'un plan IVVQ\@.
+Le plan IVVQ a été validé par le client, et résume les caractéristiques principales du projet ainsi que les tests techniques et fonctionnels qui seront réalisés pour assurer le fonctionnement final du projet.
+
+
+Nous avons décidé de séparer le projet en trois blocs principaux.
+Chaque membre de l'équipe est responsable d'un bloc du projet, c'est à dire de la façon dont il va être réalisé.
+Toute fonction d'un bloc principal peut être confiée à un autre membre du groupe qui est plus à l'aise avec l'approche technique du problème.
+
+
+La rédaction des documents de rendu comme celui ci sera réalisée avec le langage \LaTeX.
+
+
+L'intégralité du code et des documents \LaTeX~sera géré sur GitHub, à l'adresse \url{https://github.com/smallito/PFE}.
+Les documents \LaTeX~compilés seront ensuite placés sur le sharepoint.
+
+
+
+\subsubsection{Réalisation Technique}
+
+Nous avons séparé le projet en plusieurs parties principales:
+\begin{itemize}
+\item \textbf{Reconnaissance des caractères}:
+Le document doit être analysé afin d'en retirer le contenu textuel.
+
+\item \textbf{Analyse du texte}:
+Le contenu textuel du document doit être analysé sémantiquement afin de placer le document dans une ou plusieurs taxonomie. 
+Ces informations seront ajoutées aux métadonnées du document.
+
+\item \textbf{Extraction d'informations utiles}:
+Le document sera finalement traité par une suite d'analyseurs spécifiques pour en retirer des informations que le commanditaire aura jugé utiles.
+Par exemple, on pourra trouver le nom des personnes mentionnées dans ce document, les dates de validité, les signatures, si le document est un faux, \ldots 
+Ces informations seront ajoutées aux métadonnées du document.
+
+\item \textbf{Création d'une interface de recherche}:
+Une interface de recherche sera ensuite réalisée afin de faciliter l'accès aux documents classés.
+La méthode de recherche sera basée sur les informations présentées précédemment.
+
+\end{itemize}
+
+
+
+
