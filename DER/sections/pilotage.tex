@@ -1,91 +1,105 @@
-Lors de ce projet de fin d’étude notre organisation s’est divisé en deux partie: 
+
+Notre projet de fin d'étude peut être séparé en deux parties distinctes:
 \begin{itemize}
-    \item Avant Projet XL 
-    \item Projet XL 
+    \item Avant le passage en XL 
+    \item Durant la période XL
 \end{itemize}
 
-\section{Avant Projet XL}
-
+\section{Avant le passage en XL}
+Le projet a débuté avec plusieurs objectifs 
 \subsection{Objectif SMART}
-Afin de mieux délimiter le projet et ses objectifs, nous avons convenu avec le client d'un certain nombre d'objectifs, correspondant au critères SMART\@.
-Ces objectifs de projet nous ont permis de mieux juger de la charge de travail nécessaire et nous a donné des buts à atteindre.
-Nous étions donc également en mesure de pouvoir quantifier l'avancement du projet. Ces objectifs étaient: 
+Afin de mieux délimiter le projet et ses objectifs, nous avons convenus avec le client d'un certain nombre d'objectifs, correspondant aux critères SMART (Spécifique, Mesurable, Atteignable, Réaliste et Temporairement défini).
 
+Ces objectifs nous ont permis d'évaluer la charge de travail nécessaire à la réalisation du projet ainsi que de commencer a prévoir l'organisation générale.
+Ils nous permettent également de pouvoir quantifier l'avancement du projet.
+
+Ces objectifs sont: 
 \begin{itemize}
     \item Construire un système d'extraction du texte brut depuis des PDF  
-    \item Extraire une liste de métadonnées (définie par le client) depuis le texte brut
+    \item Extraire une liste de métadonnées (définie avec le client) depuis le texte
     \item Assigner au moins une taxonomie au texte 
     \item Indexer les documents de notre base de données à partir des informations extraites (métadonnées et taxonomies)
-    \item Interfaçage avec un moteur de recherche  
+    \item Réaliser une interface de sous la forme d'un moteur de recherche  
 \end{itemize}
 
-Nous étions capables de vérifier si chacun de ces objectifs était accomplis grâce à une série de test, définie section 8 du DER\@. 
+Pour être capables de vérifier si chacun de ces objectifs est atteint, nous avons mis en place une série de test, définie section~\ref{tests} du DER\@. 
 
 
 
 \subsection{Gantt}
-Dans un premier temps, nous avions effectué un planning de Gantt post mortem avec les grandes tâches.
-Cette étape a été l'une de nos premières tâches.
-Cette organisation permet d’avoir une estimation de la charge de travail. 
+Dans un premier temps, nous avions réalisé un planning de Gantt avec les tâches principales.
+Ce Gantt nous permet de faire une estimation de la charge de travail et la durée du projet. 
 
-Avec la complexité du projet, nous voulions nous consacrer sur les tâches les plus importantes.
-Cependant, il valait mieux avoir un diagramme général afin d'avoir un support visuel pour évaluer la charge de travail restante. 
+Avec la complexité du projet, nous avons décidé nous consacrer sur les tâches les plus importantes, c'est a dire les fonctionnalités d'extractions de données.
+Le moteur de recherche et surtout son interface ont été classés comme secondaires pour le projet.
 
+\begin{figure}[h!]
+  \includegraphics{gantt.png}
+	\caption{Diagramme de Gantt prévisionnel}
+	\label{fig:ganttprev}
+\end{figure}
+
+Le figure~\ref{fig:ganttprev} représente le diagramme de Gantt prévisionnel qui nous a permis de nous aiguiller tout le long du projet.
+En orange nous avons la durée des tâches que nous avons estimées et en gris leurs durées réelles.
+
+Voici également le diagramme de Gantt post Mortem (figure~\ref{fig:postmortem}), complété tout au long du projet.
 \begin{figure}[h!]
   \includegraphics{DiagrammeGanttAvantXL.png}
 	\caption{Diagramme de Gantt post moderm}
-	\label{}
+	\label{fig:postmortem}
 \end{figure}
 
-Le schéma ci-dessus est le diagramme de Gantt qui nous a permis de nous aiguiller tout le long du projet.
-En orange nous avons la durée des tâches que nous avons estimées et en gris leurs durées réelles.
 
 Nous pouvons remarquer que nous sommes généralement dans les temps même si certaines tâches ont pris plus de temps que prévues.
 L'analyse sémantique représente la taxonomie qui est la charge de travail la plus importantes. 
 
-L'analyse visuel nécessaire a été supprimé en cours de route car suite à une réunion avec le commanditaire, il nous a été demandé de centrer le POC sur un seul type de document.
+L'analyse visuel a été supprimé suite à une réunion avec le commanditaire ou nous avons réduit le cadre du projet pour avoir une chance de le finir.
+Cette réduction de cadre a rendu la fonctionnalité de cette tâche inutile.
 De ce fait, nous avons gagné plus de temps pour nous focaliser sur d'autres tâches. 
 
 
+\subsection{Gantt Hebdomadaire}
+Le diagramme de Gantt prévisionnel (\ref{fig:ganttprev}) est utile pour contrôler l'avancement du projet.
 
-\subsection{Gantt Hebdo}
-Le diagramme représenté dans la partie 12.2) est très bien pour avoir une vue globale sur l'avancement du projet.
-
-Cependant, pour chaque grande tâche dépendent des tâches plus petites. 
-C'est la raison pour laquelle nous avons fait un diagramme hebdomadaire divisé en sept sprints. 
+Cependant, chaque grande tâche est composée de tâches plus petites. 
+C'est la raison pour laquelle nous avons fait un diagramme de Gantt hebdomadaire pour chaque sprint d'une semaine.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\textwidth]{DiagrammeGanttHebdoAvantXL.png}
-	\caption[]{Diagramme de Gantt hebdomadaire sprint 3/7}
-	\label{}
+  \caption[]{Diagramme de Gantt hebdomadaire sprint 3/7}
+  \label{fig:gantthebdo}
 \end{figure}
 
-Cette démarche nous a été d’une grande aide afin de nous guider sur notre avancement.
-Ci-dessus, nous avons l'exemple du sprint 3/7 qui concerne en partie de notre demande de projet XL et l’implémentation d'une OCR\@. 
+Cette démarche nous a été d’une grande aide pour nous guider sur notre avancement.
+La figure~\ref{fig:gantthebdo} nous avons l'exemple du sprint 3/7 qui concerne la demande de projet XL et l'implémentation d'une méthode d'OCR\@. 
 Nous avons des indications sur la durée que nous avons prévu (en orange) et le retard que nous avons pris (en gris). 
 
 
-
 \subsection{Organisation}
-Deux membres de l'équipe travaillaient depuis Laval et l'autre depuis Paris.
-Cela ne nous a pas dérangé, cette situation nous a permis d'organiser des réunions régulières avec le commanditaire. 
+L'équipe du projet est composée de deux étudiants Lavallois et un étudiant Parisiens.
+Cette situation géographique n'a pas été un handicap car cela nous a permis d'organiser des réunions régulières avec le commanditaire à la prefecture de la Mayenne, située a Laval. 
+Les réunions se sont en grande majorité par visioconférence en utilisant Discord, Facebook et Microsoft Teams en fonction de la situation.
+
+Les membres de l'équipe sur Laval ont également pu effectuer une rencontre avec des archivistes dans le bâtiment des archives départementales.
 
 \subsubsection{Sharepoint et Github}
-Afin de nous organiser, l'ensemble des fichiers non-techniques étaient stockés sur le Sharepoint Cap Projet.
-Ce dernier se compose des documents administratifs, de nos comptes rendus de réunions, des recueils administratifs de la préfecture et d’un trombinoscope. 
-Il nous permet de nous structurer et d’informer notre mentor lorsqu'un document est disponible. 
+Afin de gérer nos documents facilement, l'ensemble des fichiers non-techniques ont été placés sur le Sharepoint Cap Projet.
+Nous considérons comme non-techniques les documents administratifs, nos comptes rendus de réunions, les recueils administratifs de la préfecture et le trombinoscope.
+Nos rapports n'y sont pas stockés car ils ont été rédigés avec \LaTeX, et leur gestion est facilitée par l'utilisation de GitHub.
 
-En ce qui concerne de nos programmes, nous avons fait le choix de travailler avec Github qui est un service web d'hébergement et de gestion de développement de logiciels.
-Ainsi, nous avions un contrôle de version des codes développés. 
+L'utilisation du SharePoint nous permet également d’informer automatiquement notre mentor lorsqu'un document est disponible. 
+
+En ce qui concerne la gestion de nos programmes, nous avons fait le choix de travailler avec Github qui est un service web d'hébergement et de gestion de développement de logiciels.
+L'utilisation de GitHub nous a permis un contrôle de version des codes et de favoriser la collaboration ainsi que la disponibilité des codes. 
 
 
 \subsubsection{Réunions}
-Pour un suivi régulier du projet, nous faisions une réunion par semaine avec notre mentor.
-Avec la distance de travail entre les membres de l'équipe et le mentor (Paris-Laval), nous communiquions en visioconférence. 
+Pour un suivi régulier du projet, nous avons convenus avec notre mentor d'une réunion par semaine.
+Cette réunion s'est pour la plupart du temps déroulée par visioconférence en raison de la situation géographique de l'équipe.
 
-C’est avec des PowerPoints que nous présentions notre avancement.
-Cette démarche a permis d'avoir une réunion structurée, lisible et présentable. 
+Lors de la réunion, nous avons utilisé des PowerPoints pour présenter notre travail.
+Cette démarche permet de structurer la réunion et rend les informations plus lisibles et présentables. 
 
 \begin{figure}[h!]
   \centering
@@ -119,7 +133,7 @@ En réalité, nous avons effectué une charge de travail équivalent à 504 heur
 
 
 
-\section{Projet XL}
+\section{Durant la période XL}
 
 \subsection{Organisation}
 Suite à l'évaluation des charges de travails que nous avions besoin pour terminer le projet, nous avions fait une demande de projet XL qui consiste à remplacer nos heures de mineurs managériales par la réalisation de notre PFE\@.
